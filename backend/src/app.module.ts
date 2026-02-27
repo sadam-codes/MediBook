@@ -6,6 +6,7 @@ import { User } from './models/user.model';
 import { Doctor } from './models/doctor.model';
 import { Patient } from './models/patient.model';
 import { Admin } from './models/admin.model';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { Admin } from './models/admin.model';
         logging: false,
       }),
     }),
+    AuthModule,
   ],
   providers: [DbHealthService],
 })

@@ -16,7 +16,6 @@ export enum UserRole {
     PATIENT = 'patient',
     ADMIN = 'admin',
 }
-
 @Table({
     tableName: 'users',
     timestamps: true,
@@ -73,7 +72,6 @@ export class User extends Model {
     @UpdatedAt
     declare updatedAt: Date;
 
-    // Associations
     @HasOne(() => Doctor)
     declare doctor: Doctor;
 
