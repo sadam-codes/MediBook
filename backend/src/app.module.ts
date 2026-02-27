@@ -7,6 +7,8 @@ import { Doctor } from './models/doctor.model';
 import { Patient } from './models/patient.model';
 import { Admin } from './models/admin.model';
 import { AuthModule } from './auth/auth.module';
+import { DoctorsModule } from './doctors/doctors.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { AuthModule } from './auth/auth.module';
       }),
     }),
     AuthModule,
+    DoctorsModule,
+    UsersModule,
   ],
   providers: [DbHealthService],
 })
