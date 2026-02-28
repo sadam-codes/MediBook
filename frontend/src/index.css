@@ -1,15 +1,134 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
+  --color-primary-50: #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
 }
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased selection:bg-primary-100 selection:text-primary-700;
+    @apply bg-slate-50 text-slate-900 antialiased;
   }
+
+  ::selection {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+}
+
+/* ── react-datepicker emerald theme ── */
+.emerald-datepicker {
+  font-family: inherit !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 20px !important;
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.15), 0 8px 25px -5px rgba(5, 150, 105, 0.08) !important;
+  overflow: hidden !important;
+  padding: 12px !important;
+  background: #fff !important;
+}
+
+/* header */
+.emerald-datepicker .react-datepicker__header {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  border-bottom: none !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 12px 8px 10px !important;
+}
+
+.emerald-datepicker .react-datepicker__current-month,
+.emerald-datepicker .react-datepicker__day-name {
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.emerald-datepicker .react-datepicker__day-name {
+  font-size: 11px !important;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* month/year dropdowns */
+.emerald-datepicker .react-datepicker__month-select,
+.emerald-datepicker .react-datepicker__year-select {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 2px 6px !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  cursor: pointer;
+  outline: none;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.emerald-datepicker .react-datepicker__month-select option,
+.emerald-datepicker .react-datepicker__year-select option {
+  background: #065f46 !important;
+  color: #fff !important;
+}
+
+/* nav arrows */
+.emerald-datepicker .react-datepicker__navigation-icon::before {
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.emerald-datepicker .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: #fff !important;
+}
+
+/* day cells */
+.emerald-datepicker .react-datepicker__day {
+  border-radius: 10px !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  width: 2rem !important;
+  line-height: 2rem !important;
+  transition: all 0.15s ease !important;
+}
+
+.emerald-datepicker .react-datepicker__day:hover {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+}
+
+.emerald-datepicker .react-datepicker__day--selected,
+.emerald-datepicker .react-datepicker__day--keyboard-selected {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4) !important;
+}
+
+.emerald-datepicker .react-datepicker__day--today {
+  font-weight: 800 !important;
+  color: #059669 !important;
+  border: 1.5px solid #059669 !important;
+  background: transparent !important;
+}
+
+.emerald-datepicker .react-datepicker__day--today.react-datepicker__day--selected {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+.emerald-datepicker .react-datepicker__day--disabled {
+  color: #d1d5db !important;
+}
+
+/* popper arrow */
+.emerald-datepicker-popper .react-datepicker__triangle {
+  display: none !important;
+}
+
+/* popper z-index */
+.emerald-datepicker-popper {
+  z-index: 9999 !important;
 }

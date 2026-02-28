@@ -21,8 +21,8 @@ export class SignupDto {
     password: string;
 
     @IsEnum(UserRole)
-    @IsNotEmpty()
-    role: UserRole;
+    @IsOptional()
+    role?: UserRole;
 
     // Shared Fields
     @IsString()

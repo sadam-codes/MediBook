@@ -32,16 +32,8 @@ export class AuthService {
         const t = await this.sequelize.transaction();
         try {
             const {
-                firstName, lastName, email, password, role,
-                phoneNumber,
-                specialization, licenseNumber, experience, bio, consultationFee,
-                dateOfBirth, gender, bloodGroup, allergies, medicalHistory, address, emergencyContactName, emergencyContactPhone,
-                department
+                firstName, lastName, email, password
             } = signupDto;
-
-            if (role === 'admin') {
-                throw new BadRequestException('Admin accounts cannot be created via public signup. Please contact the system administrator.');
-            }
 
             const existingUser = await this.userModel.findOne({
                 where: { email },
@@ -51,46 +43,16 @@ export class AuthService {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
+            let assignedRole = signupDto.role || 'patient';
+
+            if (assignedRole === 'admin') {
+                throw new BadRequestException('Admin accounts cannot be created via public signup. Please contact the system administrator.');
+            }
+
             const user = await this.userModel.create(
-                { firstName, lastName, email, password: hashedPassword, role },
+                { firstName, lastName, email, password: hashedPassword, role: assignedRole },
                 { transaction: t },
             );
-
-            if (role === 'doctor') {
-                await this.doctorModel.create(
-                    {
-                        userId: user.id,
-                        specialization: specialization || 'General',
-                        phoneNumber,
-                        licenseNumber,
-                        experience,
-                        bio,
-                        consultationFee
-                    },
-                    { transaction: t },
-                );
-            } else if (role === 'patient') {
-                await this.patientModel.create({
-                    userId: user.id,
-                    phoneNumber,
-                    dateOfBirth,
-                    gender,
-                    bloodGroup,
-                    allergies,
-                    medicalHistory,
-                    address,
-                    emergencyContactName,
-                    emergencyContactPhone
-                }, { transaction: t });
-            } else if (role === 'admin') {
-                await this.adminModel.create({
-                    userId: user.id,
-                    department,
-                    phoneNumber
-                }, { transaction: t });
-            } else {
-                throw new BadRequestException('Invalid role');
-            }
 
             await t.commit();
 
@@ -104,6 +66,8 @@ export class AuthService {
                     role: user.role,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    hasPatientProfile: false,
+                    hasDoctorProfile: false,
                 },
                 access_token: this.jwtService.sign(payload),
             };
@@ -125,7 +89,10 @@ export class AuthService {
         try {
             const { email, password } = loginDto;
 
-            const user = await this.userModel.findOne({ where: { email } });
+            const user = await this.userModel.findOne({
+                where: { email },
+                include: [this.patientModel, this.doctorModel]
+            });
             if (!user) throw new BadRequestException('Invalid credentials');
 
             const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -143,6 +110,8 @@ export class AuthService {
                     role: user.role,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    hasPatientProfile: !!user.patient,
+                    hasDoctorProfile: !!user.doctor
                 },
                 access_token: this.jwtService.sign(payload),
             };
