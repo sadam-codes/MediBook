@@ -41,7 +41,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onBookClick }) => {
 
                 <button
                     onClick={onBookClick}
-                    className="px-12 py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-3xl shadow-2xl shadow-emerald-500/30 transition-all text-lg active:scale-95 uppercase tracking-widest"
+                    className="px-12 py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-2xl shadow-emerald-500/30 transition-all text-lg active:scale-95 uppercase tracking-widest"
                 >
                     Book Session Now
                 </button>

@@ -62,11 +62,11 @@ export const MainLayout: React.FC = () => {
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
                         <div className="hidden sm:flex items-center mr-4 space-x-6">
-                            {user?.role === 'patient' && !user.hasDoctorProfile && (
+                            {/* {user?.role === 'patient' && !user.hasDoctorProfile && (
                                 <button onClick={() => navigate('/join-doctor')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors flex items-center">
                                     <UserPlus size={16} className="mr-2" /> Join as Doctor
                                 </button>
-                            )}
+                            )} */}
                             {user?.role === 'patient' && !user.hasPatientProfile && (
                                 <button onClick={() => navigate('/complete-profile')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors">
                                     Complete Profile
@@ -176,7 +176,7 @@ export const MainLayout: React.FC = () => {
                                 onClick={() => { navigate('/home'); setIsMobileMenuOpen(false); }}
                                 className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
                             >
-
+                                View Professional Profile
                                 {user ? 'Dashboard Home' : 'Home'}
                             </button>
                         </div>

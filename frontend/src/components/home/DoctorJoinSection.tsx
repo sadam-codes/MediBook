@@ -25,7 +25,7 @@ const DoctorJoinSection: React.FC = () => {
                 </p>
                 <button
                     onClick={handleJoinClick}
-                    className="px-16 py-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-[32px] shadow-3xl shadow-emerald-500/20 transition-all text-xl active:scale-95 uppercase tracking-widest border border-white/10"
+                    className="px-10 py-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-[20px] transition-all text-xl active:scale-95 uppercase tracking-widest "
                 >
                     Join as Doctor
                 </button>

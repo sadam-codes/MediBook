@@ -60,7 +60,7 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
 
                             <button
                                 onClick={() => onViewProfile(doc)}
-                                className="w-full py-5 bg-emerald-600 text-white font-black rounded-[32px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-emerald-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
+                                className="w-full py-5 bg-emerald-600 text-white font-black rounded-[20px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-emerald-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
                             >
                                 View Profile
                             </button>
