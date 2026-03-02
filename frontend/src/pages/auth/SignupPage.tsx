@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const api = axios.create({ baseURL: 'http://localhost:5000' });
 
@@ -19,6 +19,7 @@ const schema = yup.object({
 
 export const SignupPage: React.FC = () => {
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<any>({
         resolver: yupResolver(schema) as any
@@ -37,11 +38,11 @@ export const SignupPage: React.FC = () => {
     };
 
     return (
-        <div className="h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-8 overflow-hidden">
+        <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-8 py-12">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-[500px] h-full max-h-[750px] bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden flex flex-col"
+                className="w-full max-w-[500px] bg-white rounded-[20px] shadow-2xl border border-gray-100 overflow-hidden flex flex-col"
             >
                 {/* Header Block */}
                 <div className="p-8 pb-6 shrink-0 relative border-b border-gray-100">
@@ -88,7 +89,20 @@ export const SignupPage: React.FC = () => {
 
                         <div className="space-y-1">
                             <label className="text-xs font-semibold text-gray-700">Password</label>
-                            <input type="password" {...register('password')} className={`w-full px-4 py-3 bg-white border ${errors.password ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'} rounded-lg outline-none text-gray-900 transition-all`} />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    {...register('password')}
+                                    className={`w-full px-4 pr-12 py-3 bg-white border ${errors.password ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'} rounded-lg outline-none text-gray-900 transition-all`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-emerald-600 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
                             <p className="text-xs text-red-600 font-medium">{errors.password?.message as string}</p>
                         </div>
 

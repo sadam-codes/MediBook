@@ -141,7 +141,6 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
                             placeholder="Select blood group..."
                         />
                     </div>
-
                     <div className="col-span-1 md:col-span-2 space-y-1.5 mt-1">
                         <label className="text-xs font-bold text-gray-700 ml-1">Medical History & Allergies</label>
                         <textarea {...register('medicalHistory')} rows={3} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm resize-y leading-relaxed" placeholder="Please declare any known conditions, allergies, or past surgeries to help doctors assist you better..."></textarea>

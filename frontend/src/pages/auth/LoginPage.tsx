@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { Shield, Mail, Lock, Loader2, ArrowLeft } from 'lucide-react';
+import { Shield, Mail, Lock, Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const api = axios.create({ baseURL: 'http://localhost:5000' });
 
@@ -19,6 +19,7 @@ type FormData = yup.InferType<typeof schema>;
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
         resolver: yupResolver(schema)
@@ -26,7 +27,9 @@ export const LoginPage: React.FC = () => {
 
     const onSubmit = async (data: FormData) => {
         try {
-            const response = await api.post('/auth/login', data);
+            // Only send email and password to prevent "property should not exist" errors
+            const { email, password } = data;
+            const response = await api.post('/auth/login', { email, password });
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             toast.success('Welcome back!');
@@ -37,11 +40,11 @@ export const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-8 overflow-hidden">
+        <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-8 py-12">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-[480px] bg-white rounded-[40px] shadow-2xl border border-slate-100 overflow-hidden flex flex-col"
+                className="w-full max-w-[480px] bg-white rounded-[20px] shadow-2xl border border-slate-100 overflow-hidden flex flex-col"
             >
                 <div className="p-8 sm:p-12 overflow-y-auto custom-scrollbar">
                     <div className="flex flex-col items-center mb-10">
@@ -71,11 +74,18 @@ export const LoginPage: React.FC = () => {
                             <div className="relative group">
                                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={20} />
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     {...register('password')}
-                                    className={`w-full pl-14 pr-6 py-5 bg-slate-50 border-2 ${errors.password ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-emerald-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
+                                    className={`w-full pl-14 pr-14 py-5 bg-slate-50 border-2 ${errors.password ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-emerald-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
                                     placeholder="••••••••"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-emerald-500 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
                             </div>
                             <p className="text-[10px] text-red-500 font-black uppercase tracking-wider ml-4 min-h-[14px]">{errors.password?.message}</p>
                         </div>
@@ -86,7 +96,7 @@ export const LoginPage: React.FC = () => {
                             className="w-full bg-slate-900 hover:bg-emerald-600 text-white font-black py-5 rounded-[28px] transition-all shadow-xl active:scale-95 flex items-center justify-center border-none"
                             style={{ backgroundColor: '#0f172a' }}
                         >
-                            {isSubmitting ? <Loader2 className="animate-spin" /> : 'Authorize Session'}
+                            {isSubmitting ? <Loader2 className="animate-spin" /> : 'Login'}
                         </button>
                     </form>
 
