@@ -37,19 +37,26 @@ export const Home: React.FC = () => {
 
     useEffect(() => {
         if (user) {
-            fetchData();
-        } else {
-            setLoading(false);
+            const currentPath = window.location.pathname;
+            if (currentPath === '/') {
+                if (user.role === 'patient') navigate('/patient');
+                else if (user.role === 'doctor') navigate('/doctor');
+                else if (user.role === 'admin') navigate('/admin');
+            } else if (currentPath === '/patient' && user.role !== 'patient') navigate('/');
+            else if (currentPath === '/doctor' && user.role !== 'doctor') navigate('/');
+            else if (currentPath === '/admin' && user.role !== 'admin') navigate('/');
         }
-    }, [user?.id, user?.role]);
+        fetchData();
+    }, [user?.id, user?.role, window.location.pathname]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            if (user?.role === 'patient') {
-                const res = await api.get('/doctors');
-                setDoctors(res.data);
-            } else if (user?.role === 'admin') {
+            // Always fetch available doctors to show on landing page / dashboard
+            const doctsRes = await api.get('/doctors');
+            setDoctors(doctsRes.data);
+
+            if (user?.role === 'admin') {
                 const res = await api.get('/users');
                 setAllUsers(res.data);
             }
@@ -83,7 +90,22 @@ export const Home: React.FC = () => {
         }
     };
 
-    const showLanding = !user || (user.role === 'patient' && !user.hasPatientProfile);
+    const showLanding = !user;
+
+    const mapDoctorToUi = (d: any) => {
+        if (!d) return null;
+        if (d.name && d.spec) return d; // Already mapped (mock data)
+        return {
+            name: `Dr. ${d.user?.fullName}`,
+            spec: d.specialization,
+            exp: `${d.experience} Years Exp.`,
+            rating: "4.9",
+            reviews: "120+",
+            img: d.user?.profileImage ? `http://localhost:5000${d.user.profileImage}` : "/default-doc.png",
+            bio: d.bio || "Leading specialist in medical care.",
+            originalData: d
+        };
+    };
 
     return (
         <React.Fragment>
@@ -91,16 +113,18 @@ export const Home: React.FC = () => {
                 doctor={selectedDoctor}
                 isOpen={!!selectedDoctor}
                 onClose={() => setSelectedDoctor(null)}
-                onBook={() => {
-                    setSelectedDoctor(null);
-                    navigate('/complete-profile');
-                }}
             />
 
             {showLanding ? (
                 <div className="flex-1 flex flex-col pt-2 pb-12">
                     <HeroSection onBookClick={() => navigate('/complete-profile')} />
-                    <DoctorsSpecialistsSection onViewProfile={(doc) => setSelectedDoctor(doc)} />
+                    <DoctorsSpecialistsSection
+                        doctors={[]}
+                        onViewProfile={() => {
+                            sessionStorage.setItem('showLogin', 'true');
+                            window.location.reload();
+                        }}
+                    />
                     <DoctorJoinSection />
                     <ReviewsSection />
                     <FAQSection />
@@ -109,7 +133,11 @@ export const Home: React.FC = () => {
             ) : (
                 <div className="flex-1 flex flex-col h-full">
                     {user?.role === 'patient' && (
-                        <PatientDashboard doctors={doctors} loading={loading} />
+                        <PatientDashboard
+                            doctors={doctors}
+                            loading={loading}
+                            onViewProfile={(doc) => setSelectedDoctor(mapDoctorToUi(doc))}
+                        />
                     )}
                     {user?.role === 'doctor' && (
                         <DoctorDashboard user={user} />

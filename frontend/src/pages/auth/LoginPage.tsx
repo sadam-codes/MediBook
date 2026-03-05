@@ -70,7 +70,7 @@ export const LoginPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Secure Password</label>
+                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
                             <div className="relative group">
                                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={20} />
                                 <input

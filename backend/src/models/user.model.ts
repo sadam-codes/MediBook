@@ -29,16 +29,16 @@ export class User extends Model {
     declare id: number;
 
     @Column({
-        type: DataType.STRING(100),
+        type: DataType.STRING(200),
         allowNull: false,
     })
-    declare firstName: string;
+    declare fullName: string;
 
     @Column({
-        type: DataType.STRING(100),
-        allowNull: false,
+        type: DataType.STRING(255),
+        allowNull: true,
     })
-    declare lastName: string;
+    declare profileImage: string;
 
     @Column({
         type: DataType.STRING(150),

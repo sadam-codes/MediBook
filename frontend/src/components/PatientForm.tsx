@@ -108,7 +108,7 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-gray-700 ml-1">Phone Number</label>
-                        <input {...register('phoneNumber')} placeholder="+1 (555) 000-0000" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm" />
+                        <input {...register('phoneNumber')} placeholder="923044561544" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm" />
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-gray-700 ml-1">Gender</label>

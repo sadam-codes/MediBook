@@ -1,100 +1,167 @@
-import React from 'react';
-import { X, ShieldCheck, Award, Star, Clock, Calendar as CalendarIcon } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, ShieldCheck, Award, Star, Calendar as CalendarIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 interface DoctorProfileModalProps {
     doctor: any;
     isOpen: boolean;
     onClose: () => void;
-    onBook: () => void;
 }
 
-const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen, onClose, onBook }) => {
-    if (!isOpen || !doctor) return null;
+const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen, onClose }) => {
+    const navigate = useNavigate();
+    const [appointments, setAppointments] = useState<any[]>([]);
+    const [patientBooking, setPatientBooking] = useState<any>(null);
+    const [loadingAppts, setLoadingAppts] = useState(false);
+
+    const docData = doctor?.originalData || doctor;
+
+    useEffect(() => {
+        if (isOpen && docData?.userId) {
+            fetchDoctorAppointments();
+            checkPatientBooking();
+        }
+    }, [doctor, isOpen]);
+
+    const checkPatientBooking = async () => {
+        try {
+            const res = await api.get('/appointments/my');
+            const found = res.data.find((a: any) => a.doctorUserId === (doctor.originalData?.userId || doctor.userId));
+            setPatientBooking(found);
+        } catch (err) {
+            console.error("Failed to check patient booking:", err);
+        }
+    };
+
+    const fetchDoctorAppointments = async () => {
+        setLoadingAppts(true);
+        try {
+            const res = await api.get(`/appointments/doctor/${docData.userId}`);
+            setAppointments(res.data);
+        } catch (err) {
+            console.error("Failed to fetch doctor appointments:", err);
+        } finally {
+            setLoadingAppts(false);
+        }
+    };
+
+    if (!doctor) return null;
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={onClose}
-                    className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
-                />
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="relative bg-white w-full max-w-2xl rounded-[20px] shadow-2xl overflow-hidden border border-white/20 flex flex-col max-h-[90vh]"
-                >
-                    <button
+            {isOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute top-4 right-4 z-50 p-2 bg-white/80 hover:bg-emerald-600 hover:text-white rounded-full transition-all backdrop-blur-md border border-gray-100 text-slate-400 shadow-sm"
+                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+                    />
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                        className="bg-white rounded-[32px] sm:rounded-[40px] shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden relative z-10 flex flex-col sm:flex-row border border-slate-100"
                     >
-                        <X size={20} />
-                    </button>
-
-                    <div className="overflow-y-auto custom-scrollbar flex-1">
-                        <div className="flex flex-col md:flex-row">
-                            {/* Image Section */}
-                            <div className="w-full md:w-2/5 h-64 md:h-auto relative shrink-0">
-                                <img src={doctor.img} alt={doctor.name} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-slate-900/40 to-transparent" />
+                        {/* Profile Left Sidebar */}
+                        <div className="w-full sm:w-80 bg-slate-50 p-6 sm:p-8 flex flex-col border-b sm:border-b-0 sm:border-r border-slate-100 shrink-0">
+                            <div className="relative mb-6 sm:mb-8 group max-w-[200px] sm:max-w-none mx-auto sm:mx-0">
+                                <div className="w-full aspect-square rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-xl border-4 border-white group-hover:scale-[1.02] transition-transform duration-500">
+                                    <img src={doctor.img} alt={doctor.name} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="absolute -bottom-3 sm:-bottom-4 left-1/2 -translate-x-1/2 bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-lg border border-slate-50 flex items-center space-x-2 whitespace-nowrap">
+                                    <ShieldCheck size={12} className="text-emerald-600" />
+                                    <span className="text-[8px] sm:text-[10px] font-black text-slate-900 uppercase tracking-widest">Verified Expert</span>
+                                </div>
                             </div>
 
-                            {/* Content Section */}
-                            <div className="flex-1 p-6 md:p-10 flex flex-col">
-                                <div className="mb-6">
-                                    <div className="inline-flex items-center space-x-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 mb-4 text-left">
-                                        <ShieldCheck size={14} className="text-emerald-600" />
-                                        <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Verified Specialist</span>
-                                    </div>
-                                    <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight leading-tight mb-2 text-left">{doctor.name}</h2>
-                                    <p className="text-emerald-600 font-bold text-base md:text-lg text-left">{doctor.spec}</p>
+                            <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
+                                <div>
+                                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight mb-1 sm:mb-2 uppercase italic">{doctor.name}</h2>
+                                    <p className="text-emerald-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em]">{doctor.spec}</p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8">
-                                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-left">
-                                        <div className="flex items-center space-x-2 text-gray-400 mb-1">
-                                            <Award size={14} />
-                                            <span className="text-[10px] font-black uppercase tracking-widest">Experience</span>
+                                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                                    <div className="bg-white p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-100 flex flex-col items-center">
+                                        <Award size={14} className="text-slate-400 mb-1" />
+                                        <span className="text-[10px] sm:text-xs font-black text-slate-900 leading-none">{doctor.exp}</span>
+                                        <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">Exp.</span>
+                                    </div>
+                                    <div className="bg-white p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-100 flex flex-col items-center">
+                                        <Star size={14} className="text-amber-400 mb-1" />
+                                        <span className="text-[10px] sm:text-xs font-black text-slate-900 leading-none">{doctor.rating}</span>
+                                        <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">Rating</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 pt-4 border-t border-slate-200">
+                                    <div className="flex items-center justify-center sm:justify-start text-slate-500 space-x-3 group cursor-pointer">
+                                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-slate-400 group-hover:text-emerald-500 transition-colors">
+                                            <CalendarIcon size={16} />
                                         </div>
-                                        <p className="text-gray-900 font-black text-sm md:text-base">{doctor.exp}</p>
+                                        <span className="text-[10px] font-bold uppercase tracking-widest italic">
+                                            {loadingAppts ? 'Checking...' : `${appointments.length} Consultations`}
+                                        </span>
                                     </div>
-                                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-left">
-                                        <div className="flex items-center space-x-1 text-yellow-500 mb-1">
-                                            <Star size={14} className="fill-current" />
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Rating</span>
-                                        </div>
-                                        <p className="text-gray-900 font-black text-sm md:text-base">{doctor.rating} <span className="text-gray-400 text-xs">({doctor.reviews})</span></p>
-                                    </div>
-                                </div>
-
-                                <div className="mb-8 text-left">
-                                    <h4 className="text-gray-900 font-black text-xs md:text-sm uppercase tracking-widest mb-3 flex items-center">
-                                        <Clock size={16} className="mr-2 text-emerald-500" />
-                                        About Specialist
-                                    </h4>
-                                    <p className="text-gray-500 font-bold leading-relaxed text-sm italic">
-                                        "{doctor.bio}"
-                                    </p>
-                                </div>
-
-                                <div className="mt-auto">
-                                    <button
-                                        onClick={onBook}
-                                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-500/20 transition-all flex items-center justify-center space-x-2 active:scale-95"
-                                    >
-                                        <CalendarIcon size={18} />
-                                        <span>Book Appointment</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </motion.div>
-            </div>
+
+                        {/* Content Right */}
+                        <div className="flex-1 p-6 sm:p-10 overflow-y-auto custom-scrollbar flex flex-col bg-white">
+                            <button
+                                onClick={onClose}
+                                className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 sm:p-3 text-slate-300 hover:text-slate-900 hover:bg-slate-50 rounded-xl sm:rounded-2xl transition-all active:scale-95 z-30"
+                            >
+                                <X size={20} className="sm:w-6 sm:h-6" />
+                            </button>
+
+                            <div className="flex-1 flex flex-col items-center justify-center space-y-2 py-6">
+                                <div className="text-center max-w-md">
+                                    <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-4 leading-tight italic">Ready for your <span className="text-emerald-600">Consultation?</span></h3>
+                                    <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">Schedule your session with Dr. {doctor.name.split(' ')[1] || doctor.name} and receive professional medical guidance from the comfort of your home.</p>
+
+                                    <button
+                                        onClick={() => {
+                                            onClose();
+                                            if (patientBooking) {
+                                                navigate('/bookings');
+                                            } else {
+                                                navigate(`/bookings/${docData.userId}`);
+                                            }
+                                        }}
+                                        className={`w-full py-6 text-white font-black rounded-3xl transition-all duration-500 shadow-2xl text-xs uppercase tracking-[0.3em] active:scale-95 border border-white/5 flex items-center justify-center space-x-3 ${patientBooking
+                                            ? 'bg-slate-900 shadow-slate-900/20 hover:bg-slate-800'
+                                            : 'bg-emerald-600 shadow-emerald-500/20 hover:bg-emerald-700 hover:shadow-emerald-600/40'
+                                            }`}
+                                    >
+                                        <CalendarIcon size={18} />
+                                        <span>{patientBooking ? 'View Active Booking' : 'Initialize Booking'}</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="mt-6 pt-8 border-t border-slate-100 text-left">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                                    <div className="space-y-2">
+                                        <h5 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Clinic Location</h5>
+                                        <p className="text-xs font-bold text-slate-900">{docData.clinicName || 'City Medical Center'}</p>
+                                        <p className="text-[10px] text-slate-400 leading-relaxed font-medium">{docData.clinicAddress || 'Downtown Medical District, Suite 402'}</p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <h5 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Consultation Fee</h5>
+                                        <p className="text-2xl sm:text-3xl font-black text-slate-900 italic">PKR {docData.consultationFee || '2500'}</p>
+                                        <span className="text-[8px] font-black text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Secure Payment via App</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
         </AnimatePresence>
     );
 };

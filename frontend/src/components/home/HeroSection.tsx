@@ -35,7 +35,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onBookClick }) => {
                     </div>
                     <div className="flex items-center space-x-3 text-slate-400 font-black uppercase tracking-widest text-xs">
                         <CheckCircle2 size={16} className="text-emerald-500" />
-                        <span>Secure booking process</span>
+                        <span>Easy booking process</span>
                     </div>
                 </div>
 

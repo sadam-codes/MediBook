@@ -13,6 +13,10 @@
     @apply bg-slate-50 text-slate-900 antialiased;
   }
 
+  button {
+    @apply cursor-pointer;
+  }
+
   ::selection {
     background-color: #d1fae5;
     color: #065f46;

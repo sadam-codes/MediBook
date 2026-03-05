@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel, InjectConnection } from '@nestjs/sequelize';
-import { User } from '../models/user.model';
+import { User, UserRole } from '../models/user.model';
 import { Doctor } from '../models/doctor.model';
 import { Patient } from '../models/patient.model';
 import { Admin } from '../models/admin.model';
@@ -28,12 +28,19 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    async signup(signupDto: SignupDto) {
+    async signup(signupDto: SignupDto, file?: any) {
         const t = await this.sequelize.transaction();
         try {
             const {
-                firstName, lastName, email, password
+                fullName, email, password,
+                phoneNumber, gender, specialization, licenseNumber, experience,
+                qualification, clinicName, clinicAddress, city, country, consultationFee,
+                availableDays, startTime, endTime, breakTime, appointmentDuration,
+                dateOfBirth, bloodGroup, allergies, medicalHistory, address,
+                emergencyContactName, emergencyContactPhone
             } = signupDto;
+
+            const profileImage = file ? `/uploads/profiles/${file.filename}` : signupDto.profileImage;
 
             const existingUser = await this.userModel.findOne({
                 where: { email },
@@ -43,16 +50,64 @@ export class AuthService {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            let assignedRole = signupDto.role || 'patient';
+            let assignedRole = signupDto.role || UserRole.PATIENT;
 
             if (assignedRole === 'admin') {
-                throw new BadRequestException('Admin accounts cannot be created via public signup. Please contact the system administrator.');
+                throw new BadRequestException('Admin accounts cannot be created via public signup.');
             }
 
             const user = await this.userModel.create(
-                { firstName, lastName, email, password: hashedPassword, role: assignedRole },
+                { fullName, email, password: hashedPassword, role: assignedRole, profileImage },
                 { transaction: t },
             );
+
+            let hasPatientProfile = false;
+            let hasDoctorProfile = false;
+
+            if (assignedRole === 'doctor') {
+                await this.doctorModel.create(
+                    {
+                        userId: user.id,
+                        specialization,
+                        licenseNumber,
+                        experience,
+                        qualification,
+                        clinicName,
+                        clinicAddress,
+                        city,
+                        country,
+                        consultationFee,
+                        phoneNumber,
+                        gender,
+                        availableDays,
+                        startTime,
+                        endTime,
+                        breakTime,
+                        appointmentDuration,
+                    },
+                    { transaction: t }
+                );
+                hasDoctorProfile = true;
+            } else if (assignedRole === 'patient') {
+                await this.patientModel.create(
+                    {
+                        userId: user.id,
+                        dateOfBirth,
+                        gender,
+                        bloodGroup,
+                        allergies,
+                        medicalHistory,
+                        address,
+                        city,
+                        country,
+                        emergencyContactName,
+                        emergencyContactPhone,
+                        phoneNumber,
+                    },
+                    { transaction: t }
+                );
+                hasPatientProfile = true;
+            }
 
             await t.commit();
 
@@ -64,23 +119,19 @@ export class AuthService {
                     id: user.id,
                     email: user.email,
                     role: user.role,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    hasPatientProfile: false,
-                    hasDoctorProfile: false,
+                    fullName: user.fullName,
+                    profileImage: user.profileImage,
+                    hasPatientProfile,
+                    hasDoctorProfile,
                 },
                 access_token: this.jwtService.sign(payload),
             };
-        } catch (err: any) {
+        } catch (err: unknown) {
             await t.rollback();
-            this.logger.error(err?.message || String(err), err?.stack);
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            this.logger.error(`Signup failed: ${errorMessage}`);
 
             if (err instanceof BadRequestException) throw err;
-
-            if (err?.name?.includes('Sequelize')) {
-                throw new BadRequestException(err?.message || 'Database error');
-            }
-
             throw new InternalServerErrorException('Signup failed');
         }
     }
@@ -108,15 +159,14 @@ export class AuthService {
                     id: user.id,
                     email: user.email,
                     role: user.role,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    fullName: user.fullName,
+                    profileImage: user.profileImage,
                     hasPatientProfile: !!user.patient,
                     hasDoctorProfile: !!user.doctor
                 },
                 access_token: this.jwtService.sign(payload),
             };
-        } catch (err: any) {
-            this.logger.error(err?.message || String(err), err?.stack);
+        } catch (err: unknown) {
             if (err instanceof BadRequestException) throw err;
             throw new InternalServerErrorException('Login failed');
         }

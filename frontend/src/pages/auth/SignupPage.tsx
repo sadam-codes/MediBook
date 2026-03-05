@@ -11,29 +11,39 @@ import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 const api = axios.create({ baseURL: 'http://localhost:5000' });
 
 const schema = yup.object({
-    firstName: yup.string().required('First name is required'),
-    lastName: yup.string().required('Last name is required'),
+    fullName: yup.string().required('Full name is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
     password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 }).required();
+
+interface SignupFormData {
+    fullName: string;
+    email: string;
+    password: string;
+}
 
 export const SignupPage: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<any>({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupFormData>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(schema) as any
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: SignupFormData) => {
         try {
             const response = await api.post('/auth/signup', data);
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             toast.success('Account created successfully!');
             navigate('/home');
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || 'Signup failed. Please try again.');
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                toast.error(err.response?.data?.message || 'Signup failed. Please try again.');
+            } else {
+                toast.error('An unexpected error occurred.');
+            }
         }
     };
 
@@ -68,17 +78,10 @@ export const SignupPage: React.FC = () => {
                 {/* Form Area - Scrollable */}
                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <label className="text-xs font-semibold text-gray-700">First Name</label>
-                                <input {...register('firstName')} className={`w-full px-4 py-3 bg-white border ${errors.firstName ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'} rounded-lg outline-none text-gray-900 transition-all`} />
-                                <p className="text-xs text-red-600 font-medium">{errors.firstName?.message as string}</p>
-                            </div>
-                            <div className="space-y-1">
-                                <label className="text-xs font-semibold text-gray-700">Last Name</label>
-                                <input {...register('lastName')} className={`w-full px-4 py-3 bg-white border ${errors.lastName ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'} rounded-lg outline-none text-gray-900 transition-all`} />
-                                <p className="text-xs text-red-600 font-medium">{errors.lastName?.message as string}</p>
-                            </div>
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-gray-700">Full Name</label>
+                            <input {...register('fullName')} className={`w-full px-4 py-3 bg-white border ${errors.fullName ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'} rounded-lg outline-none text-gray-900 transition-all`} />
+                            <p className="text-xs text-red-600 font-medium">{errors.fullName?.message as string}</p>
                         </div>
 
                         <div className="space-y-1">

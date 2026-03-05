@@ -15,12 +15,24 @@ export class DoctorsService {
             include: [
                 {
                     model: User,
-                    attributes: ['id', 'firstName', 'lastName', 'email', 'role'], // Exclude password
+                    attributes: ['id', 'fullName', 'email', 'role', 'profileImage'], // Exclude password
                 },
             ],
             where: {
                 isAvailable: true, // Only fetch available doctors
             }
+        });
+    }
+
+    async findOne(userId: number): Promise<Doctor | null> {
+        return this.doctorModel.findOne({
+            where: { userId },
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'fullName', 'email', 'role', 'profileImage'],
+                },
+            ],
         });
     }
 }

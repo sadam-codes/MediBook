@@ -4,9 +4,12 @@ import { doctorData } from '../../data/homeData';
 
 interface DoctorsSpecialistsSectionProps {
     onViewProfile: (doc: any) => void;
+    doctors: any[];
 }
 
 const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ onViewProfile }) => {
+    const displayDoctors = doctorData.slice(0, 6);
+
     return (
         <div className="mb-24">
             <div className="text-center mb-16 relative">
@@ -17,9 +20,9 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
                 <p className="text-gray-400 font-bold max-w-2xl mx-auto italic text-lg leading-relaxed">Our world-class healthcare professionals are here to provide you with the best medical care and expertise.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 overflow-auto">
-                {doctorData.map((doc, i) => (
+                {displayDoctors.map((doc, i) => (
                     <div key={i} className="group bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-700 hover:-translate-y-3">
-                        <div className="relative h-80 overflow-hidden">
+                        <div className="relative h-64 overflow-hidden">
                             <div className="absolute inset-0 bg-emerald-950/20 group-hover:bg-transparent transition-colors duration-700 z-10"></div>
                             <img
                                 src={doc.img}
@@ -35,7 +38,7 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
                                 </div>
                             </div>
                         </div>
-                        <div className="p-10 text-left">
+                        <div className="p-8 text-left">
                             <div className="mb-8">
                                 <div className="flex items-center justify-between mb-2">
                                     <h3 className="text-2xl font-black text-gray-900 tracking-tight group-hover:text-emerald-600 transition-colors uppercase leading-none">{doc.name}</h3>
@@ -62,7 +65,7 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
                                 onClick={() => onViewProfile(doc)}
                                 className="w-full py-5 bg-emerald-600 text-white font-black rounded-[20px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-emerald-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
                             >
-                                View Profile
+                                Book Appointment
                             </button>
                         </div>
                     </div>

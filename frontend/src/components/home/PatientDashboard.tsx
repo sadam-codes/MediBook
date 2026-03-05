@@ -1,17 +1,44 @@
-import React from 'react';
-import { Loader2, Calendar, Award } from 'lucide-react';
+import React, { useState } from 'react';
+import { Loader2, Award, Star, ShieldCheck, Filter } from 'lucide-react';
+import { CustomSelect } from '../ui/CustomSelect';
+import { specializations } from '../../data/specializations';
 
 interface PatientDashboardProps {
     doctors: any[];
     loading: boolean;
+    onViewProfile: (doc: any) => void;
 }
 
-const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading }) => {
+const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, onViewProfile }) => {
+    const [selectedSpecialty, setSelectedSpecialty] = useState<string>('All');
+
+    const filteredDoctors = doctors.filter(doc =>
+        selectedSpecialty === 'All' || doc.specialization === selectedSpecialty
+    );
+
+    const specialtyOptions = [
+        { label: 'All Specialists', value: 'All' },
+        ...specializations.map(s => ({ label: s, value: s }))
+    ];
+
     return (
         <div className="flex-1">
-            <div className="mb-10 text-left">
-                <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-2">Expert Specialists</h2>
-                <p className="text-gray-400 font-bold uppercase tracking-widest text-xs opacity-60 italic">Available for booking today</p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div className="text-left">
+                    <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-2">Expert Specialists</h2>
+                    <p className="text-gray-400 font-bold uppercase tracking-widest text-xs opacity-60 italic">Available for booking today</p>
+                </div>
+
+                <div className="w-full md:w-80">
+                    <CustomSelect
+                        label="Find Specialist"
+                        options={specialtyOptions}
+                        value={selectedSpecialty}
+                        onChange={(val) => setSelectedSpecialty(val as string)}
+                        placeholder="Select Specialty"
+                        icon={Filter}
+                    />
+                </div>
             </div>
             {loading ? (
                 <div className="flex justify-center items-center h-48">
@@ -19,29 +46,63 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading })
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
-                    {doctors.map(doc => (
-                        <div key={doc.id} className="bg-white p-10 rounded-[20px] shadow-sm border border-gray-100 hover:border-emerald-300 transition-all duration-500 hover:shadow-2xl flex flex-col group relative overflow-hidden text-left">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-30 group-hover:bg-emerald-200 transition-colors" />
-                            <div className="flex items-start justify-between mb-8 relative z-10">
-                                <div className="text-left">
-                                    <h3 className="text-xl font-black text-gray-900 leading-tight group-hover:text-emerald-600 transition-colors uppercase tracking-tight">Dr. {doc.user?.firstName} {doc.user?.lastName}</h3>
-                                    <p className="text-emerald-600 font-black uppercase text-[10px] tracking-widest mt-2 italic flex items-center">
-                                        <Award size={12} className="mr-1" />
-                                        {doc.specialization}
-                                    </p>
+                    {filteredDoctors.length > 0 ? (
+                        filteredDoctors.map((doc, i) => (
+                            <div key={i} className="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-sm">
+                                <div className="relative h-64 overflow-hidden shrink-0">
+                                    <div className="absolute inset-0 bg-emerald-950/20 z-10"></div>
+                                    <img
+                                        src={doc.user?.profileImage ? `http://localhost:5000${doc.user.profileImage}` : "/default-doc.png"}
+                                        alt={doc.user?.fullName}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute bottom-6 left-6 z-20">
+                                        <div className="bg-white/90 backdrop-blur-xl px-5 py-2.5 rounded-2xl border border-white/20 shadow-2xl">
+                                            <div className="flex items-center space-x-2">
+                                                <Award size={14} className="text-emerald-600" />
+                                                <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">{doc.experience} Years Exp.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-emerald-100 shadow-sm">
-                                    Rs.{doc.consultationFee}
+                                <div className="p-8 text-left">
+                                    <div className="mb-8">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h3 className="text-2xl font-black text-gray-900 tracking-tight uppercase leading-none">Dr. {doc.user?.fullName}</h3>
+                                            <div className="flex items-center space-x-1 text-yellow-500">
+                                                <Star size={16} className="fill-current" />
+                                                <span className="text-xs font-black text-gray-900 ml-1">4.9</span>
+                                            </div>
+                                        </div>
+                                        <p className="text-emerald-500 font-bold text-sm tracking-[0.1em] italic uppercase opacity-80">{doc.specialization}</p>
+                                    </div>
+
+                                    <div className="flex items-center space-x-3 mb-10">
+                                        <div className="flex -space-x-2.5">
+                                            {[...Array(5)].map((_, idx) => (
+                                                <div key={idx} className="w-6 h-6 rounded-full bg-emerald-50 border-2 border-white flex items-center justify-center">
+                                                    <ShieldCheck size={12} className="text-emerald-500" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest leading-none">Verified Professional</span>
+                                    </div>
+
+                                    <button
+                                        onClick={() => onViewProfile(doc)}
+                                        className="w-full py-5 bg-emerald-600 text-white font-black rounded-[20px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-emerald-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
+                                    >
+                                        Book Appointment
+                                    </button>
                                 </div>
                             </div>
-                            <p className="text-gray-400 font-bold text-sm mb-10 flex-1 line-clamp-3 text-left leading-relaxed italic opacity-80">
-                                {doc.bio || 'Providing expert medical consultation with focus on long-term wellness and personalized patient care.'}
-                            </p>
-                            <button className="w-full bg-slate-900 hover:bg-emerald-600 text-white font-black py-5 rounded-[28px] transition-all flex items-center justify-center mt-auto border border-white/5 shadow-2xl shadow-slate-900/10 hover:shadow-emerald-500/30 active:scale-95 text-[10px] uppercase tracking-[0.2em]">
-                                <Calendar size={18} className="mr-3" /> Book Consultation
-                            </button>
+                        ))
+                    ) : (
+                        <div className="col-span-full py-20 text-center bg-white rounded-[40px] border border-dashed border-gray-200">
+                            <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-2">No doctors available now</h3>
+                            <p className="text-gray-400 font-bold italic">Please check back later for new specialist</p>
                         </div>
-                    ))}
+                    )}
                 </div>
             )}
         </div>

@@ -94,6 +94,18 @@ export class Patient extends Model {
     @Column({
         type: DataType.STRING(100),
         allowNull: true,
+    })
+    declare city: string;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true,
+    })
+    declare country: string;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true,
         comment: 'Name of emergency contact person',
     })
     declare emergencyContactName: string;

@@ -1,22 +1,24 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
+import { multerConfig } from '../config/multer.config';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post('signup')
-    async signup(@Body() dto: SignupDto) {
-        console.log('--- NEW SIGNUP REQUEST ---');
-        console.log('SIGNUP DTO:', dto);
+    @UseInterceptors(FileInterceptor('profileImage', multerConfig))
+    async signup(
+        @Body() dto: SignupDto,
+        @UploadedFile() file?: any
+    ) {
         try {
-            const result = await this.authService.signup(dto);
-            console.log('✅ SIGNUP SUCCESS:', JSON.stringify(result, null, 2));
+            const result = await this.authService.signup(dto, file);
             return result;
         } catch (e: any) {
-            console.log('❌ SIGNUP ERROR:', e?.response || e?.message || e);
             throw e;
         }
     }

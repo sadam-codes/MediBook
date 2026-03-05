@@ -86,7 +86,7 @@ export const DoctorStepper: React.FC<{ onComplete: () => void }> = ({ onComplete
                 {step === 2 && (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-gray-700 ml-1">Consultation Fee (Rs.)</label>
+                            <label className="text-xs font-bold text-gray-700 ml-1">Consultation Fee (PKR)</label>
                             <input type="number" {...register('consultationFee', { required: 'Consultation Fee is required' })} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm" placeholder="e.g. 1500" />
                         </div>
                         <div className="space-y-1.5">

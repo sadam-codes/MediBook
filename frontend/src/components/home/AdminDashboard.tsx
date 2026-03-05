@@ -40,7 +40,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ allUsers, loading, onRo
                                                     <div className="flex items-center space-x-5">
 
                                                         <div className="text-left">
-                                                            <div className="text-base font-black text-gray-900 leading-tight uppercase tracking-tight">{u.firstName} {u.lastName}</div>
+                                                            <div className="text-base font-black text-gray-900 leading-tight uppercase tracking-tight">{u.fullName}</div>
                                                             <div className="text-[10px] font-bold text-gray-400 tracking-[0.2em] italic uppercase">{u.email}</div>
                                                         </div>
                                                     </div>

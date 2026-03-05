@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Menu, X, UserPlus, Calendar } from 'lucide-react';
+import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
 
 export const MainLayout: React.FC = () => {
@@ -56,31 +56,58 @@ export const MainLayout: React.FC = () => {
         <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
             <nav className={`bg-white shadow-sm border-b border-gray-200 shrink-0 relative transition-all duration-300 ${isMobileMenuOpen ? 'z-[200]' : 'z-50'}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
-                    <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onClick={() => navigate('/home')}>
+                    <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onClick={() => {
+                        if (user?.role === 'patient') navigate('/patient');
+                        else if (user?.role === 'doctor') navigate('/doctor');
+                        else if (user?.role === 'admin') navigate('/admin');
+                        else navigate('/');
+                    }}>
                         <div className="w-7 h-7 sm:w-8 sm:h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md text-sm sm:text-base">M</div>
                         <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook<span className="text-emerald-600">AI</span></div>
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
                         <div className="hidden sm:flex items-center mr-4 space-x-6">
-                            {/* {user?.role === 'patient' && !user.hasDoctorProfile && (
-                                <button onClick={() => navigate('/join-doctor')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors flex items-center">
-                                    <UserPlus size={16} className="mr-2" /> Join as Doctor
-                                </button>
-                            )} */}
                             {user?.role === 'patient' && !user.hasPatientProfile && (
                                 <button onClick={() => navigate('/complete-profile')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors">
                                     Complete Profile
                                 </button>
                             )}
+                            {user?.role === 'patient' && (
+                                <button onClick={() => navigate('/bookings')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors flex items-center">
+                                    <Calendar size={16} className="mr-2" /> My Bookings
+                                </button>
+                            )}
                         </div>
                         {user ? (
-                            <div className="hidden sm:flex items-center space-x-3 bg-gray-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-gray-200">
-                                <span className="hidden md:block text-sm font-medium text-gray-700">{user.firstName}</span>
+                            <div className="hidden sm:flex items-center space-x-4">
+                                <div className="flex items-center space-x-3 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-200 transition-all cursor-pointer group">
+                                    <div className="relative">
+                                        {user.profileImage ? (
+                                            <img
+                                                src={`http://localhost:5000${user.profileImage}`}
+                                                alt={user.fullName}
+                                                className="w-9 h-9 rounded-lg object-cover border border-white shadow-sm"
+                                            />
+                                        ) : (
+                                            <div className="w-9 h-9 bg-emerald-600 text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-sm">
+                                                {user.fullName?.[0] || 'U'}
+                                            </div>
+                                        )}
+                                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
+                                    </div>
+                                    <div className="flex flex-col items-start pr-1">
+                                        <span className="text-sm font-bold text-gray-900 leading-tight">{user.fullName}</span>
+                                        <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-tight">{user.role}</span>
+                                    </div>
+                                    <ChevronDown size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
+                                </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="hidden sm:block px-3 py-1.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-md text-xs hover:bg-gray-50 transition-colors ml-2"
+                                    className="p-2.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all group relative"
+                                    title="Logout"
                                 >
-                                    Log Out
+                                    <LogOut size={20} />
+                                    <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none font-bold">Logout</span>
                                 </button>
                             </div>
                         ) : (
@@ -131,13 +158,27 @@ export const MainLayout: React.FC = () => {
                         </div>
 
                         {user ? (
-                            <div className="flex items-center space-x-4 pb-5 border-b border-gray-100">
-                                <div className="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-md transform rotate-3">
-                                    {user.firstName?.[0] || 'U'}
+                            <div className="flex items-center space-x-4 pb-6 border-b border-gray-100">
+                                <div className="relative">
+                                    {user.profileImage ? (
+                                        <img
+                                            src={`http://localhost:5000${user.profileImage}`}
+                                            alt={user.fullName}
+                                            className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md transform -rotate-2"
+                                        />
+                                    ) : (
+                                        <div className="w-16 h-16 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-bold text-3xl shadow-md transform rotate-3">
+                                            {user.fullName?.[0] || 'U'}
+                                        </div>
+                                    )}
+                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-4 border-white rounded-full shadow-sm animate-pulse"></div>
                                 </div>
                                 <div>
-                                    <p className="font-extrabold text-gray-900 text-xl tracking-tight">{user.firstName} {user.lastName}</p>
-                                    <p className="text-sm font-semibold text-emerald-600 uppercase tracking-widest mt-0.5">{user.role}</p>
+                                    <p className="font-extrabold text-gray-900 text-xl tracking-tight">{user.fullName}</p>
+                                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest mt-0.5 flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                        {user.role} Online
+                                    </p>
                                 </div>
                             </div>
                         ) : (
@@ -170,23 +211,36 @@ export const MainLayout: React.FC = () => {
                                     Complete Profile
                                 </button>
                             )}
-
+                            {user?.role === 'patient' && (
+                                <button
+                                    onClick={() => { navigate('/bookings'); setIsMobileMenuOpen(false); }}
+                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
+                                >
+                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-emerald-100 transition-colors">
+                                        <Calendar size={18} className="text-gray-500 group-hover:text-emerald-600 transition-colors" />
+                                    </div>
+                                    My Bookings
+                                </button>
+                            )}
                             {/* Always show home link in mobile menu for easy navigation */}
                             <button
                                 onClick={() => { navigate('/home'); setIsMobileMenuOpen(false); }}
                                 className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
                             >
-                                View Professional Profile
-                                {user ? 'Dashboard Home' : 'Home'}
+                                <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-emerald-100 transition-colors">
+                                    <UserPlus size={18} className="text-gray-500 group-hover:text-emerald-600 transition-colors" />
+                                </div>
+                                Home
                             </button>
                         </div>
 
                         {user ? (
                             <button
                                 onClick={handleLogout}
-                                className="w-full text-center px-5 py-4 mt-2 bg-white text-gray-600 font-bold rounded-2xl hover:bg-red-50 hover:text-red-600 transition-all border border-gray-200 hover:border-red-200"
+                                className="w-full h-14 mt-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-red-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
                             >
-                                Secure Log Out
+                                <LogOut size={20} />
+                                Logout
                             </button>
                         ) : (
                             <div className="grid grid-cols-2 gap-3 mt-2">
@@ -209,7 +263,7 @@ export const MainLayout: React.FC = () => {
             </nav>
 
             {/* Main Content Area - Render child routes here */}
-            <main className="flex-1 min-h-0 overflow-y-auto">
+            <main className="flex-1 min-h-0 overflow-y-scroll">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 h-full flex flex-col">
                     <Outlet />
                 </div>

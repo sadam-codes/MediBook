@@ -6,9 +6,12 @@ import { User } from './models/user.model';
 import { Doctor } from './models/doctor.model';
 import { Patient } from './models/patient.model';
 import { Admin } from './models/admin.model';
+import { Appointment } from './models/appointment.model';
 import { AuthModule } from './auth/auth.module';
 import { DoctorsModule } from './doctors/doctors.module';
 import { UsersModule } from './users/users.module';
+import { AppointmentsModule } from './appointments/appointments.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -27,7 +30,7 @@ import { UsersModule } from './users/users.module';
         username: config.get<string>('DB_USER'),
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME'),
-        models: [User, Doctor, Patient, Admin],
+        models: [User, Doctor, Patient, Admin, Appointment],
         autoLoadModels: true,
         synchronize: true,
         dialectOptions:
@@ -40,6 +43,8 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     DoctorsModule,
     UsersModule,
+    AppointmentsModule,
+    MailModule,
   ],
   providers: [DbHealthService],
 })

@@ -6,11 +6,7 @@ import { Unique } from 'sequelize-typescript';
 export class SignupDto {
     @IsString()
     @IsNotEmpty()
-    firstName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    lastName: string;
+    fullName: string;
 
     @IsEmail()
     @IsNotEmpty()
@@ -24,10 +20,17 @@ export class SignupDto {
     @IsOptional()
     role?: UserRole;
 
-    // Shared Fields
+    @IsString()
+    @IsOptional()
+    profileImage?: string;
+
     @IsString()
     @IsOptional()
     phoneNumber?: string;
+
+    @IsString()
+    @IsOptional()
+    gender?: string;
 
     // Doctor Fields
     @IsString()
@@ -44,20 +47,51 @@ export class SignupDto {
 
     @IsString()
     @IsOptional()
-    bio?: string;
+    qualification?: string;
+
+    @IsString()
+    @IsOptional()
+    clinicName?: string;
+
+    @IsString()
+    @IsOptional()
+    clinicAddress?: string;
+
+    @IsString()
+    @IsOptional()
+    city?: string;
+
+    @IsString()
+    @IsOptional()
+    country?: string;
 
     @IsNumber()
     @IsOptional()
     consultationFee?: number;
 
+    @IsOptional()
+    availableDays?: string[];
+
+    @IsString()
+    @IsOptional()
+    startTime?: string;
+
+    @IsString()
+    @IsOptional()
+    endTime?: string;
+
+    @IsString()
+    @IsOptional()
+    breakTime?: string;
+
+    @IsNumber()
+    @IsOptional()
+    appointmentDuration?: number;
+
     // Patient Fields
     @IsDateString()
     @IsOptional()
     dateOfBirth?: string;
-
-    @IsEnum(Gender)
-    @IsOptional()
-    gender?: Gender;
 
     @IsEnum(BloodGroup)
     @IsOptional()
@@ -82,9 +116,4 @@ export class SignupDto {
     @IsString()
     @IsOptional()
     emergencyContactPhone?: string;
-
-    // Admin Fields
-    @IsString()
-    @IsOptional()
-    department?: string;
 }
