@@ -72,12 +72,12 @@ export class User extends Model {
     @UpdatedAt
     declare updatedAt: Date;
 
-    @HasOne(() => Doctor)
+    @HasOne(() => Doctor, { onDelete: 'CASCADE' })
     declare doctor: Doctor;
 
-    @HasOne(() => Patient)
+    @HasOne(() => Patient, { onDelete: 'CASCADE' })
     declare patient: Patient;
 
-    @HasOne(() => Admin)
+    @HasOne(() => Admin, { onDelete: 'CASCADE' })
     declare admin: Admin;
 }

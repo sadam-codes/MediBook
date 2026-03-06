@@ -82,9 +82,9 @@ export class Appointment extends Model {
     @UpdatedAt
     declare updatedAt: Date;
 
-    @BelongsTo(() => User, 'patientId')
+    @BelongsTo(() => User, { foreignKey: 'patientId', onDelete: 'CASCADE' })
     declare patient: User;
 
-    @BelongsTo(() => User, 'doctorUserId')
+    @BelongsTo(() => User, { foreignKey: 'doctorUserId', onDelete: 'CASCADE' })
     declare doctorUser: User;
 }

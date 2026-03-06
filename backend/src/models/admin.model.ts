@@ -73,6 +73,6 @@ export class Admin extends Model {
     declare updatedAt: Date;
 
     // Association
-    @BelongsTo(() => User)
+    @BelongsTo(() => User, { onDelete: 'CASCADE' })
     declare user: User;
 }

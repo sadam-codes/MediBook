@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import api from '../services/api';
 
 // Modular Home Components
 import HeroSection from '../components/home/HeroSection';
@@ -17,9 +18,7 @@ import AdminDashboard from '../components/home/AdminDashboard';
 
 import { ConfirmModal } from '../components/ui/ConfirmModal';
 
-const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000' });
 
-// ... (interceptors)
 
 export const Home: React.FC = () => {
     const navigate = useNavigate();

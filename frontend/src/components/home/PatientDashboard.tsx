@@ -26,7 +26,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div className="text-left">
                     <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-2">Expert Specialists</h2>
-                    <p className="text-gray-400 font-bold uppercase tracking-widest text-xs opacity-60 italic">Available for booking today</p>
+                    <p className="text-gray-400 font-bold uppercase tracking-widest text-xs opacity-60">Available for booking today</p>
                 </div>
 
                 <div className="w-full md:w-80">
@@ -42,7 +42,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
             </div>
             {loading ? (
                 <div className="flex justify-center items-center h-48">
-                    <Loader2 className="animate-spin text-emerald-600" size={32} />
+                    <Loader2 className="animate-spin text-sky-600" size={32} />
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
@@ -50,7 +50,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
                         filteredDoctors.map((doc, i) => (
                             <div key={i} className="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-sm">
                                 <div className="relative h-64 overflow-hidden shrink-0">
-                                    <div className="absolute inset-0 bg-emerald-950/20 z-10"></div>
+                                    <div className="absolute inset-0 bg-sky-950/20 z-10"></div>
                                     <img
                                         src={doc.user?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${doc.user.profileImage}` : "/default-doc.png"}
                                         alt={doc.user?.fullName}
@@ -59,8 +59,8 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
                                     <div className="absolute bottom-6 left-6 z-20">
                                         <div className="bg-white/90 backdrop-blur-xl px-5 py-2.5 rounded-2xl border border-white/20 shadow-2xl">
                                             <div className="flex items-center space-x-2">
-                                                <Award size={14} className="text-emerald-600" />
-                                                <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">{doc.experience} Years Exp.</p>
+                                                <Award size={14} className="text-sky-600" />
+                                                <p className="text-[10px] font-black text-sky-600 uppercase tracking-widest">{doc.experience} Years Exp.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -74,14 +74,14 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
                                                 <span className="text-xs font-black text-gray-900 ml-1">4.9</span>
                                             </div>
                                         </div>
-                                        <p className="text-emerald-500 font-bold text-sm tracking-[0.1em] italic uppercase opacity-80">{doc.specialization}</p>
+                                        <p className="text-sky-500 font-bold text-sm tracking-[0.1em] uppercase opacity-80">{doc.specialization}</p>
                                     </div>
 
                                     <div className="flex items-center space-x-3 mb-10">
                                         <div className="flex -space-x-2.5">
                                             {[...Array(5)].map((_, idx) => (
-                                                <div key={idx} className="w-6 h-6 rounded-full bg-emerald-50 border-2 border-white flex items-center justify-center">
-                                                    <ShieldCheck size={12} className="text-emerald-500" />
+                                                <div key={idx} className="w-6 h-6 rounded-full bg-sky-50 border-2 border-white flex items-center justify-center">
+                                                    <ShieldCheck size={12} className="text-sky-500" />
                                                 </div>
                                             ))}
                                         </div>
@@ -90,7 +90,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
 
                                     <button
                                         onClick={() => onViewProfile(doc)}
-                                        className="w-full py-5 bg-emerald-600 text-white font-black rounded-[20px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-emerald-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
+                                        className="w-full py-5 bg-sky-600 text-white font-black rounded-[20px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-sky-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
                                     >
                                         Book Appointment
                                     </button>
@@ -100,7 +100,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
                     ) : (
                         <div className="col-span-full py-20 text-center bg-white rounded-[40px] border border-dashed border-gray-200">
                             <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-2">No doctors available now</h3>
-                            <p className="text-gray-400 font-bold italic">Please check back later for new specialist</p>
+                            <p className="text-gray-400 font-bold">Please check back later for new specialist</p>
                         </div>
                     )}
                 </div>

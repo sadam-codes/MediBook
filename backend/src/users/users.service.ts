@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../models/user.model';
 import { Doctor } from '../models/doctor.model';
 import { Patient } from '../models/patient.model';
+import { Admin } from '../models/admin.model';
 
 @Injectable()
 export class UsersService {
@@ -10,6 +11,7 @@ export class UsersService {
         @InjectModel(User) private userModel: typeof User,
         @InjectModel(Doctor) private doctorModel: typeof Doctor,
         @InjectModel(Patient) private patientModel: typeof Patient,
+        @InjectModel(Admin) private adminModel: typeof Admin,
     ) { }
 
     async findAll() {
@@ -55,8 +57,16 @@ export class UsersService {
     }
 
     async delete(userId: number) {
-        // Optional: Manual cleanup if not using CASCADE in DB
-        // But the primary goal is deleting the user
+        // Explicitly delete associations if CASCADE at DB level is not fully configured or supported
+        await this.doctorModel.destroy({ where: { userId } });
+        await this.patientModel.destroy({ where: { userId } });
+        await this.adminModel.destroy({ where: { userId } });
+
+        // Also delete appointments where this user is either patient or doctor
+        await this.userModel.sequelize?.query(
+            `DELETE FROM appointments WHERE "patientId" = ${userId} OR "doctorUserId" = ${userId}`
+        );
+
         await this.userModel.destroy({ where: { id: userId } });
         return { message: 'User deleted successfully' };
     }

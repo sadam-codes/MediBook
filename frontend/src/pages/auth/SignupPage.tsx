@@ -64,13 +64,13 @@ export const SignupPage: React.FC = () => {
                     </button>
 
                     <div className="text-center mt-4">
-                        <div className="inline-flex items-center space-x-2 text-emerald-600 font-semibold text-xs uppercase tracking-wider mb-2">
+                        <div className="inline-flex items-center space-x-2 text-sky-600 font-semibold text-xs uppercase tracking-wider mb-2">
                             <span>Join MediBookAI</span>
                         </div>
                         <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Create Account</h2>
                         <p className="text-gray-500 font-medium text-sm mt-2">
                             Already a member?{' '}
-                            <button onClick={() => navigate('/login')} className="text-emerald-600 font-medium hover:underline bg-transparent border-none">Sign In</button>
+                            <button onClick={() => navigate('/login')} className="text-sky-600 font-medium hover:underline bg-transparent border-none">Sign In</button>
                         </p>
                     </div>
                 </div>
@@ -101,7 +101,7 @@ export const SignupPage: React.FC = () => {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-emerald-600 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-sky-600 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
@@ -112,7 +112,7 @@ export const SignupPage: React.FC = () => {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-all shadow-md active:scale-[0.98] flex items-center justify-center border-none mt-6"
+                            className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 rounded-lg transition-all shadow-md active:scale-[0.98] flex items-center justify-center border-none mt-6"
                         >
                             {isSubmitting ? <Loader2 className="animate-spin text-white" /> : 'Create Account'}
                         </button>

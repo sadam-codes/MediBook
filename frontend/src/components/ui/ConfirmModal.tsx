@@ -23,9 +23,9 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     cancelText = 'Cancel',
     type = 'warning'
 }) => {
-    const iconColor = type === 'danger' ? 'text-rose-500' : type === 'warning' ? 'text-amber-500' : 'text-emerald-500';
-    const bgColor = type === 'danger' ? 'bg-rose-50' : type === 'warning' ? 'bg-amber-50' : 'bg-emerald-50';
-    const buttonColor = type === 'danger' ? 'bg-rose-600 hover:bg-rose-700' : type === 'warning' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-emerald-600 hover:bg-emerald-700';
+    const iconColor = type === 'danger' ? 'text-rose-500' : type === 'warning' ? 'text-amber-500' : 'text-sky-500';
+    const bgColor = type === 'danger' ? 'bg-rose-50' : type === 'warning' ? 'bg-amber-50' : 'bg-sky-50';
+    const buttonColor = type === 'danger' ? 'bg-rose-600 hover:bg-rose-700' : type === 'warning' ? 'bg-sky-600 hover:bg-sky-700' : 'bg-sky-600 hover:bg-sky-700';
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
@@ -33,7 +33,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 <div className={`w-16 h-16 ${bgColor} rounded-full flex items-center justify-center mb-6`}>
                     <AlertTriangle size={32} className={iconColor} />
                 </div>
-                <p className="text-gray-500 font-medium mb-10 leading-relaxed italic">
+                <p className="text-gray-500 font-medium mb-10 leading-relaxed">
                     {message}
                 </p>
                 <div className="flex w-full space-x-4">

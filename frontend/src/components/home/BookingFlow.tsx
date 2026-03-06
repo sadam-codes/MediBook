@@ -124,11 +124,11 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
             <div className="flex items-center justify-between mb-6 sm:mb-8 px-0 sm:px-2 overflow-x-auto custom-scrollbar-hide py-2">
                 {[1, 2, 3, 4].map((s) => (
                     <div key={s} className="flex items-center shrink-0">
-                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-black border-2 transition-all ${step >= s ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'bg-white border-gray-100 text-gray-300'
+                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-black border-2 transition-all ${step >= s ? 'bg-sky-600 border-sky-600 text-white shadow-lg shadow-sky-500/20' : 'bg-white border-gray-100 text-gray-300'
                             }`}>
                             {step > s ? <CheckCircle2 size={14} className="sm:w-4 sm:h-4" /> : s}
                         </div>
-                        {s < 4 && <div className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 ${step > s ? 'bg-emerald-600' : 'bg-gray-100'}`} />}
+                        {s < 4 && <div className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 ${step > s ? 'bg-sky-600' : 'bg-gray-100'}`} />}
                     </div>
                 ))}
             </div>
@@ -137,7 +137,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
             {step === 1 && (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <h3 className="text-lg sm:text-xl font-black text-gray-900 mb-4 sm:mb-6 uppercase tracking-tight flex items-center">
-                        <CalendarIcon size={18} className="mr-2 text-emerald-600" /> Select Date
+                        <CalendarIcon size={18} className="mr-2 text-sky-600" /> Select Date
                     </h3>
                     <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5 sm:gap-2 mb-6 sm:mb-8">
                         {/* Simplified mini calendar logic for demonstration */}
@@ -151,7 +151,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
                                     disabled={!available}
                                     onClick={() => handleDateSelect(d)}
                                     className={`flex flex-col items-center p-3 rounded-2xl border-2 transition-all ${available
-                                        ? 'border-gray-50 hover:border-emerald-500 hover:bg-emerald-50 bg-gray-50'
+                                        ? 'border-gray-50 hover:border-sky-500 hover:bg-sky-50 bg-gray-50'
                                         : 'border-transparent opacity-30 cursor-not-allowed'
                                         }`}
                                 >
@@ -169,13 +169,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
                 <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                     <div className="flex items-center justify-between mb-4 sm:mb-6">
                         <h3 className="text-lg sm:text-xl font-black text-gray-900 uppercase tracking-tight flex items-center">
-                            <Clock size={18} className="mr-2 text-emerald-600" /> Select Time
+                            <Clock size={18} className="mr-2 text-sky-600" /> Select Time
                         </h3>
-                        <button onClick={() => setStep(1)} className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-emerald-600 hover:underline">Change Date</button>
+                        <button onClick={() => setStep(1)} className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-sky-600 hover:underline">Change Date</button>
                     </div>
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-12">
-                            <Loader2 size={32} className="animate-spin text-emerald-600 mb-4" />
+                            <Loader2 size={32} className="animate-spin text-sky-600 mb-4" />
                             <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Finding Slots...</p>
                         </div>
                     ) : (
@@ -189,7 +189,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
                                         onClick={() => { setSelectedTime(time); setStep(3); }}
                                         className={`py-3 rounded-xl font-black text-xs border-2 transition-all ${isBooked
                                             ? 'bg-gray-100 border-gray-100 text-gray-300 cursor-not-allowed line-through'
-                                            : 'bg-white border-gray-100 text-gray-900 hover:border-emerald-500 hover:text-emerald-600'
+                                            : 'bg-white border-gray-100 text-gray-900 hover:border-sky-500 hover:text-sky-600'
                                             }`}
                                     >
                                         {time}
@@ -205,25 +205,25 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
             {step === 3 && (
                 <div className="animate-in fade-in slide-in-from-right-4 duration-500 text-left">
                     <h3 className="text-lg sm:text-xl font-black text-gray-900 mb-4 sm:mb-6 uppercase tracking-tight">Confirm Details</h3>
-                    <div className="bg-emerald-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-emerald-100 mb-6 sm:mb-8 space-y-3 sm:space-y-4">
-                        <div className="flex justify-between items-center border-b border-emerald-100/50 pb-3">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600/60">Doctor</span>
+                    <div className="bg-sky-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-sky-100 mb-6 sm:mb-8 space-y-3 sm:space-y-4">
+                        <div className="flex justify-between items-center border-b border-sky-100/50 pb-3">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-sky-600/60">Doctor</span>
                             <span className="font-black text-gray-900">Dr. {docData.user?.fullName || docData.name || 'Specialist'}</span>
                         </div>
-                        <div className="flex justify-between items-center border-b border-emerald-100/50 pb-3">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600/60">Specialization</span>
+                        <div className="flex justify-between items-center border-b border-sky-100/50 pb-3">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-sky-600/60">Specialization</span>
                             <span className="font-bold text-gray-900">{docData.specialization}</span>
                         </div>
-                        <div className="flex justify-between items-center border-b border-emerald-100/50 pb-3">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600/60">Clinic</span>
+                        <div className="flex justify-between items-center border-b border-sky-100/50 pb-3">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-sky-600/60">Clinic</span>
                             <span className="font-bold text-gray-900">{docData.clinicName}</span>
                         </div>
-                        <div className="flex justify-between items-center border-b border-emerald-100/50 pb-3">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600/60">Date & Time</span>
-                            <span className="font-black text-emerald-600">{format(selectedDate!, 'MMMM d, yyyy')} at {selectedTime}</span>
+                        <div className="flex justify-between items-center border-b border-sky-100/50 pb-3">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-sky-600/60">Date & Time</span>
+                            <span className="font-black text-sky-600">{format(selectedDate!, 'MMMM d, yyyy')} at {selectedTime}</span>
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 gap-1 uppercase italic font-bold">
-                            <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-emerald-600/60">Consultation Fee</span>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 gap-1 uppercase font-bold">
+                            <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-sky-600/60">Consultation Fee</span>
                             <span className="text-lg sm:text-xl font-black text-gray-900">PKR {docData.consultationFee}</span>
                         </div>
                     </div>
@@ -232,7 +232,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
                         <button
                             onClick={handleConfirmBooking}
                             disabled={loading}
-                            className="w-full sm:flex-1 py-4 sm:py-5 bg-emerald-600 text-white font-black rounded-2xl hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-500/20 uppercase tracking-widest text-[10px] flex items-center justify-center"
+                            className="w-full sm:flex-1 py-4 sm:py-5 bg-sky-600 text-white font-black rounded-2xl hover:bg-sky-700 transition-all shadow-xl shadow-sky-500/20 uppercase tracking-widest text-[10px] flex items-center justify-center"
                         >
                             {loading ? <Loader2 size={18} className="animate-spin" /> : "Confirm"}
                         </button>
@@ -243,15 +243,15 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
             {/* Step 4: Success Message */}
             {step === 4 && (
                 <div className="animate-in zoom-in duration-500 flex flex-col items-center justify-center py-10 flex-1">
-                    <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-8 relative">
-                        <div className="absolute inset-0 bg-emerald-400 rounded-full animate-ping opacity-20"></div>
-                        <CheckCircle2 size={48} className="text-emerald-600 relative z-10" />
+                    <div className="w-24 h-24 bg-sky-100 rounded-full flex items-center justify-center mb-8 relative">
+                        <div className="absolute inset-0 bg-sky-400 rounded-full animate-ping opacity-20"></div>
+                        <CheckCircle2 size={48} className="text-sky-600 relative z-10" />
                     </div>
                     <h3 className="text-2xl font-black text-gray-900 mb-2 uppercase tracking-tight">Booking Confirmed</h3>
-                    <p className="text-gray-400 font-bold italic mb-10">Your appointment has been successfully scheduled.</p>
+                    <p className="text-gray-400 font-bold mb-10">Your appointment has been successfully scheduled.</p>
                     <button
                         onClick={() => navigate('/patient')}
-                        className="w-full py-5 bg-gray-900 text-white font-black rounded-2xl hover:bg-emerald-600 transition-all shadow-xl shadow-slate-900/10 uppercase tracking-widest text-[10px]"
+                        className="w-full py-5 bg-gray-900 text-white font-black rounded-2xl hover:bg-sky-600 transition-all shadow-xl shadow-slate-900/10 uppercase tracking-widest text-[10px]"
                     >
                         Return to Dashboard
                     </button>

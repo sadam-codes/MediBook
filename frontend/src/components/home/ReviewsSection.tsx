@@ -15,14 +15,14 @@ const ReviewsSection: React.FC = () => {
                         <div className="flex text-yellow-200 mb-8 space-x-1.5">
                             {[...Array(review.rating)].map((_, idx) => <Star key={idx} size={18} className="fill-current" />)}
                         </div>
-                        <p className="text-gray-500 font-bold mb-12 italic flex-1 leading-relaxed text-lg opacity-80">"{review.text}"</p>
+                        <p className="text-gray-500 font-bold mb-12 flex-1 leading-relaxed text-lg opacity-80">"{review.text}"</p>
                         <div className="flex items-center space-x-5 pt-8 border-t border-gray-50">
                             <div className="w-14 h-14 rounded-[20px] overflow-hidden border-2 border-white">
                                 <img src={review.img} alt={review.name} className="w-full h-full object-cover" />
                             </div>
                             <div className="text-left">
                                 <p className="font-black text-gray-900 text-sm uppercase tracking-widest">{review.name}</p>
-                                <p className="text-emerald-600 font-bold text-[10px] uppercase tracking-[0.2em] opacity-60">Verified {review.role}</p>
+                                <p className="text-sky-600 font-bold text-[10px] uppercase tracking-[0.2em] opacity-60">Verified {review.role}</p>
                             </div>
                         </div>
                     </div>

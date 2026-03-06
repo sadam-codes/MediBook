@@ -31,8 +31,8 @@ export const RoleSelection: React.FC = () => {
     return (
         <div className="h-screen w-full bg-slate-50 flex items-center justify-center p-6 overflow-hidden relative">
             {/* Background Decorative Elements */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-100/30 rounded-full blur-3xl -mr-32 -mt-32"></div>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-100/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-100/30 rounded-full blur-3xl -mr-32 -mt-32"></div>
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-sky-100/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
 
             <motion.div
                 className="max-w-6xl w-full relative z-10"
@@ -42,12 +42,12 @@ export const RoleSelection: React.FC = () => {
             >
                 <div className="text-center mb-16">
                     <motion.div variants={itemVariants} className="inline-flex items-center space-x-3 bg-white px-6 py-3 rounded-3xl shadow-sm border border-slate-100 mb-8">
-                        <HeartPulse className="text-emerald-600 animate-pulse" size={24} />
+                        <HeartPulse className="text-sky-600 animate-pulse" size={24} />
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Next Gen Healthcare</span>
                     </motion.div>
 
                     <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tight">
-                        MediBook<span className="text-emerald-600">AI</span>
+                        MediBook<span className="text-sky-600">AI</span>
                     </motion.h1>
                     <motion.p variants={itemVariants} className="text-lg md:text-xl text-slate-400 font-bold max-w-2xl mx-auto leading-relaxed">
                         Experience the future of medical management. <br className="hidden md:block" /> Select your entry point to the ecosystem.
@@ -60,14 +60,14 @@ export const RoleSelection: React.FC = () => {
                         title="Patient"
                         description="Access world-class care, book appointments, and manage health records live."
                         onClick={() => handleRoleSelect('patient')}
-                        color="emerald"
+                        color="sky"
                     />
                     <RoleCard
                         icon={<Activity size={40} />}
                         title="Doctor"
                         description="Empower your practice with advanced scheduling and patient analytics."
                         onClick={() => handleRoleSelect('doctor')}
-                        color="emerald"
+                        color="sky"
                     />
                     <RoleCard
                         icon={<ShieldCheck size={40} />}
@@ -96,13 +96,13 @@ interface RoleCardProps {
     title: string;
     description: string;
     onClick: () => void;
-    color: 'blue' | 'emerald' | 'slate';
+    color: 'blue' | 'sky' | 'slate';
 }
 
 const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, onClick, color }) => {
     const colorMap = {
-        blue: 'hover:border-emerald-500 hover:shadow-emerald-200/40 text-emerald-600',
-        emerald: 'hover:border-emerald-500 hover:shadow-emerald-200/40 text-emerald-600',
+        blue: 'hover:border-sky-500 hover:shadow-sky-200/40 text-sky-600',
+        sky: 'hover:border-sky-500 hover:shadow-sky-200/40 text-sky-600',
         slate: 'hover:border-slate-900 hover:shadow-slate-200/40 text-slate-900',
     };
 
@@ -117,7 +117,7 @@ const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, onClick, 
             onClick={onClick}
             className={`flex flex-col items-center text-center p-10 bg-white rounded-[40px] border-2 border-transparent shadow-2xl transition-all duration-500 group relative overflow-hidden ${colorMap[color]}`}
         >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full -mr-16 -mt-16 group-hover:bg-emerald-50/50 transition-colors"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full -mr-16 -mt-16 group-hover:bg-sky-50/50 transition-colors"></div>
 
             <div className={`mb-8 w-20 h-20 rounded-[28px] ${color === 'slate' ? 'bg-slate-900 text-white' : 'bg-slate-50 group-hover:bg-white'} flex items-center justify-center shadow-inner transition-all relative z-10`}>
                 {icon}

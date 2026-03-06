@@ -142,6 +142,6 @@ export class Doctor extends Model {
     declare updatedAt: Date;
 
     // Association
-    @BelongsTo(() => User)
+    @BelongsTo(() => User, { onDelete: 'CASCADE' })
     declare user: User;
 }

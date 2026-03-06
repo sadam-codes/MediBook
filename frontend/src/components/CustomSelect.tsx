@@ -32,13 +32,13 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({ value, onChange, opt
     return (
         <div ref={wrapperRef} className="relative w-full">
             <div
-                className={`w-full px-4 py-3 bg-gray-50 border transition-all cursor-pointer flex justify-between items-center rounded-xl shadow-sm ${isOpen ? 'bg-white border-emerald-500 ring-2 ring-emerald-500/10' : 'border-gray-200 hover:border-emerald-300'}`}
+                className={`w-full px-4 py-3 bg-gray-50 border transition-all cursor-pointer flex justify-between items-center rounded-xl shadow-sm ${isOpen ? 'bg-white border-sky-500 ring-2 ring-sky-500/10' : 'border-gray-200 hover:border-sky-300'}`}
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span className={`font-medium ${selectedOption ? 'text-gray-900' : 'text-gray-400'}`}>
                     {selectedOption ? selectedOption.label : placeholder}
                 </span>
-                <ChevronDown size={18} className={`text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-emerald-600' : ''}`} />
+                <ChevronDown size={18} className={`text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-sky-600' : ''}`} />
             </div>
 
             {isOpen && (
@@ -46,14 +46,14 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({ value, onChange, opt
                     {options.map((option) => (
                         <div
                             key={option.value}
-                            className={`px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${value === option.value ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-700 hover:bg-gray-50 hover:text-emerald-600 font-medium'}`}
+                            className={`px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${value === option.value ? 'bg-sky-50 text-sky-700 font-bold' : 'text-gray-700 hover:bg-gray-50 hover:text-sky-600 font-medium'}`}
                             onClick={() => {
                                 onChange(option.value);
                                 setIsOpen(false);
                             }}
                         >
                             {option.label}
-                            {value === option.value && <Check size={16} className="text-emerald-600" />}
+                            {value === option.value && <Check size={16} className="text-sky-600" />}
                         </div>
                     ))}
                 </div>

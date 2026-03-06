@@ -33,13 +33,13 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-emerald-950/40 backdrop-blur-sm"
+                        className="absolute inset-0 bg-sky-950/40 backdrop-blur-sm"
                     />
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative w-full max-w-md bg-white rounded-[32px] shadow-2xl overflow-hidden border border-emerald-100"
+                        className="relative w-full max-w-md bg-white rounded-[32px] shadow-2xl overflow-hidden border border-sky-100"
                     >
                         <div className="p-8">
                             <div className="flex items-center justify-between mb-6">

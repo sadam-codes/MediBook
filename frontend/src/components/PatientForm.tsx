@@ -69,10 +69,10 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
 
     return (
         <div className="bg-white p-6 md:p-8 rounded-[32px] shadow-xl shadow-gray-200/50 border border-gray-100 max-w-2xl mx-auto mt-6 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2.5 bg-emerald-600" />
+            <div className="absolute top-0 left-0 w-full h-2.5 bg-sky-600" />
 
             <div className="mb-6 text-center">
-                <div className="w-14 h-14 bg-emerald-600 text-white rounded-[20px] flex items-center justify-center mx-auto mb-4 transform -rotate-3 shadow-md border border-emerald-100">
+                <div className="w-14 h-14 bg-sky-600 text-white rounded-[20px] flex items-center justify-center mx-auto mb-4 transform -rotate-3 shadow-md border border-sky-100">
                     <Heart size={28} className="fill-current" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight mb-2">Your Health Profile</h3>
@@ -98,17 +98,17 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
                                 dropdownMode="select"
                                 maxDate={new Date()}
                                 placeholderText="Select birth date"
-                                className="w-full px-4 py-3 pl-10 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm cursor-pointer"
+                                className="w-full px-4 py-3 pl-10 bg-gray-50 border border-gray-200 focus:bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm cursor-pointer"
                                 wrapperClassName="w-full"
-                                popperClassName="emerald-datepicker-popper"
-                                calendarClassName="emerald-datepicker"
+                                popperClassName="sky-datepicker-popper"
+                                calendarClassName="sky-datepicker"
                             />
-                            <CalendarDays size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 pointer-events-none" />
+                            <CalendarDays size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-500 pointer-events-none" />
                         </div>
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-gray-700 ml-1">Phone Number</label>
-                        <input {...register('phoneNumber')} placeholder="923044561544" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm" />
+                        <input {...register('phoneNumber')} placeholder="923044561544" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm" />
                     </div>
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-gray-700 ml-1">Gender</label>
@@ -143,12 +143,12 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
                     </div>
                     <div className="col-span-1 md:col-span-2 space-y-1.5 mt-1">
                         <label className="text-xs font-bold text-gray-700 ml-1">Medical History & Allergies</label>
-                        <textarea {...register('medicalHistory')} rows={3} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm resize-y leading-relaxed" placeholder="Please declare any known conditions, allergies, or past surgeries to help doctors assist you better..."></textarea>
+                        <textarea {...register('medicalHistory')} rows={3} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm resize-y leading-relaxed" placeholder="Please declare any known conditions, allergies, or past surgeries to help doctors assist you better..."></textarea>
                     </div>
                 </div>
 
                 <div className="pt-4">
-                    <button type="submit" disabled={submitting} className="w-full px-6 py-4 bg-emerald-600 text-white font-black text-[15px] rounded-xl flex justify-center items-center shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 hover:-translate-y-0.5 transition-all active:scale-[0.98]">
+                    <button type="submit" disabled={submitting} className="w-full px-6 py-4 bg-sky-600 text-white font-black text-[15px] rounded-xl flex justify-center items-center shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 hover:-translate-y-0.5 transition-all active:scale-[0.98]">
                         {submitting ? <Loader2 className="animate-spin mr-2 text-white" size={20} /> : 'Save Health Profile'}
                     </button>
                 </div>

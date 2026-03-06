@@ -6,13 +6,13 @@ import { faqs } from '../../data/homeData';
 const FAQAccordion = ({ q, a }: { q: string, a: string }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className={`bg-white rounded-3xl border transition-all duration-300 ${isOpen ? 'border-emerald-200 shadow-xl shadow-emerald-500/5' : 'border-gray-100 shadow-sm hover:border-gray-200'}`}>
+        <div className={`bg-white rounded-3xl border transition-all duration-300 ${isOpen ? 'border-sky-200 shadow-xl shadow-sky-500/5' : 'border-gray-100 shadow-sm hover:border-gray-200'}`}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full px-8 py-6 flex items-center justify-between text-left group"
             >
-                <span className={`font-black text-lg ${isOpen ? 'text-emerald-600' : 'text-gray-900 group-hover:text-emerald-600'} transition-colors tracking-tight`}>{q}</span>
-                <div className={`p-2 rounded-xl transition-all ${isOpen ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200' : 'bg-gray-50 text-gray-400'}`}>
+                <span className={`font-black text-lg ${isOpen ? 'text-sky-600' : 'text-gray-900 group-hover:text-sky-600'} transition-colors tracking-tight`}>{q}</span>
+                <div className={`p-2 rounded-xl transition-all ${isOpen ? 'bg-sky-600 text-white shadow-lg shadow-sky-200' : 'bg-gray-50 text-gray-400'}`}>
                     {isOpen ? <Minus size={20} /> : <Plus size={20} />}
                 </div>
             </button>
@@ -40,7 +40,7 @@ const FAQSection: React.FC = () => {
         <div className="mb-24">
             <div className="text-center mb-16 relative">
                 <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Need Assistance?</h2>
-                <p className="text-gray-400 font-bold max-w-2xl mx-auto italic text-lg opacity-80">Quick answers to frequently asked questions about MediBookAI.</p>
+                <p className="text-gray-400 font-bold max-w-2xl mx-auto text-lg opacity-80">Quick answers to frequently asked questions about MediBookAI.</p>
             </div>
 
             <div className="max-w-4xl mx-auto space-y-5">

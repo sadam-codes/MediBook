@@ -53,7 +53,7 @@ export const BookingPage: React.FC = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-                <Loader2 size={48} className="animate-spin text-emerald-600 mb-4 opacity-20" />
+                <Loader2 size={48} className="animate-spin text-sky-600 mb-4 opacity-20" />
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Initializing Booking Engine...</p>
             </div>
         );
@@ -82,7 +82,7 @@ export const BookingPage: React.FC = () => {
                 <div className="bg-white rounded-[48px] shadow-2xl shadow-slate-200/50 overflow-hidden border border-slate-100 flex flex-col md:flex-row">
                     {/* Doctor Mini Profile */}
                     <div className="md:w-80 bg-slate-900 p-10 text-left relative overflow-hidden shrink-0">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-[80px]" />
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full -mr-32 -mt-32 blur-[80px]" />
 
                         <div className="relative z-10">
                             <div className="w-32 h-32 rounded-[32px] overflow-hidden border-4 border-white/10 shadow-2xl mb-8">
@@ -90,7 +90,7 @@ export const BookingPage: React.FC = () => {
                             </div>
 
                             <h2 className="text-3xl font-black text-white italic tracking-tight mb-2 uppercase leading-none">{doctor.name}</h2>
-                            <p className="text-emerald-500 font-black text-[10px] uppercase tracking-[0.2em] mb-8">{doctor.spec}</p>
+                            <p className="text-sky-500 font-black text-[10px] uppercase tracking-[0.2em] mb-8">{doctor.spec}</p>
 
                             <div className="space-y-6 pt-8 border-t border-white/10">
                                 <div>
@@ -101,7 +101,7 @@ export const BookingPage: React.FC = () => {
 
                                 <div>
                                     <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Consultation Fee</p>
-                                    <p className="text-2xl font-black text-white italic">PKR {doctor.consultationFee}</p>
+                                    <p className="text-2xl font-black text-white">PKR {doctor.consultationFee}</p>
                                 </div>
                             </div>
                         </div>
@@ -111,16 +111,16 @@ export const BookingPage: React.FC = () => {
                     <div className="flex-1 p-4 md:p-6 relative">
                         {existingAppointment ? (
                             <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-700">
-                                <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-8 border border-emerald-100 shadow-inner">
-                                    <CheckCircle2 size={40} className="text-emerald-500" />
+                                <div className="w-20 h-20 bg-sky-50 rounded-full flex items-center justify-center mb-8 border border-sky-100 shadow-inner">
+                                    <CheckCircle2 size={40} className="text-sky-500" />
                                 </div>
-                                <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4 italic">Already <span className="text-emerald-600">Booked</span></h3>
+                                <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Already <span className="text-sky-600">Booked</span></h3>
                                 <p className="text-slate-400 font-medium text-sm leading-relaxed mb-10 max-w-sm mx-auto">
                                     You already have an active appointment with Dr. {doctor.name.split(' ')[1] || doctor.name} on <span className="text-slate-900 font-bold">{new Date(existingAppointment.date).toLocaleDateString()}</span> at <span className="text-slate-900 font-bold">{existingAppointment.time}</span>.
                                 </p>
                                 <button
                                     onClick={() => navigate('/bookings')}
-                                    className="px-10 py-2 bg-slate-900 text-white font-black rounded-2xl hover:bg-emerald-600 transition-all shadow-xl shadow-slate-900/10 uppercase tracking-widest text-[10px] active:scale-95"
+                                    className="px-10 py-2 bg-slate-900 text-white font-black rounded-2xl hover:bg-sky-600 transition-all shadow-xl shadow-slate-900/10 uppercase tracking-widest text-[10px] active:scale-95"
                                 >
                                     View My Appointments
                                 </button>

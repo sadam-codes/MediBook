@@ -63,18 +63,18 @@ export const MainLayout: React.FC = () => {
                         else if (user?.role === 'admin') navigate('/admin');
                         else navigate('/');
                     }}>
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md text-sm sm:text-base">M</div>
-                        <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook<span className="text-emerald-600">AI</span></div>
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-sky-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md text-sm sm:text-base">M</div>
+                        <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook<span className="text-sky-600">AI</span></div>
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
                         <div className="hidden sm:flex items-center mr-4 space-x-6">
                             {user?.role === 'patient' && !user.hasPatientProfile && (
-                                <button onClick={() => navigate('/complete-profile')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors">
+                                <button onClick={() => navigate('/complete-profile')} className="text-sm font-semibold text-gray-600 hover:text-sky-600 transition-colors">
                                     Complete Profile
                                 </button>
                             )}
                             {user?.role === 'patient' && (
-                                <button onClick={() => navigate('/bookings')} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors flex items-center">
+                                <button onClick={() => navigate('/bookings')} className="text-sm font-semibold text-gray-600 hover:text-sky-600 transition-colors flex items-center">
                                     <Calendar size={16} className="mr-2" /> My Bookings
                                 </button>
                             )}
@@ -90,15 +90,15 @@ export const MainLayout: React.FC = () => {
                                                 className="w-9 h-9 rounded-lg object-cover border border-white shadow-sm"
                                             />
                                         ) : (
-                                            <div className="w-9 h-9 bg-emerald-600 text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-sm">
+                                            <div className="w-9 h-9 bg-sky-600 text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-sm">
                                                 {user.fullName?.[0] || 'U'}
                                             </div>
                                         )}
-                                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
+                                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-sky-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
                                     </div>
                                     <div className="flex flex-col items-start pr-1">
                                         <span className="text-sm font-bold text-gray-900 leading-tight">{user.fullName}</span>
-                                        <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-tight">{user.role}</span>
+                                        <span className="text-[10px] font-bold text-sky-600 uppercase tracking-tight">{user.role}</span>
                                     </div>
                                     <ChevronDown size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
                                 </div>
@@ -115,13 +115,13 @@ export const MainLayout: React.FC = () => {
                             <div className="hidden sm:flex items-center space-x-3">
                                 <button
                                     onClick={() => openAuthModal('login')}
-                                    className="px-4 py-2 text-sm font-bold text-gray-700 hover:text-emerald-600 transition-colors"
+                                    className="px-4 py-2 text-sm font-bold text-gray-700 hover:text-sky-600 transition-colors"
                                 >
                                     Login
                                 </button>
                                 <button
                                     onClick={() => openAuthModal('signup')}
-                                    className="px-5 py-2 bg-emerald-600 text-white text-sm font-bold rounded-xl hover:bg-emerald-700 shadow-lg shadow-emerald-200 transition-all active:scale-95"
+                                    className="px-5 py-2 bg-sky-600 text-white text-sm font-bold rounded-xl hover:bg-sky-700 shadow-lg shadow-sky-200 transition-all active:scale-95"
                                 >
                                     Sign Up
                                 </button>
@@ -132,7 +132,7 @@ export const MainLayout: React.FC = () => {
                         <div className="sm:hidden flex items-center ml-2">
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                className="p-2 text-gray-700 hover:text-emerald-600 active:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white shadow-sm"
+                                className="p-2 text-gray-700 hover:text-sky-600 active:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white shadow-sm"
                             >
                                 <Menu size={22} />
                             </button>
@@ -147,12 +147,12 @@ export const MainLayout: React.FC = () => {
                     <div className="p-8 flex flex-col h-full overflow-y-auto custom-scrollbar">
                         <div className="flex items-center justify-between mb-12 shrink-0">
                             <div className="flex items-center space-x-1">
-                                <div className="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg text-lg">M</div>
-                                <div className="font-bold text-2xl tracking-tighter text-gray-900">MediBook<span className="text-emerald-600">AI</span></div>
+                                <div className="w-9 h-9 bg-sky-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg text-lg">M</div>
+                                <div className="font-bold text-2xl tracking-tighter text-gray-900">MediBook<span className="text-sky-600">AI</span></div>
                             </div>
                             <button
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="p-3 text-gray-400 hover:text-emerald-600 bg-gray-50 hover:bg-emerald-50 rounded-2xl transition-all"
+                                className="p-3 text-gray-400 hover:text-sky-600 bg-gray-50 hover:bg-sky-50 rounded-2xl transition-all"
                             >
                                 <X size={24} />
                             </button>
@@ -168,16 +168,16 @@ export const MainLayout: React.FC = () => {
                                             className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md transform -rotate-2"
                                         />
                                     ) : (
-                                        <div className="w-16 h-16 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-bold text-3xl shadow-md transform rotate-3">
+                                        <div className="w-16 h-16 bg-sky-600 text-white rounded-2xl flex items-center justify-center font-bold text-3xl shadow-md transform rotate-3">
                                             {user.fullName?.[0] || 'U'}
                                         </div>
                                     )}
-                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-4 border-white rounded-full shadow-sm animate-pulse"></div>
+                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-sky-500 border-4 border-white rounded-full shadow-sm animate-pulse"></div>
                                 </div>
                                 <div>
                                     <p className="font-extrabold text-gray-900 text-xl tracking-tight">{user.fullName}</p>
-                                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest mt-0.5 flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                    <p className="text-xs font-bold text-sky-600 uppercase tracking-widest mt-0.5 flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 bg-sky-500 rounded-full"></span>
                                         {user.role} Online
                                     </p>
                                 </div>
@@ -193,10 +193,10 @@ export const MainLayout: React.FC = () => {
                             {user?.role === 'patient' && !user?.hasDoctorProfile && (
                                 <button
                                     onClick={() => { navigate('/join-doctor'); setIsMobileMenuOpen(false); }}
-                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
+                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
                                 >
-                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-emerald-100 transition-colors">
-                                        <UserPlus size={18} className="text-gray-500 group-hover:text-emerald-600 transition-colors" />
+                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
+                                        <UserPlus size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
                                     Join as Doctor
                                 </button>
@@ -204,10 +204,10 @@ export const MainLayout: React.FC = () => {
                             {user?.role === 'patient' && !user?.hasPatientProfile && (
                                 <button
                                     onClick={() => { navigate('/complete-profile'); setIsMobileMenuOpen(false); }}
-                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
+                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
                                 >
-                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-emerald-100 transition-colors">
-                                        <Calendar size={18} className="text-gray-500 group-hover:text-emerald-600 transition-colors" />
+                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
+                                        <Calendar size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
                                     Complete Profile
                                 </button>
@@ -215,10 +215,10 @@ export const MainLayout: React.FC = () => {
                             {user?.role === 'patient' && (
                                 <button
                                     onClick={() => { navigate('/bookings'); setIsMobileMenuOpen(false); }}
-                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
+                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
                                 >
-                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-emerald-100 transition-colors">
-                                        <Calendar size={18} className="text-gray-500 group-hover:text-emerald-600 transition-colors" />
+                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
+                                        <Calendar size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
                                     My Bookings
                                 </button>
@@ -226,10 +226,10 @@ export const MainLayout: React.FC = () => {
                             {/* Always show home link in mobile menu for easy navigation */}
                             <button
                                 onClick={() => { navigate('/home'); setIsMobileMenuOpen(false); }}
-                                className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 flex items-center transition-all group"
+                                className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
                             >
-                                <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-emerald-100 transition-colors">
-                                    <UserPlus size={18} className="text-gray-500 group-hover:text-emerald-600 transition-colors" />
+                                <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
+                                    <UserPlus size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                 </div>
                                 Home
                             </button>
@@ -247,13 +247,13 @@ export const MainLayout: React.FC = () => {
                             <div className="grid grid-cols-2 gap-3 mt-2">
                                 <button
                                     onClick={() => { openAuthModal('login'); setIsMobileMenuOpen(false); }}
-                                    className="text-center px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all border border-transparent"
+                                    className="text-center px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 transition-all border border-transparent"
                                 >
                                     Log In
                                 </button>
                                 <button
                                     onClick={() => { openAuthModal('signup'); setIsMobileMenuOpen(false); }}
-                                    className="text-center px-5 py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200"
+                                    className="text-center px-5 py-4 bg-sky-600 text-white font-bold rounded-2xl hover:bg-sky-700 transition-all shadow-lg shadow-sky-200"
                                 >
                                     Sign Up
                                 </button>

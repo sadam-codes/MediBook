@@ -48,7 +48,7 @@ export const LoginPage: React.FC = () => {
             >
                 <div className="p-8 sm:p-12 overflow-y-auto custom-scrollbar">
                     <div className="flex flex-col items-center mb-10">
-                        <div className="w-16 h-16 bg-emerald-600 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-emerald-200 mb-6">
+                        <div className="w-16 h-16 bg-sky-600 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-sky-200 mb-6">
                             <Shield size={32} />
                         </div>
                         <h2 className="text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h2>
@@ -59,10 +59,10 @@ export const LoginPage: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Identity</label>
                             <div className="relative group">
-                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={20} />
+                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-sky-500 transition-colors" size={20} />
                                 <input
                                     {...register('email')}
-                                    className={`w-full pl-14 pr-6 py-5 bg-slate-50 border-2 ${errors.email ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-emerald-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
+                                    className={`w-full pl-14 pr-6 py-5 bg-slate-50 border-2 ${errors.email ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-sky-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
                                     placeholder="name@example.com"
                                 />
                             </div>
@@ -72,17 +72,17 @@ export const LoginPage: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
                             <div className="relative group">
-                                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={20} />
+                                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-sky-500 transition-colors" size={20} />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     {...register('password')}
-                                    className={`w-full pl-14 pr-14 py-5 bg-slate-50 border-2 ${errors.password ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-emerald-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
+                                    className={`w-full pl-14 pr-14 py-5 bg-slate-50 border-2 ${errors.password ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-sky-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
                                     placeholder="••••••••"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-emerald-500 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
+                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-sky-500 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
                                 >
                                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                 </button>
@@ -93,7 +93,7 @@ export const LoginPage: React.FC = () => {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full bg-slate-900 hover:bg-emerald-600 text-white font-black py-5 rounded-[28px] transition-all shadow-xl active:scale-95 flex items-center justify-center border-none"
+                            className="w-full bg-slate-900 hover:bg-sky-600 text-white font-black py-5 rounded-[28px] transition-all shadow-xl active:scale-95 flex items-center justify-center border-none"
                             style={{ backgroundColor: '#0f172a' }}
                         >
                             {isSubmitting ? <Loader2 className="animate-spin" /> : 'Login'}

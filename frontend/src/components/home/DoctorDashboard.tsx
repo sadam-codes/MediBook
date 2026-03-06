@@ -36,15 +36,15 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
         <div className="flex-1 flex flex-col min-h-0 space-y-8">
             {/* Professional Stats Banner */}
             <div className="bg-slate-900 rounded-[32px] p-10 overflow-hidden relative shadow-2xl shrink-0 border border-white/5 group">
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/10 rounded-full -mr-40 -mt-40 blur-[120px] opacity-20 group-hover:opacity-30 transition-opacity duration-1000"></div>
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/10 rounded-full -mr-40 -mt-40 blur-[120px] opacity-20 group-hover:opacity-30 transition-opacity duration-1000"></div>
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-10">
                     <div className="text-left">
-                        <div className="inline-flex items-center space-x-2 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 mb-6">
-                            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                            <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest text-[9px]">Operational Status: Active</span>
+                        <div className="inline-flex items-center space-x-2 bg-sky-500/10 px-3 py-1.5 rounded-lg border border-sky-500/20 mb-6">
+                            <span className="w-1.5 h-1.5 bg-sky-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                            <span className="text-[9px] font-black text-sky-400 uppercase tracking-widest text-[9px]">Operational Status: Active</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-3 italic uppercase leading-none">
-                            Welcome, <span className="text-emerald-500">Dr. {user.fullName.split(' ')[0]}</span>
+                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-3 uppercase leading-none">
+                            Welcome, <span className="text-sky-500">Dr. {user.fullName.split(' ')[0]}</span>
                         </h2>
                         <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mb-0 flex items-center">
                             <span className="w-6 h-[1px] bg-slate-800 mr-3" />
@@ -53,8 +53,8 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                     </div>
                     <div className="flex items-center">
                         <div className="bg-white/5 backdrop-blur-3xl px-10 py-6 rounded-3xl border border-white/10 shadow-inner flex flex-col items-center">
-                            <p className="text-[8px] font-black text-emerald-500 uppercase tracking-[0.3em] mb-2">Today's Load</p>
-                            <p className="text-4xl font-black text-white leading-none italic">{todayPatients}</p>
+                            <p className="text-[8px] font-black text-sky-500 uppercase tracking-[0.3em] mb-2">Today's Load</p>
+                            <p className="text-4xl font-black text-white leading-none">{todayPatients}</p>
                             <p className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-2">Active Patients</p>
                         </div>
                     </div>
@@ -67,10 +67,10 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                     <div className="flex items-center justify-between mb-8 relative z-10">
                         <div className="flex flex-col">
                             <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center mb-1">
-                                <Calendar size={14} className="mr-2 text-emerald-600" />
+                                <Calendar size={14} className="mr-2 text-sky-600" />
                                 Appointment Queue
                             </h3>
-                            <p className="text-xl font-black text-gray-900 uppercase italic tracking-tight">Active Schedule</p>
+                            <p className="text-xl font-black text-gray-900 uppercase tracking-tight">Active Schedule</p>
                         </div>
                         <div className="flex items-center space-x-2">
                             <span className="text-slate-900 text-[10px] font-black px-3 py-1 bg-slate-50 rounded-lg border border-slate-100 uppercase tracking-widest">{appointments.length} Total</span>
@@ -80,7 +80,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                     <div className="flex-1 overflow-y-auto custom-scrollbar -mr-6 pr-6 relative z-10">
                         {loading ? (
                             <div className="h-full flex flex-col items-center justify-center space-y-4">
-                                <Loader2 size={32} className="animate-spin text-emerald-600/20" />
+                                <Loader2 size={32} className="animate-spin text-sky-600/20" />
                                 <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Synchronizing Queue...</span>
                             </div>
                         ) : appointments.length > 0 ? (
@@ -100,11 +100,11 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                                                 <h4 className="font-black text-slate-900 uppercase tracking-tight truncate text-xs">
                                                     {appt.patient?.fullName}
                                                 </h4>
-                                                <span className="text-[7px] font-black text-emerald-500 uppercase tracking-widest border border-emerald-500/20 px-2 py-0.5 rounded-md">Validated</span>
+                                                <span className="text-[7px] font-black text-sky-500 uppercase tracking-widest border border-sky-500/20 px-2 py-0.5 rounded-md">Validated</span>
                                             </div>
                                             <div className="flex items-center space-x-4">
                                                 <div className="flex items-center text-slate-400 space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-slate-100 shadow-sm">
-                                                    <Clock size={10} className="text-emerald-500" />
+                                                    <Clock size={10} className="text-sky-500" />
                                                     <span className="text-[9px] font-black uppercase tracking-tight text-slate-600">
                                                         {(() => {
                                                             try {
@@ -141,19 +141,19 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                 {/* Insights Section */}
                 <div className="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 text-left flex flex-col overflow-hidden">
                     <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center mb-1">
-                        <UserPlus size={14} className="mr-2 text-emerald-600" />
+                        <UserPlus size={14} className="mr-2 text-sky-600" />
                         Performance Insights
                     </h3>
-                    <p className="text-xl font-black text-gray-900 uppercase italic tracking-tight mb-8">Clinical Analytics</p>
+                    <p className="text-xl font-black text-gray-900 uppercase tracking-tight mb-8">Clinical Analytics</p>
 
                     <div className="grid grid-cols-2 gap-4 mb-8">
                         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                             <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 font-bold">Completion Rate</p>
-                            <p className="text-2xl font-black text-slate-900 italic">94%</p>
+                            <p className="text-2xl font-black text-slate-900">94%</p>
                         </div>
                         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                             <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 font-bold">Patient Satisfaction</p>
-                            <p className="text-2xl font-black text-emerald-600 italic">4.9/5</p>
+                            <p className="text-2xl font-black text-sky-600">4.9/5</p>
                         </div>
                     </div>
 
@@ -162,7 +162,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                             <Clock size={20} className="text-slate-300" />
                         </div>
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Upcoming Performance Metrics</p>
-                        <p className="text-[9px] font-medium text-slate-300 italic">Advanced analytics module integration in progress</p>
+                        <p className="text-[9px] font-medium text-slate-300">Advanced analytics module integration in progress</p>
                     </div>
                 </div>
             </div>

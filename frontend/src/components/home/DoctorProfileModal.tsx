@@ -73,15 +73,15 @@ const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen,
                                     <img src={doctor.img} alt={doctor.name} className="w-full h-full object-cover" />
                                 </div>
                                 <div className="absolute -bottom-3 sm:-bottom-4 left-1/2 -translate-x-1/2 bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-lg border border-slate-50 flex items-center space-x-2 whitespace-nowrap">
-                                    <ShieldCheck size={12} className="text-emerald-600" />
+                                    <ShieldCheck size={12} className="text-sky-600" />
                                     <span className="text-[8px] sm:text-[10px] font-black text-slate-900 uppercase tracking-widest">Verified Expert</span>
                                 </div>
                             </div>
 
                             <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
                                 <div>
-                                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight mb-1 sm:mb-2 uppercase italic">{doctor.name}</h2>
-                                    <p className="text-emerald-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em]">{doctor.spec}</p>
+                                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight mb-1 sm:mb-2 uppercase">{doctor.name}</h2>
+                                    <p className="text-sky-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em]">{doctor.spec}</p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
@@ -99,10 +99,10 @@ const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen,
 
                                 <div className="space-y-2 pt-4 border-t border-slate-200">
                                     <div className="flex items-center justify-center sm:justify-start text-slate-500 space-x-3 group cursor-pointer">
-                                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-slate-400 group-hover:text-emerald-500 transition-colors">
+                                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-slate-400 group-hover:text-sky-500 transition-colors">
                                             <CalendarIcon size={16} />
                                         </div>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest italic">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest">
                                             {loadingAppts ? 'Checking...' : `${appointments.length} Consultations`}
                                         </span>
                                     </div>
@@ -121,7 +121,7 @@ const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen,
 
                             <div className="flex-1 flex flex-col items-center justify-center space-y-2 py-6">
                                 <div className="text-center max-w-md">
-                                    <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-4 leading-tight italic">Ready for your <span className="text-emerald-600">Consultation?</span></h3>
+                                    <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-4 leading-tight">Ready for your <span className="text-sky-600">Consultation?</span></h3>
                                     <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">Schedule your session with Dr. {doctor.name.split(' ')[1] || doctor.name} and receive professional medical guidance from the comfort of your home.</p>
 
                                     <button
@@ -135,7 +135,7 @@ const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen,
                                         }}
                                         className={`w-full py-6 text-white font-black rounded-3xl transition-all duration-500 shadow-2xl text-xs uppercase tracking-[0.3em] active:scale-95 border border-white/5 flex items-center justify-center space-x-3 ${patientBooking
                                             ? 'bg-slate-900 shadow-slate-900/20 hover:bg-slate-800'
-                                            : 'bg-emerald-600 shadow-emerald-500/20 hover:bg-emerald-700 hover:shadow-emerald-600/40'
+                                            : 'bg-sky-600 shadow-sky-500/20 hover:bg-sky-700 hover:shadow-sky-600/40'
                                             }`}
                                     >
                                         <CalendarIcon size={18} />
@@ -153,8 +153,8 @@ const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen,
                                     </div>
                                     <div className="space-y-2">
                                         <h5 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Consultation Fee</h5>
-                                        <p className="text-2xl sm:text-3xl font-black text-slate-900 italic">PKR {docData.consultationFee || '2500'}</p>
-                                        <span className="text-[8px] font-black text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Secure Payment via App</span>
+                                        <p className="text-2xl sm:text-3xl font-black text-slate-900">PKR {docData.consultationFee || '2500'}</p>
+                                        <span className="text-[8px] font-black text-sky-500 bg-sky-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Secure Payment via App</span>
                                     </div>
                                 </div>
                             </div>
