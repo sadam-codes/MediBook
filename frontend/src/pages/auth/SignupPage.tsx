@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
-const api = axios.create({ baseURL: 'http://localhost:5000' });
+const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000' });
 
 const schema = yup.object({
     fullName: yup.string().required('Full name is required'),

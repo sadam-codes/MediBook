@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
+import { Chatbot } from '../components/chatbot/Chatbot';
 
 export const MainLayout: React.FC = () => {
     const navigate = useNavigate();
@@ -84,7 +85,7 @@ export const MainLayout: React.FC = () => {
                                     <div className="relative">
                                         {user.profileImage ? (
                                             <img
-                                                src={`http://localhost:5000${user.profileImage}`}
+                                                src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${user.profileImage}`}
                                                 alt={user.fullName}
                                                 className="w-9 h-9 rounded-lg object-cover border border-white shadow-sm"
                                             />
@@ -162,7 +163,7 @@ export const MainLayout: React.FC = () => {
                                 <div className="relative">
                                     {user.profileImage ? (
                                         <img
-                                            src={`http://localhost:5000${user.profileImage}`}
+                                            src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${user.profileImage}`}
                                             alt={user.fullName}
                                             className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md transform -rotate-2"
                                         />
@@ -268,6 +269,8 @@ export const MainLayout: React.FC = () => {
                     <Outlet />
                 </div>
             </main>
+
+            <Chatbot />
 
             <AuthModal
                 isOpen={isAuthModalOpen}

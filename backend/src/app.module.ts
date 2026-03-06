@@ -12,6 +12,7 @@ import { DoctorsModule } from './doctors/doctors.module';
 import { UsersModule } from './users/users.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { MailModule } from './mail/mail.module';
+import { ChatbotModule } from './chatbot/chatbot.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { MailModule } from './mail/mail.module';
     UsersModule,
     AppointmentsModule,
     MailModule,
+    ChatbotModule,
   ],
   providers: [DbHealthService],
 })

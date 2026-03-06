@@ -3,6 +3,7 @@ import { Calendar, Clock, Loader2, ArrowLeft, CheckCircle2, Phone } from 'lucide
 import { useNavigate } from 'react-router-dom';
 import { format, parse } from 'date-fns';
 import api from '../services/api';
+import toast from 'react-hot-toast';
 
 export const MyBookingsPage: React.FC = () => {
     const [bookings, setBookings] = useState<any[]>([]);
@@ -124,7 +125,7 @@ export const MyBookingsPage: React.FC = () => {
                                                 const cleanPhone = phone.replace(/\D/g, '');
                                                 window.open(`https://wa.me/${cleanPhone}`, '_blank');
                                             } else {
-                                                alert("Contact information not available for this doctor.");
+                                                toast.error("Contact information not available for this doctor.");
                                             }
                                         }}
                                         className="flex items-center space-x-2 px-6 py-3 bg-slate-900 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-emerald-600 transition-all active:scale-95 shadow-lg shadow-slate-900/10 hover:shadow-emerald-600/20"

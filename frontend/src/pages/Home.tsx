@@ -15,13 +15,11 @@ import PatientDashboard from '../components/home/PatientDashboard';
 import DoctorDashboard from '../components/home/DoctorDashboard';
 import AdminDashboard from '../components/home/AdminDashboard';
 
-const api = axios.create({ baseURL: 'http://localhost:5000' });
+import { ConfirmModal } from '../components/ui/ConfirmModal';
 
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-});
+const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000' });
+
+// ... (interceptors)
 
 export const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -34,6 +32,8 @@ export const Home: React.FC = () => {
     const [allUsers, setAllUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+    const [userToDelete, setUserToDelete] = useState<number | null>(null);
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -78,15 +78,22 @@ export const Home: React.FC = () => {
         }
     };
 
-    const handleDeleteUser = async (userId: number) => {
-        if (!window.confirm('Are you sure you want to delete this user?')) return;
+    const handleDeleteUser = (userId: number) => {
+        setUserToDelete(userId);
+        setIsDeleteConfirmOpen(true);
+    };
+
+    const confirmDeleteUser = async () => {
+        if (!userToDelete) return;
         try {
-            await api.delete(`/users/${userId}`);
+            await api.delete(`/users/${userToDelete}`);
             toast.success('User deleted successfully');
             fetchData();
         } catch (err: any) {
             console.error('Failed to delete user:', err);
             toast.error(err.response?.data?.message || 'Failed to delete user');
+        } finally {
+            setUserToDelete(null);
         }
     };
 
@@ -101,7 +108,7 @@ export const Home: React.FC = () => {
             exp: `${d.experience} Years Exp.`,
             rating: "4.9",
             reviews: "120+",
-            img: d.user?.profileImage ? `http://localhost:5000${d.user.profileImage}` : "/default-doc.png",
+            img: d.user?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${d.user.profileImage}` : "/default-doc.png",
             bio: d.bio || "Leading specialist in medical care.",
             originalData: d
         };
@@ -109,6 +116,15 @@ export const Home: React.FC = () => {
 
     return (
         <React.Fragment>
+            <ConfirmModal
+                isOpen={isDeleteConfirmOpen}
+                onClose={() => setIsDeleteConfirmOpen(false)}
+                onConfirm={confirmDeleteUser}
+                title="Delete User"
+                message="Are you sure you want to permanently delete this user? This action is irreversible."
+                confirmText="Delete Now"
+                type="danger"
+            />
             <DoctorProfileModal
                 doctor={selectedDoctor}
                 isOpen={!!selectedDoctor}

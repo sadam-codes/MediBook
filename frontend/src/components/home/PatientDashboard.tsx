@@ -52,7 +52,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ doctors, loading, o
                                 <div className="relative h-64 overflow-hidden shrink-0">
                                     <div className="absolute inset-0 bg-emerald-950/20 z-10"></div>
                                     <img
-                                        src={doc.user?.profileImage ? `http://localhost:5000${doc.user.profileImage}` : "/default-doc.png"}
+                                        src={doc.user?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${doc.user.profileImage}` : "/default-doc.png"}
                                         alt={doc.user?.fullName}
                                         className="w-full h-full object-cover"
                                     />

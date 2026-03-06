@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Loader2, User, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react';
 import BookingFlow from '../components/home/BookingFlow';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -27,7 +27,7 @@ export const BookingPage: React.FC = () => {
                     ...res.data,
                     name: res.data.user?.fullName,
                     spec: res.data.specialization,
-                    img: res.data.user?.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(res.data.user?.fullName || 'D')}&background=0f172a&color=fff&bold=true`
+                    img: res.data.user?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${res.data.user.profileImage}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(res.data.user?.fullName || 'D')}&background=0f172a&color=fff&bold=true`
                 };
                 setDoctor(doc);
 

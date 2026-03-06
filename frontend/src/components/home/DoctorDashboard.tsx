@@ -89,7 +89,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                                     <div key={i} className="group bg-slate-50/30 hover:bg-slate-50 p-5 rounded-2xl border border-transparent hover:border-slate-100 transition-all duration-300 flex items-center space-x-5">
                                         <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-200">
                                             <img
-                                                src={appt.patient?.profileImage ? `http://localhost:5000${appt.patient.profileImage}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(appt.patient?.fullName || 'P')}&background=0f172a&color=fff&bold=true`}
+                                                src={appt.patient?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${appt.patient.profileImage}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(appt.patient?.fullName || 'P')}&background=0f172a&color=fff&bold=true`}
                                                 alt={appt.patient?.fullName}
                                                 className="w-full h-full object-cover"
                                             />
