@@ -68,11 +68,11 @@ export const MainLayout: React.FC = () => {
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
                         <div className="hidden sm:flex items-center mr-4 space-x-6">
-                            {user?.role === 'patient' && !user.hasPatientProfile && (
+                            {/* {user?.role === 'patient' && !user.hasPatientProfile && (
                                 <button onClick={() => navigate('/complete-profile')} className="text-sm font-semibold text-gray-600 hover:text-sky-600 transition-colors">
                                     Complete Profile
                                 </button>
-                            )}
+                            )} */}
                             {user?.role === 'patient' && (
                                 <button onClick={() => navigate('/bookings')} className="text-sm font-semibold text-gray-600 hover:text-sky-600 transition-colors flex items-center">
                                     <Calendar size={16} className="mr-2" /> My Bookings
@@ -209,7 +209,7 @@ export const MainLayout: React.FC = () => {
                                     <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
                                         <Calendar size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
-                                    Complete Profile
+                                    {/* Complete Profile */}
                                 </button>
                             )}
                             {user?.role === 'patient' && (

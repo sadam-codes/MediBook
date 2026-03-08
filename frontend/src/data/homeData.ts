@@ -70,21 +70,21 @@ export const doctorData = [
 
 export const patientReviews = [
     {
-        name: "Mateen",
+        name: "Ali",
         role: "Patient",
         text: "Incredible experience. I found a specialist within minutes and booked an appointment seamlessly. The doctors are top-notch.",
         rating: 5,
         img: doctor5
     },
     {
-        name: "Shehr Bano",
+        name: "Sara.",
         role: "Patient",
         text: "The platform is so easy to use. Highly professional doctors and a very clean booking system. It saved me a lot of time!",
         rating: 5,
         img: doctor4
     },
     {
-        name: "Shanza.",
+        name: "Sonia",
         role: "Patient",
         text: "I love how I can see the doctor's complete profile and fee before booking. Very transparent and trustworthy service.",
         rating: 4,

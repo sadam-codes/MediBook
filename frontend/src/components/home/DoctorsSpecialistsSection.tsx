@@ -19,7 +19,7 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
                 <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Meet Our Specialists</h2>
                 <p className="text-gray-400 font-bold max-w-2xl mx-auto text-lg leading-relaxed">Our world-class healthcare professionals are here to provide you with the best medical care and expertise.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 overflow-auto">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                 {displayDoctors.map((doc, i) => (
                     <div key={i} className="group bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-sky-500/10 transition-all duration-700 hover:-translate-y-3">
                         <div className="relative h-64 overflow-hidden">
@@ -47,7 +47,7 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
                                         <span className="text-xs font-black text-gray-900 ml-1">{doc.rating}</span>
                                     </div>
                                 </div>
-                                <p className="text-sky-500 font-bold text-sm tracking-[0.1em] uppercase opacity-80">{doc.spec}</p>
+                                <p className="text-sky-500 font-bold text-sm uppercase opacity-80">{doc.spec}</p>
                             </div>
 
                             <div className="flex items-center space-x-3 mb-10">
@@ -62,6 +62,7 @@ const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps> = ({ o
                             </div>
 
                             <button
+                            type="button"
                                 onClick={() => onViewProfile(doc)}
                                 className="w-full py-5 bg-sky-600 text-white font-black rounded-[20px] transition-all duration-500 shadow-2xl shadow-slate-900/10 hover:shadow-sky-600/30 text-[10px] uppercase tracking-[0.2em] active:scale-95 border border-white/5"
                             >
