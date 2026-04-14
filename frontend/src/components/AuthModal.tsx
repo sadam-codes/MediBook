@@ -294,7 +294,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
                                     {mode === 'login' ? 'Portal Authentication' : (signupStep === 1 ? 'Network Registration' : signupStep === 2 ? 'Professional Credentials' : signupStep === 3 ? 'Operational Logistics' : 'Final Activation')}
                                 </h2>
-                                <p className="text-slate-500 text-sm mt-2 font-medium">{mode === 'login' ? 'Secure access to your professional dashboard' : 'Integrating your practice into MediBookAI'}</p>
+                                <p className="text-slate-500 text-sm mt-2 font-medium">{mode === 'login' ? 'Secure access to your professional dashboard' : 'Integrating your practice into MediBook'}</p>
                                 {mode === 'signup' && (
                                     <div className="flex items-center justify-center gap-2 mt-8">
                                         {[1, 2, 3, 4].map(step => (

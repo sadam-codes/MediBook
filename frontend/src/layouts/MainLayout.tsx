@@ -64,7 +64,7 @@ export const MainLayout: React.FC = () => {
                         else navigate('/');
                     }}>
                         <div className="w-7 h-7 sm:w-8 sm:h-8 bg-sky-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md text-sm sm:text-base">M</div>
-                        <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook<span className="text-sky-600">AI</span></div>
+                        <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook</div>
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
                         <div className="hidden sm:flex items-center mr-4 space-x-6">
@@ -148,7 +148,7 @@ export const MainLayout: React.FC = () => {
                         <div className="flex items-center justify-between mb-12 shrink-0">
                             <div className="flex items-center space-x-1">
                                 <div className="w-9 h-9 bg-sky-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg text-lg">M</div>
-                                <div className="font-bold text-2xl tracking-tighter text-gray-900">MediBook<span className="text-sky-600">AI</span></div>
+                                <div className="font-bold text-2xl tracking-tighter text-gray-900">MediBook</div>
                             </div>
                             <button
                                 onClick={() => setIsMobileMenuOpen(false)}
@@ -185,7 +185,7 @@ export const MainLayout: React.FC = () => {
                         ) : (
                             <div className="pb-5 border-b border-gray-100">
                                 <h3 className="text-xl font-black text-gray-900 tracking-tight">Welcome</h3>
-                                <p className="text-sm font-bold text-gray-400">Join MediBookAI today</p>
+                                <p className="text-sm font-bold text-gray-400">Join MediBook today</p>
                             </div>
                         )}
 

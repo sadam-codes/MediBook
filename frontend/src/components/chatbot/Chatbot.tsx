@@ -108,7 +108,7 @@ export const Chatbot: React.FC = () => {
 
     const initialMessage: Message = {
         id: '1',
-        text: 'Hello! I am your **MediBookAI Assistant**. How can I help you today?',
+        text: 'Hello! I am your **MediBook Assistant**. How can I help you today?',
         sender: 'bot',
         timestamp: new Date(),
     };
@@ -258,7 +258,7 @@ export const Chatbot: React.FC = () => {
                                     <img src="/maledoctor.png" alt="MediBook AI" className="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                    <h3 className="font-black text-lg tracking-tight uppercase leading-none mb-1">MediBook AI</h3>
+                                    <h3 className="font-black text-lg tracking-tight uppercase leading-none mb-1">MediBook</h3>
                                     <p className="text-[10px] text-sky-100 font-bold uppercase tracking-[0.2em] flex items-center opacity-80">
                                         <span className="w-1.5 h-1.5 bg-sky-400 rounded-full mr-2 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
                                         Specialist Expert

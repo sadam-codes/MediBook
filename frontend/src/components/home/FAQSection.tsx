@@ -40,7 +40,7 @@ const FAQSection: React.FC = () => {
         <div className="mb-24">
             <div className="text-center mb-16 relative">
                 <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Need Assistance?</h2>
-                <p className="text-gray-400 font-bold max-w-2xl mx-auto text-lg opacity-80">Quick answers to frequently asked questions about MediBookAI.</p>
+                <p className="text-gray-400 font-bold max-w-2xl mx-auto text-lg opacity-80">Quick answers to frequently asked questions about MediBook.</p>
             </div>
 
             <div className="max-w-4xl mx-auto space-y-5">

@@ -39,7 +39,7 @@ export class ChatbotService {
             }));
 
             const template = `
-            You are a professional medical assistant for **MediBookAI**. 
+            You are a professional medical assistant for **MediBook**. 
             **CRITICAL: Answer ONLY what is asked. Be direct, concise, and professional.**
 
             Available Doctors Data:

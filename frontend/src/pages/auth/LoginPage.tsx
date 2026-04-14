@@ -102,7 +102,7 @@ export const LoginPage: React.FC = () => {
 
                     <div className="mt-10 flex flex-col items-center space-y-4">
                         <p className="text-sm font-bold text-slate-400">
-                            New to MediBookAI?{' '}
+                            New to MediBook?{' '}
                             <button onClick={() => navigate('/')} className="text-indigo-600 hover:underline font-black bg-transparent border-none p-0 inline-flex items-center">
                                 Join now <ArrowLeft size={14} className="ml-1 rotate-180" />
                             </button>

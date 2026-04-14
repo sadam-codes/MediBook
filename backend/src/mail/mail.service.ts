@@ -18,22 +18,22 @@ export class MailService {
 
     async sendBookingNotificationToDoctor(doctorEmail: string, doctorName: string, patientName: string, patientPhone: string, date: string, time: string) {
         const mailOptions = {
-            from: `"MediBookAI" <${this.configService.get<string>('EMAIL_USER')}>`,
+            from: `"MediBook" <${this.configService.get<string>('EMAIL_USER')}>`,
             to: doctorEmail,
-            subject: 'New Appointment Booked - MediBookAI',
+            subject: 'New Appointment Booked - MediBook',
             html: `
                 <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                     <h2 style="color: #10b981;">New Appointment Notification</h2>
                     <p>R/s Dr. ${doctorName},</p>
-                    <p>We are pleased to inform you that a new appointment has been scheduled through MediBookAI.</p>
+                    <p>We are pleased to inform you that a new appointment has been scheduled through MediBook.</p>
                     <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb; margin: 20px 0;">
                         <p><strong>Patient Name:</strong> ${patientName}</p>
                         <p><strong>Contact Number:</strong> ${patientPhone}</p>
                         <p><strong>Date:</strong> ${date}</p>
                         <p><strong>Time:</strong> ${time}</p>
                     </div>
-                    <p>MediBookAI is your premium healthcare companion, streamlining patient management and appointment scheduling.</p>
-                    <p>Best Regards,<br/>Team MediBookAI</p>
+                    <p>MediBook is your premium healthcare companion, streamlining patient management and appointment scheduling.</p>
+                    <p>Best Regards,<br/>Team MediBook</p>
                 </div>
             `,
         };
@@ -47,9 +47,9 @@ export class MailService {
 
     async sendBookingConfirmationToPatient(patientEmail: string, patientName: string, doctorName: string, date: string, time: string) {
         const mailOptions = {
-            from: `"MediBookAI" <${this.configService.get<string>('EMAIL_USER')}>`,
+            from: `"MediBook" <${this.configService.get<string>('EMAIL_USER')}>`,
             to: patientEmail,
-            subject: 'Appointment Confirmation - MediBookAI',
+            subject: 'Appointment Confirmation - MediBook',
             html: `
                 <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                     <h2 style="color: #10b981;">Appointment Confirmed!</h2>
@@ -61,8 +61,8 @@ export class MailService {
                         <p><strong>Time:</strong> ${time}</p>
                     </div>
                     <p>Please be on time for your consultation.</p>
-                    <p>Thank you for choosing MediBookAI - your trusted partner in healthcare.</p>
-                    <p>Best Regards,<br/>Team MediBookAI</p>
+                    <p>Thank you for choosing MediBook - your trusted partner in healthcare.</p>
+                    <p>Best Regards,<br/>Team MediBook</p>
                 </div>
             `,
         };

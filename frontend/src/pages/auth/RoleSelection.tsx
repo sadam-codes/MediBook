@@ -47,7 +47,7 @@ export const RoleSelection: React.FC = () => {
                     </motion.div>
 
                     <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tight">
-                        MediBook<span className="text-sky-600">AI</span>
+                        MediBook
                     </motion.h1>
                     <motion.p variants={itemVariants} className="text-lg md:text-xl text-slate-400 font-bold max-w-2xl mx-auto leading-relaxed">
                         Experience the future of medical management. <br className="hidden md:block" /> Select your entry point to the ecosystem.

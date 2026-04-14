@@ -13,7 +13,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onBookClick }) => {
             <div className="flex-1 lg:w-3/5 pl-0 lg:pl-10 relative z-10 text-left">
                 <div className="inline-flex items-center space-x-2 bg-sky-50 px-4 py-2 rounded-full border border-sky-100 mb-8">
                     <span className="w-2 h-2 bg-sky-500 rounded-full animate-pulse" />
-                    <span className="text-[10px] font-black text-sky-600 uppercase tracking-widest">MediBookAI Excellence</span>
+                    <span className="text-[10px] font-black text-sky-600 uppercase tracking-widest">MediBook Excellence</span>
                 </div>
                 <h1 className="text-4xl lg:text-[4rem] font-black text-gray-900 mb-8 tracking-tighter leading-[0.95] text-left">
                     Your Health, <br /><span className="text-sky-600">Our Priority.</span>

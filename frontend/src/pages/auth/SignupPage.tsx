@@ -65,7 +65,7 @@ export const SignupPage: React.FC = () => {
 
                     <div className="text-center mt-4">
                         <div className="inline-flex items-center space-x-2 text-sky-600 font-semibold text-xs uppercase tracking-wider mb-2">
-                            <span>Join MediBookAI</span>
+                            <span>Join MediBook</span>
                         </div>
                         <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Create Account</h2>
                         <p className="text-gray-500 font-medium text-sm mt-2">
