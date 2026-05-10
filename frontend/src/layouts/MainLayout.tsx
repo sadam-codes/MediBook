@@ -3,12 +3,31 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
 import { Chatbot } from '../components/chatbot/Chatbot';
+import { ProfilePhotoButton, type LayoutUser } from '../components/ProfilePhotoButton';
+
+function readUserFromStorage(): LayoutUser | null {
+    try {
+        const s = localStorage.getItem('user');
+        return s ? JSON.parse(s) : null;
+    } catch {
+        return null;
+    }
+}
 
 export const MainLayout: React.FC = () => {
     const navigate = useNavigate();
-    const userString = localStorage.getItem('user');
-    const user = userString ? JSON.parse(userString) : null;
+    const [user, setUser] = useState<LayoutUser | null>(readUserFromStorage);
+    const [avatarKey, setAvatarKey] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const patchUser = (patch: Partial<LayoutUser>) => {
+        setUser((prev) => {
+            if (!prev) return prev;
+            const next = { ...prev, ...patch };
+            localStorage.setItem('user', JSON.stringify(next));
+            return next;
+        });
+    };
 
     const handleLogout = () => {
         localStorage.clear();
@@ -81,20 +100,16 @@ export const MainLayout: React.FC = () => {
                         </div>
                         {user ? (
                             <div className="hidden sm:flex items-center space-x-4">
-                                <div className="flex items-center space-x-3 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-200 transition-all cursor-pointer group">
-                                    <div className="relative">
-                                        {user.profileImage ? (
-                                            <img
-                                                src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${user.profileImage}`}
-                                                alt={user.fullName}
-                                                className="w-9 h-9 rounded-lg object-cover border border-white shadow-sm"
-                                            />
-                                        ) : (
-                                            <div className="w-9 h-9 bg-sky-600 text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-sm">
-                                                {user.fullName?.[0] || 'U'}
-                                            </div>
-                                        )}
-                                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-sky-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
+                                <div className="flex items-center space-x-3 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-200 transition-all group">
+                                    <div className="relative shrink-0">
+                                        <ProfilePhotoButton
+                                            user={user}
+                                            cacheKey={avatarKey}
+                                            onUpdated={(p) => patchUser(p)}
+                                            onCacheBust={() => setAvatarKey((k) => k + 1)}
+                                            size="sm"
+                                        />
+                                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-sky-500 border-2 border-white rounded-full shadow-sm animate-pulse pointer-events-none" />
                                     </div>
                                     <div className="flex flex-col items-start pr-1">
                                         <span className="text-sm font-bold text-gray-900 leading-tight">{user.fullName}</span>
@@ -160,19 +175,15 @@ export const MainLayout: React.FC = () => {
 
                         {user ? (
                             <div className="flex items-center space-x-4 pb-6 border-b border-gray-100">
-                                <div className="relative">
-                                    {user.profileImage ? (
-                                        <img
-                                            src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${user.profileImage}`}
-                                            alt={user.fullName}
-                                            className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md transform -rotate-2"
-                                        />
-                                    ) : (
-                                        <div className="w-16 h-16 bg-sky-600 text-white rounded-2xl flex items-center justify-center font-bold text-3xl shadow-md transform rotate-3">
-                                            {user.fullName?.[0] || 'U'}
-                                        </div>
-                                    )}
-                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-sky-500 border-4 border-white rounded-full shadow-sm animate-pulse"></div>
+                                <div className="relative shrink-0 -rotate-2">
+                                    <ProfilePhotoButton
+                                        user={user}
+                                        cacheKey={avatarKey}
+                                        onUpdated={(p) => patchUser(p)}
+                                        onCacheBust={() => setAvatarKey((k) => k + 1)}
+                                        size="lg"
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-sky-500 border-4 border-white rounded-full shadow-sm animate-pulse pointer-events-none" />
                                 </div>
                                 <div>
                                     <p className="font-extrabold text-gray-900 text-xl tracking-tight">{user.fullName}</p>
@@ -274,7 +285,10 @@ export const MainLayout: React.FC = () => {
 
             <AuthModal
                 isOpen={isAuthModalOpen}
-                onClose={() => setIsAuthModalOpen(false)}
+                onClose={() => {
+                    setIsAuthModalOpen(false);
+                    setUser(readUserFromStorage());
+                }}
                 initialMode={authMode}
                 initialRole={signupInitRole}
             />

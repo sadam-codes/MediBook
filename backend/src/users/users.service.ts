@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../models/user.model';
 import { Doctor } from '../models/doctor.model';
@@ -16,8 +16,37 @@ export class UsersService {
 
     async findAll() {
         return this.userModel.findAll({
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password', 'profileImageData'] },
         });
+    }
+
+    async updateProfileImage(
+        userId: number,
+        file: { buffer: Buffer; mimetype: string },
+    ): Promise<{ profileImage: string | null }> {
+        const [affected] = await this.userModel.update(
+            {
+                profileImageData: file.buffer,
+                profileImageMime: file.mimetype,
+                profileImage: `/users/${userId}/avatar`,
+            },
+            { where: { id: userId } },
+        );
+        if (!affected) throw new NotFoundException('User not found');
+        return { profileImage: `/users/${userId}/avatar` };
+    }
+
+    async getAvatar(userId: number): Promise<{ buffer: Buffer; mime: string } | null> {
+        const user = await this.userModel.unscoped().findByPk(userId, {
+            attributes: ['profileImageData', 'profileImageMime'],
+        });
+        const raw = user?.profileImageData;
+        if (!raw || !(raw as Buffer).length) return null;
+        const buffer = Buffer.isBuffer(raw) ? raw : Buffer.from(raw as ArrayBuffer);
+        return {
+            buffer,
+            mime: user!.profileImageMime || 'application/octet-stream',
+        };
     }
 
     async joinDoctor(userId: number, dto: any) {

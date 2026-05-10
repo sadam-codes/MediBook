@@ -19,6 +19,9 @@ export enum UserRole {
 @Table({
     tableName: 'users',
     timestamps: true,
+    defaultScope: {
+        attributes: { exclude: ['profileImageData'] },
+    },
 })
 export class User extends Model {
     @Column({
@@ -35,10 +38,22 @@ export class User extends Model {
     declare fullName: string;
 
     @Column({
-        type: DataType.STRING(255),
+        type: DataType.STRING(512),
         allowNull: true,
     })
     declare profileImage: string;
+
+    @Column({
+        type: DataType.BLOB('long'),
+        allowNull: true,
+    })
+    declare profileImageData: Buffer | null;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true,
+    })
+    declare profileImageMime: string | null;
 
     @Column({
         type: DataType.STRING(150),

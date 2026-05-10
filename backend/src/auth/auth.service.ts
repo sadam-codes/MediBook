@@ -40,7 +40,15 @@ export class AuthService {
                 emergencyContactName, emergencyContactPhone
             } = signupDto;
 
-            const profileImage = file ? `/uploads/profiles/${file.filename}` : signupDto.profileImage;
+            let profileImage: string | null = signupDto.profileImage ?? null;
+            let profileImageData: Buffer | null = null;
+            let profileImageMime: string | null = null;
+
+            if (file?.buffer?.length) {
+                profileImageData = file.buffer;
+                profileImageMime = file.mimetype;
+                profileImage = null;
+            }
 
             const existingUser = await this.userModel.findOne({
                 where: { email },
@@ -57,9 +65,21 @@ export class AuthService {
             }
 
             const user = await this.userModel.create(
-                { fullName, email, password: hashedPassword, role: assignedRole, profileImage },
+                {
+                    fullName,
+                    email,
+                    password: hashedPassword,
+                    role: assignedRole,
+                    profileImage,
+                    profileImageData,
+                    profileImageMime,
+                },
                 { transaction: t },
             );
+
+            if (profileImageData) {
+                await user.update({ profileImage: `/users/${user.id}/avatar` }, { transaction: t });
+            }
 
             let hasPatientProfile = false;
             let hasDoctorProfile = false;

@@ -14,11 +14,15 @@ export class ChatbotService {
         private configService: ConfigService,
         private doctorsService: DoctorsService,
     ) {
-        const apiKey = this.configService.get<string>('OPENAI_API_KEY');
+        const apiKey = this.configService.get<string>('GROQ_API_KEY')?.trim();
+        if (!apiKey) {
+            this.logger.warn('GROQ_API_KEY is missing or empty; chatbot will fail until it is set in .env');
+        }
         this.model = new ChatOpenAI({
-            openAIApiKey: apiKey,
-            modelName: 'gpt-4o-mini',
+            apiKey,
+            model: 'llama-3.3-70b-versatile',
             temperature: 0.7,
+            configuration: { baseURL: 'https://api.groq.com/openai/v1' },
         });
     }
 

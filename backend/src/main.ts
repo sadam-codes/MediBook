@@ -16,10 +16,6 @@ async function bootstrap() {
     }),
   );
 
-  const express = require('express');
-  const path = require('path');
-  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-
   await app.listen(process.env.PORT ?? 5000);
   console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`);
 }

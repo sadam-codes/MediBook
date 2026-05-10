@@ -1,18 +1,13 @@
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
+
+const allowedMime = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 export const multerConfig = {
-    storage: diskStorage({
-        destination: './uploads/profiles',
-        filename: (req, file, callback) => {
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-            const ext = extname(file.originalname);
-            callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-        },
-    }),
-    fileFilter: (req, file, callback) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
-            return callback(new Error('Only image files are allowed!'), false);
+    storage: memoryStorage(),
+    limits: { fileSize: 3 * 1024 * 1024 },
+    fileFilter: (req: unknown, file: { mimetype: string }, callback: (err: Error | null, accept: boolean) => void) => {
+        if (!allowedMime.has(file.mimetype)) {
+            return callback(new Error('Only JPEG, PNG, or WebP images are allowed.'), false);
         }
         callback(null, true);
     },
