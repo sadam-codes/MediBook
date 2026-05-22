@@ -5,11 +5,12 @@ import { AppointmentsService } from './appointments.service';
 import { Appointment } from '../models/appointment.model';
 import { User } from '../models/user.model';
 import { Doctor } from '../models/doctor.model';
+import { Patient } from '../models/patient.model';
 import { MailModule } from '../mail/mail.module';
 
 @Module({
     imports: [
-        SequelizeModule.forFeature([Appointment, User, Doctor]),
+        SequelizeModule.forFeature([Appointment, User, Doctor, Patient]),
         MailModule
     ],
     controllers: [AppointmentsController],

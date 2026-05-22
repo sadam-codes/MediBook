@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, UseGuards, Query, Req, Param } from '@nestjs/common';
+import { Controller, Post, Get, Body, UseGuards, Query, Req, Param, ForbiddenException } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -14,6 +14,14 @@ export class AppointmentsController {
             ...bookingData,
             patientId: req.user.userId
         });
+    }
+
+    @Get('admin')
+    async getAllAppointments(@Req() req: any) {
+        if (req.user.role !== 'admin') {
+            throw new ForbiddenException('Only administrators can view all bookings.');
+        }
+        return this.appointmentsService.findAllForAdmin();
     }
 
     @Get('doctor/:id')

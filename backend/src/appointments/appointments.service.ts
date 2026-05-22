@@ -117,4 +117,27 @@ export class AppointmentsService {
             }]
         });
     }
+
+    async findAllForAdmin() {
+        return this.appointmentModel.findAll({
+            order: [['createdAt', 'DESC']],
+            include: [
+                {
+                    model: User,
+                    as: 'patient',
+                    attributes: ['id', 'fullName', 'email', 'profileImage'],
+                    include: [{ model: Patient, attributes: ['phoneNumber'] }],
+                },
+                {
+                    model: User,
+                    as: 'doctorUser',
+                    attributes: ['id', 'fullName', 'email', 'profileImage'],
+                    include: [{
+                        model: Doctor,
+                        attributes: ['specialization', 'clinicName', 'clinicAddress', 'phoneNumber', 'city'],
+                    }],
+                },
+            ],
+        });
+    }
 }

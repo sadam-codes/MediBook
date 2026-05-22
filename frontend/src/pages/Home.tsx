@@ -28,6 +28,7 @@ export const Home: React.FC = () => {
 
     const [doctors, setDoctors] = useState<any[]>([]);
     const [allUsers, setAllUsers] = useState<any[]>([]);
+    const [allBookings, setAllBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
     const [userToDelete, setUserToDelete] = useState<number | null>(null);
@@ -55,8 +56,12 @@ export const Home: React.FC = () => {
             setDoctors(doctsRes.data);
 
             if (user?.role === 'admin') {
-                const res = await api.get('/users');
-                setAllUsers(res.data);
+                const [usersRes, bookingsRes] = await Promise.all([
+                    api.get('/users'),
+                    api.get('/appointments/admin'),
+                ]);
+                setAllUsers(usersRes.data);
+                setAllBookings(bookingsRes.data);
             }
         } catch (err) {
             console.error('Failed to fetch data:', err);
@@ -159,6 +164,7 @@ export const Home: React.FC = () => {
                     {user?.role === 'admin' && (
                         <AdminDashboard
                             allUsers={allUsers}
+                            allBookings={allBookings}
                             loading={loading}
                             onRoleUpdate={handleRoleUpdate}
                             onDeleteUser={handleDeleteUser}
