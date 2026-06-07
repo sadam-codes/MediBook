@@ -35,7 +35,7 @@ export const RoleSelection: React.FC = () => {
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-sky-100/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
 
             <motion.div
-                className="max-w-6xl w-full relative z-10"
+                className="w-full relative z-10"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"

@@ -8,6 +8,12 @@
   --color-primary-700: #0369a1;
 }
 
+@layer components {
+  .site-container {
+    @apply w-full max-w-[1380px] mx-auto px-5 sm:px-8 lg:px-10;
+  }
+}
+
 @layer base {
   body {
   @apply bg-slate-50 text-slate-900 antialiased;

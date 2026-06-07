@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, Loader2, CheckCircle2, UserX } from 'lucide-react';
+import { Calendar, Clock, Loader2, CheckCircle2, UserX, CreditCard } from 'lucide-react';
 import api from '../../services/api';
 import { format, parse } from 'date-fns';
 import toast from 'react-hot-toast';
 import { getStatusLabel, isPastAppointment } from '../../utils/appointmentUtils';
+import PaymentsSection from './PaymentsSection';
 
 interface DoctorDashboardProps {
     user: any;
 }
+
+type DoctorTab = 'appointments' | 'payments';
 
 const STATUS_BADGE: Record<string, string> = {
     confirmed: 'bg-sky-50 text-sky-600 border-sky-100',
@@ -16,13 +19,17 @@ const STATUS_BADGE: Record<string, string> = {
 };
 
 const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
+    const [activeTab, setActiveTab] = useState<DoctorTab>('appointments');
     const [appointments, setAppointments] = useState<any[]>([]);
+    const [payments, setPayments] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [paymentsLoading, setPaymentsLoading] = useState(false);
     const [actionId, setActionId] = useState<number | null>(null);
 
     useEffect(() => {
         if (user?.id) {
             fetchAppointments();
+            fetchPayments();
         }
     }, [user?.id]);
 
@@ -35,6 +42,18 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
             console.error('Failed to fetch appointments:', err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchPayments = async () => {
+        setPaymentsLoading(true);
+        try {
+            const res = await api.get('/payments/doctor');
+            setPayments(res.data);
+        } catch (err) {
+            console.error('Failed to fetch payments:', err);
+        } finally {
+            setPaymentsLoading(false);
         }
     };
 
@@ -81,6 +100,48 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
 
     return (
         <div className="flex-1 flex flex-col min-h-0 space-y-8">
+            <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-2xl w-fit">
+                <button
+                    onClick={() => setActiveTab('appointments')}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all
+                        ${activeTab === 'appointments' ? 'bg-white text-sky-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                    <Calendar size={14} />
+                    Appointments ({appointments.length})
+                </button>
+                <button
+                    onClick={() => setActiveTab('payments')}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all
+                        ${activeTab === 'payments' ? 'bg-white text-sky-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                    <CreditCard size={14} />
+                    Payments ({payments.length})
+                </button>
+            </div>
+
+            {activeTab === 'payments' ? (
+                <div className="flex-1 flex flex-col min-h-0">
+                    <div className="mb-5">
+                        <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Received Payments</h2>
+                        <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-0.5">
+                            Payments received from your booked patients
+                        </p>
+                    </div>
+                    {paymentsLoading && payments.length === 0 ? (
+                        <div className="flex-1 flex justify-center items-center">
+                            <Loader2 className="animate-spin text-sky-600" size={48} />
+                        </div>
+                    ) : (
+                        <PaymentsSection
+                            payments={payments}
+                            loading={paymentsLoading}
+                            role="doctor"
+                            showHeader={false}
+                        />
+                    )}
+                </div>
+            ) : (
+            <>
             <div className="bg-slate-900 rounded-[32px] p-10 overflow-hidden relative shadow-2xl shrink-0 border border-white/5 group">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/10 rounded-full -mr-40 -mt-40 blur-[120px] opacity-20 group-hover:opacity-30 transition-opacity duration-1000" />
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-10">
@@ -218,6 +279,8 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ user }) => {
                     </div>
                 </div>
             </div>
+            </>
+            )}
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown, CreditCard } from 'lucide-react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
 import { Chatbot } from '../components/chatbot/Chatbot';
 import { ProfilePhotoButton, type LayoutUser } from '../components/ProfilePhotoButton';
@@ -16,7 +16,6 @@ function readUserFromStorage(): LayoutUser | null {
 
 export const MainLayout: React.FC = () => {
     const navigate = useNavigate();
-    const location = useLocation();
     const [user, setUser] = useState<LayoutUser | null>(readUserFromStorage);
     const [avatarKey, setAvatarKey] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -47,20 +46,6 @@ export const MainLayout: React.FC = () => {
         setIsAuthModalOpen(true);
     };
 
-    const navLinkClass = (path: string, exact = false) =>
-        `text-sm font-semibold transition-colors flex items-center ${
-            (exact ? location.pathname === path : location.pathname === path || location.pathname.startsWith(`${path}/`))
-                ? 'text-sky-600'
-                : 'text-gray-600 hover:text-sky-600'
-        }`;
-
-    const mobileNavLinkClass = (path: string) =>
-        `w-full text-left px-5 py-4 font-bold rounded-2xl flex items-center transition-all group ${
-            location.pathname === path
-                ? 'bg-sky-50 text-sky-700'
-                : 'bg-gray-50 text-gray-900 hover:bg-sky-50 hover:text-sky-700'
-        }`;
-
     React.useEffect(() => {
         const showLogin = sessionStorage.getItem('showLogin');
         const showSignup = sessionStorage.getItem('showSignup');
@@ -90,7 +75,7 @@ export const MainLayout: React.FC = () => {
     return (
         <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
             <nav className={`bg-white shadow-sm border-b border-gray-200 shrink-0 relative transition-all duration-300 ${isMobileMenuOpen ? 'z-[200]' : 'z-50'}`}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
+                <div className="site-container h-14 sm:h-16 flex items-center justify-between">
                     <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onClick={() => {
                         if (user?.role === 'patient') navigate('/patient');
                         else if (user?.role === 'doctor') navigate('/doctor');
@@ -101,13 +86,6 @@ export const MainLayout: React.FC = () => {
                         <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook</div>
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
-                        <div className="hidden sm:flex items-center mr-4 space-x-6">
-                            {(user?.role === 'doctor' || user?.role === 'admin') && (
-                                <button onClick={() => navigate('/payments')} className={navLinkClass('/payments')}>
-                                    <CreditCard size={16} className="mr-2" /> Payments
-                                </button>
-                            )}
-                        </div>
                         {user ? (
                             <div className="hidden sm:flex items-center space-x-4">
                                 <div className="flex items-center space-x-3 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-200 transition-all group">
@@ -233,17 +211,6 @@ export const MainLayout: React.FC = () => {
                                     Complete Profile
                                 </button>
                             )}
-                            {(user?.role === 'doctor' || user?.role === 'admin') && (
-                                <button
-                                    onClick={() => { navigate('/payments'); setIsMobileMenuOpen(false); }}
-                                    className={mobileNavLinkClass('/payments')}
-                                >
-                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
-                                        <CreditCard size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
-                                    </div>
-                                    Payments
-                                </button>
-                            )}
                             {user?.role !== 'patient' && (
                             <button
                                 onClick={() => { navigate('/home'); setIsMobileMenuOpen(false); }}
@@ -287,12 +254,12 @@ export const MainLayout: React.FC = () => {
 
             {/* Main Content Area - Render child routes here */}
             <main className="flex-1 min-h-0 overflow-y-scroll">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 h-full flex flex-col">
+                <div className="site-container py-8 lg:py-10 h-full flex flex-col">
                     <Outlet />
                 </div>
             </main>
 
-            <Chatbot />
+            {user?.role === 'patient' && <Chatbot />}
 
             <AuthModal
                 isOpen={isAuthModalOpen}

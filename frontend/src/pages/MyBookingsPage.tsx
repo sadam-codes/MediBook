@@ -89,7 +89,7 @@ export const MyBookingsPage: React.FC = () => {
     const upcomingCount = bookings.filter(isUpcomingAppointment).length;
 
     return (
-        <div className="min-h-screen bg-slate-50 py-6 px-4">
+        <div className="min-h-screen bg-slate-50 py-4">
             {rescheduleTarget && (
                 <RescheduleModal
                     appointment={rescheduleTarget}
@@ -154,7 +154,7 @@ export const MyBookingsPage: React.FC = () => {
                 </div>
             )}
 
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
                     <div className="text-left">
                         <button

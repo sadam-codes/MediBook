@@ -6,6 +6,9 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 import { findActiveDoctorBooking } from '../utils/appointmentUtils';
 
+/** Prevents duplicate verify + toast (React StrictMode runs effects twice). */
+const verifiedPaymentSessions = new Set<string>();
+
 export const BookingPage: React.FC = () => {
     const { doctorId } = useParams<{ doctorId: string }>();
     const navigate = useNavigate();
@@ -28,6 +31,12 @@ export const BookingPage: React.FC = () => {
         const appointmentId = searchParams.get('appointment_id');
 
         if (paymentStatus === 'success' && sessionId) {
+            if (verifiedPaymentSessions.has(sessionId)) {
+                setPaymentStep(4);
+                setSearchParams({}, { replace: true });
+                return;
+            }
+            verifiedPaymentSessions.add(sessionId);
             verifyPayment(sessionId);
         } else if (paymentStatus === 'cancelled' && appointmentId) {
             cancelPendingPayment(appointmentId);
@@ -36,19 +45,22 @@ export const BookingPage: React.FC = () => {
 
     const verifyPayment = async (sessionId: string) => {
         setVerifyingPayment(true);
+        setSearchParams({}, { replace: true });
+
         try {
             const res = await api.get(`/payments/verify?session_id=${sessionId}`);
             if (res.data.paid) {
                 setPaymentStep(4);
                 toast.success('Payment successful! Appointment confirmed.');
             } else {
+                verifiedPaymentSessions.delete(sessionId);
                 toast.error('Payment was not completed.');
             }
         } catch (err) {
+            verifiedPaymentSessions.delete(sessionId);
             toast.error('Could not verify payment.');
         } finally {
             setVerifyingPayment(false);
-            setSearchParams({});
         }
     };
 
@@ -112,7 +124,7 @@ export const BookingPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-slate-50 py-0 px-4">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
                 {/* Header Navigation */}
                 <div className="flex items-center justify-between mb-12">
                     <button

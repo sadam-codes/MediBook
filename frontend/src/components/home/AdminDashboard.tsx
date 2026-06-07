@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Loader2, Trash2, Edit3, ChevronDown, ChevronLeft, ChevronRight, ShieldCheck, UserCheck, Settings, Users, Filter, CalendarDays } from 'lucide-react';
+import { Loader2, Trash2, Edit3, ChevronDown, ChevronLeft, ChevronRight, ShieldCheck, UserCheck, Settings, Users, Filter, CalendarDays, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import api from '../../services/api';
+import PaymentsSection from './PaymentsSection';
 
 interface AdminDashboardProps {
     allUsers: any[];
@@ -10,7 +12,7 @@ interface AdminDashboardProps {
     onDeleteUser: (userId: number) => void;
 }
 
-type AdminTab = 'users' | 'bookings';
+type AdminTab = 'bookings' | 'users' | 'payments';
 
 const PAGE_SIZE = 5;
 
@@ -251,6 +253,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ allUsers, allBookings, 
     const [filterRole, setFilterRole] = useState<FilterRole>('all');
     const [bookingsPage, setBookingsPage] = useState(1);
     const [usersPage, setUsersPage] = useState(1);
+    const [payments, setPayments] = useState<any[]>([]);
+    const [paymentsLoading, setPaymentsLoading] = useState(false);
 
     const filteredUsers = filterRole === 'all'
         ? allUsers
@@ -266,6 +270,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ allUsers, allBookings, 
     useEffect(() => {
         setUsersPage(1);
     }, [filterRole, filteredUsers.length]);
+
+    useEffect(() => {
+        const fetchPayments = async () => {
+            setPaymentsLoading(true);
+            try {
+                const res = await api.get('/payments/admin');
+                setPayments(res.data);
+            } catch (err) {
+                console.error('Failed to fetch payments:', err);
+            } finally {
+                setPaymentsLoading(false);
+            }
+        };
+        fetchPayments();
+    }, []);
 
     return (
         <div className="flex-1 flex flex-col min-h-0 gap-5">
@@ -287,18 +306,32 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ allUsers, allBookings, 
                     <Users size={14} />
                     Users ({allUsers.length})
                 </button>
+                <button
+                    onClick={() => setActiveTab('payments')}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all
+                        ${activeTab === 'payments' ? 'bg-white text-sky-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                    <CreditCard size={14} />
+                    Payments ({payments.length})
+                </button>
             </div>
 
             {/* Header */}
             <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
                     <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight leading-tight">
-                        {activeTab === 'bookings' ? 'Booking Details' : 'User Management'}
+                        {activeTab === 'bookings'
+                            ? 'Booking Details'
+                            : activeTab === 'users'
+                                ? 'User Management'
+                                : 'All Payments'}
                     </h2>
                     <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-0.5">
                         {activeTab === 'bookings'
                             ? 'All appointments — patient, doctor, schedule & fees'
-                            : 'Manage and monitor platform participants'}
+                            : activeTab === 'users'
+                                ? 'Manage and monitor platform participants'
+                                : 'Complete platform payment records with transaction details'}
                     </p>
                 </div>
                 {activeTab === 'users' && (
@@ -313,10 +346,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ allUsers, allBookings, 
             </div>
 
             <div className="flex-1 min-h-0 flex flex-col">
-                {loading ? (
+                {loading && activeTab !== 'payments' ? (
                     <div className="flex-1 flex justify-center items-center">
                         <Loader2 className="animate-spin text-sky-600" size={48} />
                     </div>
+                ) : activeTab === 'payments' ? (
+                    paymentsLoading && payments.length === 0 ? (
+                        <div className="flex-1 flex justify-center items-center">
+                            <Loader2 className="animate-spin text-sky-600" size={48} />
+                        </div>
+                    ) : (
+                        <PaymentsSection
+                            payments={payments}
+                            loading={paymentsLoading}
+                            role="admin"
+                            showHeader={false}
+                        />
+                    )
                 ) : activeTab === 'bookings' ? (
                     <div className="flex-1 flex flex-col min-h-0">
                         <div className="flex flex-col flex-1 bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden">
