@@ -7,10 +7,11 @@ import toast from 'react-hot-toast';
 
 interface BookingFlowProps {
     doctor: any;
+    initialStep?: number;
 }
 
-const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
-    const [step, setStep] = useState(1);
+const BookingFlow: React.FC<BookingFlowProps> = ({ doctor, initialStep = 1 }) => {
+    const [step, setStep] = useState(initialStep);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [availableSlots, setAvailableSlots] = useState<string[]>([]);
@@ -18,6 +19,12 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
     const [loading, setLoading] = useState(false);
 
     const docData = doctor.originalData || doctor;
+
+    useEffect(() => {
+        if (initialStep !== step) {
+            setStep(initialStep);
+        }
+    }, [initialStep]);
 
     // Step 1: Handle Date Selection
     const handleDateSelect = (date: Date) => {
@@ -94,17 +101,22 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
         setLoading(true);
         try {
             const finalDoctorId = docData.userId || docData.id;
-            await api.post('/appointments', {
+            const { data } = await api.post('/payments/checkout', {
                 doctorId: finalDoctorId,
                 date: format(selectedDate!, 'yyyy-MM-dd'),
                 time: selectedTime,
-                fee: docData.consultationFee,
+                fee: Number(docData.consultationFee),
                 notes: ""
             });
-            setStep(4);
-            toast.success("Appointment Booked!");
+
+            if (data.url) {
+                window.location.href = data.url;
+                return;
+            }
+
+            toast.error("Unable to start payment");
         } catch (err: any) {
-            toast.error(err.response?.data?.message || "Booking failed");
+            toast.error(err.response?.data?.message || "Payment setup failed");
         } finally {
             setLoading(false);
         }
@@ -234,7 +246,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
                             disabled={loading}
                             className="w-full sm:flex-1 py-4 sm:py-5 bg-sky-600 text-white font-black rounded-2xl hover:bg-sky-700 transition-all shadow-xl shadow-sky-500/20 uppercase tracking-widest text-[10px] flex items-center justify-center"
                         >
-                            {loading ? <Loader2 size={18} className="animate-spin" /> : "Confirm"}
+                            {loading ? <Loader2 size={18} className="animate-spin" /> : "Pay & Confirm"}
                         </button>
                     </div>
                 </div>
@@ -250,7 +262,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ doctor }) => {
                     <h3 className="text-2xl font-black text-gray-900 mb-2 uppercase tracking-tight">Booking Confirmed</h3>
                     <p className="text-gray-400 font-bold mb-10">Your appointment has been successfully scheduled.</p>
                     <button
-                        onClick={() => navigate('/patient')}
+                        onClick={() => navigate('/patient/doctors')}
                         className="w-full py-5 bg-gray-900 text-white font-black rounded-2xl hover:bg-sky-600 transition-all shadow-xl shadow-slate-900/10 uppercase tracking-widest text-[10px]"
                     >
                         Return to Dashboard

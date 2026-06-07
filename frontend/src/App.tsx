@@ -9,6 +9,9 @@ import { MainLayout } from './layouts/MainLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { BookingPage } from './pages/BookingPage';
 import { MyBookingsPage } from './pages/MyBookingsPage';
+import { PaymentsPage } from './pages/PaymentsPage';
+import { PatientLandingPage } from './pages/PatientLandingPage';
+import { PatientDoctorsPage } from './pages/PatientDoctorsPage';
 
 function App() {
   return (
@@ -20,13 +23,15 @@ function App() {
           <Route path="/" element={<Home />} />
 
           {/* Protected Routes */}
-          <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
-            <Route path="/patient" element={<Home />} />
+            <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
+            <Route path="/patient" element={<PatientLandingPage />} />
+            <Route path="/patient/doctors" element={<PatientDoctorsPage />} />
             <Route path="/doctor" element={<Home />} />
             <Route path="/admin" element={<Home />} />
             <Route path="/join-doctor" element={<JoinDoctorPage />} />
             <Route path="/bookings/:doctorId" element={<BookingPage />} />
             <Route path="/bookings" element={<MyBookingsPage />} />
+            <Route path="/payments" element={<PaymentsPage />} />
           </Route>
         </Route>
 

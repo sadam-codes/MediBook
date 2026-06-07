@@ -1,22 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react';
 import BookingFlow from '../components/home/BookingFlow';
 import api from '../services/api';
 import toast from 'react-hot-toast';
+import { findActiveDoctorBooking } from '../utils/appointmentUtils';
 
 export const BookingPage: React.FC = () => {
     const { doctorId } = useParams<{ doctorId: string }>();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [doctor, setDoctor] = useState<any>(null);
     const [existingAppointment, setExistingAppointment] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [paymentStep, setPaymentStep] = useState<number | null>(null);
+    const [verifyingPayment, setVerifyingPayment] = useState(false);
 
     useEffect(() => {
         if (doctorId) {
             fetchDoctor();
         }
     }, [doctorId]);
+
+    useEffect(() => {
+        const paymentStatus = searchParams.get('payment');
+        const sessionId = searchParams.get('session_id');
+        const appointmentId = searchParams.get('appointment_id');
+
+        if (paymentStatus === 'success' && sessionId) {
+            verifyPayment(sessionId);
+        } else if (paymentStatus === 'cancelled' && appointmentId) {
+            cancelPendingPayment(appointmentId);
+        }
+    }, [searchParams]);
+
+    const verifyPayment = async (sessionId: string) => {
+        setVerifyingPayment(true);
+        try {
+            const res = await api.get(`/payments/verify?session_id=${sessionId}`);
+            if (res.data.paid) {
+                setPaymentStep(4);
+                toast.success('Payment successful! Appointment confirmed.');
+            } else {
+                toast.error('Payment was not completed.');
+            }
+        } catch (err) {
+            toast.error('Could not verify payment.');
+        } finally {
+            setVerifyingPayment(false);
+            setSearchParams({});
+        }
+    };
+
+    const cancelPendingPayment = async (appointmentId: string) => {
+        try {
+            await api.post(`/payments/cancel/${appointmentId}`);
+            toast.error('Payment cancelled. Your slot was not reserved.');
+        } catch {
+            // Non-blocking cleanup
+        } finally {
+            setSearchParams({});
+        }
+    };
 
     const fetchDoctor = async () => {
         setLoading(true);
@@ -33,28 +78,32 @@ export const BookingPage: React.FC = () => {
 
                 // Check for existing appointment
                 const apptsRes = await api.get('/appointments/my');
-                const existing = apptsRes.data.find((a: any) => a.doctorUserId === doc.userId);
+                const existing = findActiveDoctorBooking(apptsRes.data, doc.userId);
                 if (existing) {
                     setExistingAppointment(existing);
+                } else {
+                    setExistingAppointment(null);
                 }
             } else {
                 toast.error("Doctor not found");
-                navigate('/patient');
+                navigate('/patient/doctors');
             }
         } catch (err) {
             console.error("Failed to fetch doctor:", err);
             toast.error("Failed to load doctor details");
-            navigate('/patient');
+            navigate('/patient/doctors');
         } finally {
             setLoading(false);
         }
     };
 
-    if (loading) {
+    if (loading || verifyingPayment) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
                 <Loader2 size={48} className="animate-spin text-sky-600 mb-4 opacity-20" />
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Initializing Booking Engine...</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
+                    {verifyingPayment ? 'Confirming Payment...' : 'Initializing Booking Engine...'}
+                </p>
             </div>
         );
     }
@@ -126,7 +175,7 @@ export const BookingPage: React.FC = () => {
                                 </button>
                             </div>
                         ) : (
-                            <BookingFlow doctor={doctor} />
+                            <BookingFlow doctor={doctor} initialStep={paymentStep ?? 1} />
                         )}
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown } from 'lucide-react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown, CreditCard } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
 import { Chatbot } from '../components/chatbot/Chatbot';
 import { ProfilePhotoButton, type LayoutUser } from '../components/ProfilePhotoButton';
@@ -16,6 +16,7 @@ function readUserFromStorage(): LayoutUser | null {
 
 export const MainLayout: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [user, setUser] = useState<LayoutUser | null>(readUserFromStorage);
     const [avatarKey, setAvatarKey] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,6 +46,20 @@ export const MainLayout: React.FC = () => {
         if (role) setSignupInitRole(role);
         setIsAuthModalOpen(true);
     };
+
+    const navLinkClass = (path: string, exact = false) =>
+        `text-sm font-semibold transition-colors flex items-center ${
+            (exact ? location.pathname === path : location.pathname === path || location.pathname.startsWith(`${path}/`))
+                ? 'text-sky-600'
+                : 'text-gray-600 hover:text-sky-600'
+        }`;
+
+    const mobileNavLinkClass = (path: string) =>
+        `w-full text-left px-5 py-4 font-bold rounded-2xl flex items-center transition-all group ${
+            location.pathname === path
+                ? 'bg-sky-50 text-sky-700'
+                : 'bg-gray-50 text-gray-900 hover:bg-sky-50 hover:text-sky-700'
+        }`;
 
     React.useEffect(() => {
         const showLogin = sessionStorage.getItem('showLogin');
@@ -87,14 +102,9 @@ export const MainLayout: React.FC = () => {
                     </div>
                     <div className="flex items-center space-x-3 sm:space-x-6">
                         <div className="hidden sm:flex items-center mr-4 space-x-6">
-                            {/* {user?.role === 'patient' && !user.hasPatientProfile && (
-                                <button onClick={() => navigate('/complete-profile')} className="text-sm font-semibold text-gray-600 hover:text-sky-600 transition-colors">
-                                    Complete Profile
-                                </button>
-                            )} */}
-                            {user?.role === 'patient' && (
-                                <button onClick={() => navigate('/bookings')} className="text-sm font-semibold text-gray-600 hover:text-sky-600 transition-colors flex items-center">
-                                    <Calendar size={16} className="mr-2" /> My Bookings
+                            {(user?.role === 'doctor' || user?.role === 'admin') && (
+                                <button onClick={() => navigate('/payments')} className={navLinkClass('/payments')}>
+                                    <CreditCard size={16} className="mr-2" /> Payments
                                 </button>
                             )}
                         </div>
@@ -220,21 +230,21 @@ export const MainLayout: React.FC = () => {
                                     <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
                                         <Calendar size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
-                                    {/* Complete Profile */}
+                                    Complete Profile
                                 </button>
                             )}
-                            {user?.role === 'patient' && (
+                            {(user?.role === 'doctor' || user?.role === 'admin') && (
                                 <button
-                                    onClick={() => { navigate('/bookings'); setIsMobileMenuOpen(false); }}
-                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
+                                    onClick={() => { navigate('/payments'); setIsMobileMenuOpen(false); }}
+                                    className={mobileNavLinkClass('/payments')}
                                 >
                                     <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
-                                        <Calendar size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
+                                        <CreditCard size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
-                                    My Bookings
+                                    Payments
                                 </button>
                             )}
-                            {/* Always show home link in mobile menu for easy navigation */}
+                            {user?.role !== 'patient' && (
                             <button
                                 onClick={() => { navigate('/home'); setIsMobileMenuOpen(false); }}
                                 className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
@@ -244,6 +254,7 @@ export const MainLayout: React.FC = () => {
                                 </div>
                                 Home
                             </button>
+                            )}
                         </div>
 
                         {user ? (

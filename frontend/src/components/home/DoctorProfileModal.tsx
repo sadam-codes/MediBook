@@ -3,6 +3,7 @@ import { X, ShieldCheck, Award, Star, Calendar as CalendarIcon } from 'lucide-re
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { findActiveDoctorBooking } from '../../utils/appointmentUtils';
 
 interface DoctorProfileModalProps {
     doctor: any;
@@ -28,8 +29,8 @@ const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen,
     const checkPatientBooking = async () => {
         try {
             const res = await api.get('/appointments/my');
-            const found = res.data.find((a: any) => a.doctorUserId === (doctor.originalData?.userId || doctor.userId));
-            setPatientBooking(found);
+            const doctorUserId = doctor.originalData?.userId || doctor.userId;
+            setPatientBooking(findActiveDoctorBooking(res.data, doctorUserId));
         } catch (err) {
             console.error("Failed to check patient booking:", err);
         }

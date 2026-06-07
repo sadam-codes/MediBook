@@ -7,16 +7,25 @@ import {
     CreatedAt,
     UpdatedAt,
     BelongsTo,
+    HasOne,
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { Doctor } from './doctor.model';
 import { Patient } from './patient.model';
+import { Review } from './review.model';
 
 export enum AppointmentStatus {
     PENDING = 'pending',
     CONFIRMED = 'confirmed',
     CANCELLED = 'cancelled',
     COMPLETED = 'completed',
+    NO_SHOW = 'no_show',
+}
+
+export enum PaymentStatus {
+    PENDING = 'pending',
+    PAID = 'paid',
+    FAILED = 'failed',
 }
 
 @Table({
@@ -76,6 +85,37 @@ export class Appointment extends Model {
     })
     declare notes: string;
 
+    @Column({
+        type: DataType.STRING(255),
+        allowNull: true,
+    })
+    declare stripeSessionId: string | null;
+
+    @Column({
+        type: DataType.ENUM(...Object.values(PaymentStatus)),
+        allowNull: false,
+        defaultValue: PaymentStatus.PENDING,
+    })
+    declare paymentStatus: PaymentStatus;
+
+    @Column({
+        type: DataType.DATE,
+        allowNull: true,
+    })
+    declare reminderSentAt: Date | null;
+
+    @Column({
+        type: DataType.DATE,
+        allowNull: true,
+    })
+    declare completedAt: Date | null;
+
+    @Column({
+        type: DataType.TEXT,
+        allowNull: true,
+    })
+    declare cancellationReason: string | null;
+
     @CreatedAt
     declare createdAt: Date;
 
@@ -87,4 +127,7 @@ export class Appointment extends Model {
 
     @BelongsTo(() => User, { foreignKey: 'doctorUserId', onDelete: 'CASCADE' })
     declare doctorUser: User;
+
+    @HasOne(() => Review, { foreignKey: 'appointmentId' })
+    declare review: Review;
 }

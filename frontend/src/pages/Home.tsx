@@ -11,7 +11,6 @@ import ReviewsSection from '../components/home/ReviewsSection';
 import FAQSection from '../components/home/FAQSection';
 import HomeFooter from '../components/home/HomeFooter';
 import DoctorProfileModal from '../components/home/DoctorProfileModal';
-import PatientDashboard from '../components/home/PatientDashboard';
 import DoctorDashboard from '../components/home/DoctorDashboard';
 import AdminDashboard from '../components/home/AdminDashboard';
 
@@ -41,8 +40,7 @@ export const Home: React.FC = () => {
                 if (user.role === 'patient') navigate('/patient');
                 else if (user.role === 'doctor') navigate('/doctor');
                 else if (user.role === 'admin') navigate('/admin');
-            } else if (currentPath === '/patient' && user.role !== 'patient') navigate('/');
-            else if (currentPath === '/doctor' && user.role !== 'doctor') navigate('/');
+            } else if (currentPath === '/doctor' && user.role !== 'doctor') navigate('/');
             else if (currentPath === '/admin' && user.role !== 'admin') navigate('/');
         }
         fetchData();
@@ -51,7 +49,6 @@ export const Home: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Always fetch available doctors to show on landing page / dashboard
             const doctsRes = await api.get('/doctors');
             setDoctors(doctsRes.data);
 
@@ -151,13 +148,6 @@ export const Home: React.FC = () => {
                 </div>
             ) : (
                 <div className="flex-1 flex flex-col h-full">
-                    {user?.role === 'patient' && (
-                        <PatientDashboard
-                            doctors={doctors}
-                            loading={loading}
-                            onViewProfile={(doc) => setSelectedDoctor(mapDoctorToUi(doc))}
-                        />
-                    )}
                     {user?.role === 'doctor' && (
                         <DoctorDashboard user={user} />
                     )}
