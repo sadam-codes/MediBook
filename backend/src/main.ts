@@ -1,9 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe, BadRequestException } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express, { Express } from 'express';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { rawBody: true });
+const server: Express = express();
+let isAppInitialized = false;
+
+async function createNestServer(expressInstance: Express) {
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressInstance),
+    { rawBody: true },
+  );
 
   app.enableCors();
 
@@ -16,7 +25,26 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.PORT ?? 5000);
-  console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`);
+  await app.init();
+  return app;
 }
-bootstrap();
+
+// Local development server
+if (!process.env.VERCEL) {
+  async function bootstrap() {
+    const app = await createNestServer(server);
+    const port = process.env.PORT ?? 5000;
+    await app.listen(port);
+    console.log(`Application is running on: http://localhost:${port}`);
+  }
+  bootstrap();
+}
+
+// Vercel Serverless Function entry point
+export default async function handler(req: any, res: any) {
+  if (!isAppInitialized) {
+    await createNestServer(server);
+    isAppInitialized = true;
+  }
+  return server(req, res);
+}
