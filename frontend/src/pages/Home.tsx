@@ -25,7 +25,7 @@ export const Home: React.FC = () => {
         return userString ? JSON.parse(userString) : null;
     }, []);
 
-    const [doctors, setDoctors] = useState<any[]>([]);
+
     const [allUsers, setAllUsers] = useState<any[]>([]);
     const [allBookings, setAllBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -49,8 +49,7 @@ export const Home: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const doctsRes = await api.get('/doctors');
-            setDoctors(doctsRes.data);
+
 
             if (user?.role === 'admin') {
                 const [usersRes, bookingsRes] = await Promise.all([
@@ -99,20 +98,7 @@ export const Home: React.FC = () => {
 
     const showLanding = !user;
 
-    const mapDoctorToUi = (d: any) => {
-        if (!d) return null;
-        if (d.name && d.spec) return d; // Already mapped (mock data)
-        return {
-            name: `Dr. ${d.user?.fullName}`,
-            spec: d.specialization,
-            exp: `${d.experience} Years Exp.`,
-            rating: "4.9",
-            reviews: "120+",
-            img: d.user?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${d.user.profileImage}` : "/default-doc.png",
-            bio: d.bio || "Leading specialist in medical care.",
-            originalData: d
-        };
-    };
+
 
     return (
         <React.Fragment>

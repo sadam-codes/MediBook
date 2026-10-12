@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Calendar, CreditCard, Stethoscope, Clock, ChevronRight,
-    Loader2, UserPlus, Sparkles,
+    Loader2, Sparkles,
 } from 'lucide-react';
 import api from '../services/api';
 import { isUpcomingAppointment } from '../utils/appointmentUtils';
