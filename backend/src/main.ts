@@ -42,9 +42,26 @@ if (!process.env.VERCEL) {
 
 // Vercel Serverless Function entry point
 export default async function handler(req: any, res: any) {
-  if (!isAppInitialized) {
-    await createNestServer(server);
-    isAppInitialized = true;
+  try {
+    if (!isAppInitialized) {
+      await createNestServer(server);
+      isAppInitialized = true;
+    }
+    return server(req, res);
+  } catch (error: any) {
+    console.error('NestJS Initialization Error on Vercel:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server Initialization Failed on Vercel',
+      error: error?.message || String(error),
+      envCheck: {
+        DB_HOST: process.env.DB_HOST ? 'Present' : 'MISSING',
+        DB_PORT: process.env.DB_PORT ? 'Present' : 'MISSING',
+        DB_USER: process.env.DB_USER ? 'Present' : 'MISSING',
+        DB_PASS: process.env.DB_PASS ? 'Present' : 'MISSING',
+        DB_NAME: process.env.DB_NAME ? 'Present' : 'MISSING',
+        JWT_SECRET: process.env.JWT_SECRET ? 'Present' : 'MISSING',
+      },
+    });
   }
-  return server(req, res);
 }

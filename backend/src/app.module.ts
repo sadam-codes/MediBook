@@ -3,6 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { DbHealthService } from './db-health.service';
+import * as pg from 'pg';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { User } from './models/user.model';
 import { Doctor } from './models/doctor.model';
 import { Patient } from './models/patient.model';
@@ -33,6 +36,7 @@ import { ReviewsModule } from './reviews/reviews.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         dialect: 'postgres',
+        dialectModule: pg,
         host: config.get<string>('DB_HOST'),
         port: Number(config.get<string>('DB_PORT')),
         username: config.get<string>('DB_USER'),
@@ -57,6 +61,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     PaymentsModule,
     ReviewsModule,
   ],
-  providers: [DbHealthService],
+  controllers: [AppController],
+  providers: [DbHealthService, AppService],
 })
 export class AppModule { }
