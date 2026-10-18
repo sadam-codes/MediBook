@@ -1,7 +1,9 @@
 export const specializations = [
-    'Dermatologist',
-    'Cardiologist',
-    'Dentist',
-    'Pediatrician',
-    'General Physician'
+    'Cardiology',
+    'Dermatology',
+    'Pediatrics',
+    'Neurology',
+    'Orthopedics',
+    'Gynecology',
+    'General Medicine'
 ];

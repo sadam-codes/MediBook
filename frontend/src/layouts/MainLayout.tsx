@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { Menu, X, UserPlus, Calendar, LogOut, ChevronDown } from 'lucide-react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X, Calendar, LogOut, ChevronDown, Stethoscope, Building2, ShieldCheck, HeartPulse } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
 import { Chatbot } from '../components/chatbot/Chatbot';
 import { ProfilePhotoButton, type LayoutUser } from '../components/ProfilePhotoButton';
+import { ClinicsModal } from '../components/home/ClinicsModal';
 
 function readUserFromStorage(): LayoutUser | null {
     try {
@@ -16,9 +17,11 @@ function readUserFromStorage(): LayoutUser | null {
 
 export const MainLayout: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [user, setUser] = useState<LayoutUser | null>(readUserFromStorage);
     const [avatarKey, setAvatarKey] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isClinicsModalOpen, setIsClinicsModalOpen] = useState(false);
 
     const patchUser = (patch: Partial<LayoutUser>) => {
         setUser((prev) => {
@@ -72,23 +75,132 @@ export const MainLayout: React.FC = () => {
         };
     }, [isMobileMenuOpen]);
 
+    const scrollToSection = (id: string) => {
+        setIsMobileMenuOpen(false);
+        if (location.pathname !== '/') {
+            navigate(`/#${id}`);
+            return;
+        }
+        const elem = document.getElementById(id);
+        if (elem) {
+            elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleMyAppointmentsClick = () => {
+        setIsMobileMenuOpen(false);
+        if (user) {
+            navigate('/bookings');
+        } else {
+            openAuthModal('login');
+        }
+    };
+
+    const handleBookAppointmentClick = () => {
+        setIsMobileMenuOpen(false);
+        if (location.pathname === '/') {
+            const elem = document.getElementById('doctors-list');
+            if (elem) {
+                elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+        }
+        if (user?.role === 'patient') {
+            navigate('/patient/doctors');
+        } else {
+            navigate('/');
+            setTimeout(() => {
+                const elem = document.getElementById('doctors-list');
+                if (elem) elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    };
+
     return (
-        <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
-            <nav className={`bg-white shadow-sm border-b border-gray-200 shrink-0 relative transition-all duration-300 ${isMobileMenuOpen ? 'z-[200]' : 'z-50'}`}>
-                <div className="site-container h-14 sm:h-16 flex items-center justify-between">
-                    <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onClick={() => {
-                        if (user?.role === 'patient') navigate('/patient');
-                        else if (user?.role === 'doctor') navigate('/doctor');
-                        else if (user?.role === 'admin') navigate('/admin');
-                        else navigate('/');
-                    }}>
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-sky-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md text-sm sm:text-base">M</div>
-                        <div className="font-bold text-lg sm:text-xl tracking-tight text-gray-900">MediBook</div>
+        <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#192B29]">
+            {/* Top clinical announcement bar */}
+            <div className="bg-[#173D39] text-[#E8F0ED] text-[12px] font-medium py-1.5 px-4 text-center border-b border-[#245B54]">
+                <div className="site-container flex items-center justify-between">
+                    <div className="flex items-center gap-2 mx-auto sm:mx-0">
+                        <span className="w-2 h-2 rounded-full bg-[#BDE8DA] inline-block animate-pulse" />
+                        <span>Verified Clinical Calendar: Real-time appointment slots open across all outpatient centers.</span>
                     </div>
-                    <div className="flex items-center space-x-3 sm:space-x-6">
+                    <div className="hidden sm:flex items-center gap-4 text-xs opacity-90">
+                        <span className="flex items-center gap-1">
+                            <ShieldCheck size={13} className="text-[#BDE8DA]" /> Hospital-Grade Data Security
+                        </span>
+                        <span>•</span>
+                        <span>Patient Inquiries: (555) 018-4200</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Main Navigation Bar */}
+            <nav className={`bg-white border-b border-[#DDE6E2] sticky top-0 z-50 transition-all duration-200 ${isMobileMenuOpen ? 'z-[200]' : 'z-50'}`}>
+                <div className="site-container h-18 sm:h-20 flex items-center justify-between">
+                    {/* Brand Identity */}
+                    <div
+                        className="flex items-center gap-3 cursor-pointer group"
+                        onClick={() => {
+                            if (user?.role === 'patient') navigate('/patient');
+                            else if (user?.role === 'doctor') navigate('/doctor');
+                            else if (user?.role === 'admin') navigate('/admin');
+                            else navigate('/');
+                        }}
+                    >
+                        <div className="w-10 h-10 rounded-xl bg-[#173D39] flex items-center justify-center text-[#BDE8DA] border border-[#245B54] group-hover:bg-[#245B54] transition-colors shadow-sm">
+                            <HeartPulse size={22} className="stroke-[2.2]" />
+                        </div>
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-1.5">
+                                <span className="font-bold text-xl sm:text-2xl text-[#173D39] tracking-tight leading-none">
+                                    MediBook
+                                </span>
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E8F0ED] text-[#173D39] uppercase tracking-wider">
+                                    Health
+                                </span>
+                            </div>
+                            <span className="text-[11px] font-medium text-[#687773] tracking-wide mt-0.5 hidden xs:block">
+                                Clinical Specialist Network
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Desktop Navigation Links */}
+                    <div className="hidden lg:flex items-center gap-8 text-[14px] font-semibold text-[#192B29]">
+                        <button
+                            onClick={() => scrollToSection('doctors-list')}
+                            className="hover:text-[#173D39] transition-colors focus-visible:outline-none focus-visible:underline"
+                        >
+                            Find a Doctor
+                        </button>
+                        <button
+                            onClick={() => scrollToSection('specialties')}
+                            className="hover:text-[#173D39] transition-colors focus-visible:outline-none focus-visible:underline"
+                        >
+                            Specialties
+                        </button>
+                        <button
+                            onClick={() => setIsClinicsModalOpen(true)}
+                            className="hover:text-[#173D39] transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:underline"
+                        >
+                            <Building2 size={15} className="text-[#245B54]" />
+                            <span>Hospitals & Clinics</span>
+                        </button>
+                        <button
+                            onClick={handleMyAppointmentsClick}
+                            className="hover:text-[#173D39] transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:underline"
+                        >
+                            <Calendar size={15} className="text-[#245B54]" />
+                            <span>My Appointments</span>
+                        </button>
+                    </div>
+
+                    {/* Actions / Auth / Profile */}
+                    <div className="flex items-center gap-3 sm:gap-4">
                         {user ? (
-                            <div className="hidden sm:flex items-center space-x-4">
-                                <div className="flex items-center space-x-3 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-200 transition-all group">
+                            <div className="hidden sm:flex items-center gap-3">
+                                <div className="flex items-center gap-3 px-3.5 py-2 bg-[#F3F7F5] rounded-xl border border-[#DDE6E2] group">
                                     <div className="relative shrink-0">
                                         <ProfilePhotoButton
                                             user={user}
@@ -97,166 +209,163 @@ export const MainLayout: React.FC = () => {
                                             onCacheBust={() => setAvatarKey((k) => k + 1)}
                                             size="sm"
                                         />
-                                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-sky-500 border-2 border-white rounded-full shadow-sm animate-pulse pointer-events-none" />
+                                        <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-[#237A57] border-2 border-white rounded-full shadow-sm" />
                                     </div>
                                     <div className="flex flex-col items-start pr-1">
-                                        <span className="text-sm font-bold text-gray-900 leading-tight">{user.fullName}</span>
-                                        <span className="text-[10px] font-bold text-sky-600 uppercase tracking-tight">{user.role}</span>
+                                        <span className="text-xs font-bold text-[#192B29] leading-tight">{user.fullName}</span>
+                                        <span className="text-[10px] font-semibold text-[#173D39] uppercase tracking-wide">{user.role}</span>
                                     </div>
-                                    <ChevronDown size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
+                                    <ChevronDown size={14} className="text-[#687773] group-hover:text-[#192B29] transition-colors" />
                                 </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="p-2.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all group relative"
+                                    className="p-2.5 text-[#687773] hover:text-[#B42318] hover:bg-[#F3F7F5] rounded-xl transition-all border border-transparent hover:border-[#DDE6E2]"
                                     title="Logout"
+                                    aria-label="Logout"
                                 >
-                                    <LogOut size={20} />
-                                    <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none font-bold">Logout</span>
+                                    <LogOut size={18} />
                                 </button>
                             </div>
                         ) : (
-                            <div className="hidden sm:flex items-center space-x-3">
+                            <div className="hidden sm:flex items-center gap-3">
                                 <button
                                     onClick={() => openAuthModal('login')}
-                                    className="px-4 py-2 text-sm font-bold text-gray-700 hover:text-sky-600 transition-colors"
+                                    className="px-4 py-2 text-sm font-semibold text-[#173D39] hover:bg-[#F3F7F5] rounded-lg transition-colors border border-transparent hover:border-[#DDE6E2]"
                                 >
-                                    Login
+                                    Sign In
                                 </button>
                                 <button
-                                    onClick={() => openAuthModal('signup')}
-                                    className="px-5 py-2 bg-sky-600 text-white text-sm font-bold rounded-xl hover:bg-sky-700 shadow-lg shadow-sky-200 transition-all active:scale-95"
+                                    onClick={handleBookAppointmentClick}
+                                    className="medical-btn-primary"
                                 >
-                                    Sign Up
+                                    Book Appointment
                                 </button>
                             </div>
                         )}
 
-                        {/* Mobile Menu Toggle */}
-                        <div className="sm:hidden flex items-center ml-2">
+                        {/* Mobile Menu Toggle Button */}
+                        <div className="lg:hidden flex items-center">
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                className="p-2 text-gray-700 hover:text-sky-600 active:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white shadow-sm"
+                                className="p-2.5 text-[#192B29] hover:text-[#173D39] bg-[#F3F7F5] border border-[#DDE6E2] rounded-xl transition-colors"
+                                aria-label="Toggle Navigation Menu"
                             >
-                                <Menu size={22} />
+                                {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Mobile Dropdown Menu - Full Screen Opaque */}
+                {/* Mobile Drawer Menu */}
                 <div
-                    className={`sm:hidden fixed inset-0 bg-white z-[100] duration-300 ease-in-out flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'}`}
+                    className={`lg:hidden fixed inset-0 top-[110px] bg-white z-[100] transition-transform duration-300 ease-in-out flex flex-col border-t border-[#DDE6E2] ${
+                        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
+                    }`}
                 >
-                    <div className="p-8 flex flex-col h-full overflow-y-auto custom-scrollbar">
-                        <div className="flex items-center justify-between mb-12 shrink-0">
-                            <div className="flex items-center space-x-1">
-                                <div className="w-9 h-9 bg-sky-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg text-lg">M</div>
-                                <div className="font-bold text-2xl tracking-tighter text-gray-900">MediBook</div>
-                            </div>
-                            <button
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="p-3 text-gray-400 hover:text-sky-600 bg-gray-50 hover:bg-sky-50 rounded-2xl transition-all"
-                            >
-                                <X size={24} />
-                            </button>
-                        </div>
-
+                    <div className="p-6 flex flex-col h-full overflow-y-auto space-y-6">
                         {user ? (
-                            <div className="flex items-center space-x-4 pb-6 border-b border-gray-100">
-                                <div className="relative shrink-0 -rotate-2">
-                                    <ProfilePhotoButton
-                                        user={user}
-                                        cacheKey={avatarKey}
-                                        onUpdated={(p) => patchUser(p)}
-                                        onCacheBust={() => setAvatarKey((k) => k + 1)}
-                                        size="lg"
-                                    />
-                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-sky-500 border-4 border-white rounded-full shadow-sm animate-pulse pointer-events-none" />
-                                </div>
+                            <div className="flex items-center gap-4 p-4 bg-[#F3F7F5] rounded-xl border border-[#DDE6E2]">
+                                <ProfilePhotoButton
+                                    user={user}
+                                    cacheKey={avatarKey}
+                                    onUpdated={(p) => patchUser(p)}
+                                    onCacheBust={() => setAvatarKey((k) => k + 1)}
+                                    size="md"
+                                />
                                 <div>
-                                    <p className="font-extrabold text-gray-900 text-xl tracking-tight">{user.fullName}</p>
-                                    <p className="text-xs font-bold text-sky-600 uppercase tracking-widest mt-0.5 flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 bg-sky-500 rounded-full"></span>
-                                        {user.role} Online
-                                    </p>
+                                    <p className="font-bold text-[#192B29] text-base">{user.fullName}</p>
+                                    <p className="text-xs font-semibold text-[#173D39] uppercase tracking-wide">{user.role} Account</p>
                                 </div>
                             </div>
                         ) : (
-                            <div className="pb-5 border-b border-gray-100">
-                                <h3 className="text-xl font-black text-gray-900 tracking-tight">Welcome</h3>
-                                <p className="text-sm font-bold text-gray-400">Join MediBook today</p>
+                            <div className="p-4 bg-[#F3F7F5] rounded-xl border border-[#DDE6E2]">
+                                <h3 className="font-bold text-[#192B29] text-base">MediBook Clinical Access</h3>
+                                <p className="text-xs text-[#687773] mt-1">Book consultations with board-certified hospital specialists</p>
                             </div>
                         )}
 
-                        <div className="space-y-3 pt-1">
-                            {user?.role === 'patient' && !user?.hasDoctorProfile && (
-                                <button
-                                    onClick={() => { navigate('/join-doctor'); setIsMobileMenuOpen(false); }}
-                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
-                                >
-                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
-                                        <UserPlus size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
-                                    </div>
-                                    Join as Doctor
-                                </button>
-                            )}
-                            {user?.role === 'patient' && !user?.hasPatientProfile && (
-                                <button
-                                    onClick={() => { navigate('/complete-profile'); setIsMobileMenuOpen(false); }}
-                                    className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
-                                >
-                                    <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
-                                        <Calendar size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
-                                    </div>
-                                    Complete Profile
-                                </button>
-                            )}
-                            {user?.role !== 'patient' && (
+                        {/* Mobile Nav Links */}
+                        <div className="space-y-2">
                             <button
-                                onClick={() => { navigate('/home'); setIsMobileMenuOpen(false); }}
-                                className="w-full text-left px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 flex items-center transition-all group"
+                                onClick={() => scrollToSection('doctors-list')}
+                                className="w-full text-left px-4 py-3 rounded-lg font-semibold text-[#192B29] hover:bg-[#F3F7F5] hover:text-[#173D39] transition-colors flex items-center justify-between"
                             >
-                                <div className="p-2 bg-white rounded-xl shadow-sm mr-3 group-hover:bg-sky-100 transition-colors">
-                                    <UserPlus size={18} className="text-gray-500 group-hover:text-sky-600 transition-colors" />
-                                </div>
-                                Home
+                                <span>Find a Doctor</span>
+                                <Stethoscope size={18} className="text-[#245B54]" />
                             </button>
-                            )}
+                            <button
+                                onClick={() => scrollToSection('specialties')}
+                                className="w-full text-left px-4 py-3 rounded-lg font-semibold text-[#192B29] hover:bg-[#F3F7F5] hover:text-[#173D39] transition-colors flex items-center justify-between"
+                            >
+                                <span>Clinical Specialties</span>
+                                <HeartPulse size={18} className="text-[#245B54]" />
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    setIsClinicsModalOpen(true);
+                                }}
+                                className="w-full text-left px-4 py-3 rounded-lg font-semibold text-[#192B29] hover:bg-[#F3F7F5] hover:text-[#173D39] transition-colors flex items-center justify-between"
+                            >
+                                <span>Hospitals & Clinics</span>
+                                <Building2 size={18} className="text-[#245B54]" />
+                            </button>
+                            <button
+                                onClick={handleMyAppointmentsClick}
+                                className="w-full text-left px-4 py-3 rounded-lg font-semibold text-[#192B29] hover:bg-[#F3F7F5] hover:text-[#173D39] transition-colors flex items-center justify-between"
+                            >
+                                <span>My Appointments</span>
+                                <Calendar size={18} className="text-[#245B54]" />
+                            </button>
                         </div>
 
-                        {user ? (
+                        {/* Actions */}
+                        <div className="pt-4 border-t border-[#DDE6E2] space-y-3 mt-auto">
                             <button
-                                onClick={handleLogout}
-                                className="w-full h-14 mt-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-red-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
+                                onClick={handleBookAppointmentClick}
+                                className="w-full py-3.5 rounded-xl bg-[#173D39] text-white font-bold text-sm hover:bg-[#245B54] transition-colors shadow-sm text-center"
                             >
-                                <LogOut size={20} />
-                                Logout
+                                Book Specialist Appointment
                             </button>
-                        ) : (
-                            <div className="grid grid-cols-2 gap-3 mt-2">
+
+                            {user ? (
                                 <button
-                                    onClick={() => { openAuthModal('login'); setIsMobileMenuOpen(false); }}
-                                    className="text-center px-5 py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl hover:bg-sky-50 hover:text-sky-700 transition-all border border-transparent"
+                                    onClick={handleLogout}
+                                    className="w-full py-3 rounded-xl border border-[#DDE6E2] font-semibold text-[#B42318] hover:bg-[#F3F7F5] transition-colors flex items-center justify-center gap-2 text-sm"
                                 >
-                                    Log In
+                                    <LogOut size={16} />
+                                    Logout
                                 </button>
-                                <button
-                                    onClick={() => { openAuthModal('signup'); setIsMobileMenuOpen(false); }}
-                                    className="text-center px-5 py-4 bg-sky-600 text-white font-bold rounded-2xl hover:bg-sky-700 transition-all shadow-lg shadow-sky-200"
-                                >
-                                    Sign Up
-                                </button>
-                            </div>
-                        )}
+                            ) : (
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            openAuthModal('login');
+                                        }}
+                                        className="py-2.5 rounded-lg border border-[#DDE6E2] text-[#192B29] font-semibold text-sm hover:bg-[#F3F7F5] transition-colors text-center"
+                                    >
+                                        Sign In
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            openAuthModal('signup');
+                                        }}
+                                        className="py-2.5 rounded-lg bg-[#E8F0ED] text-[#173D39] font-semibold text-sm hover:bg-[#BDE8DA] transition-colors text-center border border-[#DDE6E2]"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </nav>
 
-            {/* Main Content Area - Render child routes here */}
-            <main className="flex-1 min-h-0 overflow-y-scroll">
-                <div className="site-container py-8 lg:py-10 h-full flex flex-col">
-                    <Outlet />
-                </div>
+            {/* Main Content Area */}
+            <main className="flex-1">
+                <Outlet />
             </main>
 
             {user?.role === 'patient' && <Chatbot />}
@@ -270,12 +379,14 @@ export const MainLayout: React.FC = () => {
                 initialMode={authMode}
                 initialRole={signupInitRole}
             />
-            <style>{`
-                .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-                .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
-            `}</style>
+
+            <ClinicsModal
+                isOpen={isClinicsModalOpen}
+                onClose={() => setIsClinicsModalOpen(false)}
+                onSelectClinic={() => {
+                    scrollToSection('doctors-list');
+                }}
+            />
         </div>
     );
 };

@@ -17,11 +17,11 @@ import { RescheduleModal } from '../components/bookings/RescheduleModal';
 import { ReviewForm } from '../components/home/ReviewForm';
 
 const STATUS_STYLES: Record<string, { bg: string; border: string; text: string; icon: string }> = {
-    confirmed: { bg: 'bg-sky-50', border: 'border-sky-100', text: 'text-sky-600', icon: 'text-sky-500' },
-    pending: { bg: 'bg-amber-50', border: 'border-amber-100', text: 'text-amber-600', icon: 'text-amber-500' },
-    completed: { bg: 'bg-emerald-50', border: 'border-emerald-100', text: 'text-emerald-600', icon: 'text-emerald-500' },
-    no_show: { bg: 'bg-rose-50', border: 'border-rose-100', text: 'text-rose-600', icon: 'text-rose-500' },
-    cancelled: { bg: 'bg-slate-50', border: 'border-slate-100', text: 'text-slate-500', icon: 'text-slate-400' },
+    confirmed: { bg: 'bg-[#E8F0ED]', border: 'border-[#DDE6E2]', text: 'text-[#173D39]', icon: 'text-[#237A57]' },
+    pending: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-800', icon: 'text-amber-600' },
+    completed: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-800', icon: 'text-emerald-600' },
+    no_show: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-800', icon: 'text-rose-600' },
+    cancelled: { bg: 'bg-[#F3F7F5]', border: 'border-[#DDE6E2]', text: 'text-[#687773]', icon: 'text-[#687773]' },
 };
 
 export const MyBookingsPage: React.FC = () => {

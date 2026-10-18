@@ -1,149 +1,219 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
-  --color-primary-700: #0369a1;
+  --color-forest: #173D39;
+  --color-forest-dark: #0f2724;
+  --color-forest-light: #1f4f4a;
+
+  --color-teal-deep: #245B54;
+  --color-teal-dark: #19433d;
+  --color-teal-light: #2e7168;
+
+  --color-mint: #BDE8DA;
+  --color-mint-light: #d8f3eb;
+  --color-mint-dark: #124d3e;
+
+  --color-sage: #E8F0ED;
+  --color-sage-light: #f2f7f5;
+  --color-sage-dark: #d2e0da;
+
+  --color-section-alt: #F3F7F5;
+  --color-text-main: #192B29;
+  --color-text-muted: #687773;
+  --color-border-subtle: #DDE6E2;
+  --color-border-strong: #c2d3cd;
+
+  --color-success: #237A57;
+  --color-error: #B42318;
+
+  /* Aliasing primary color to forest and deep teal */
+  --color-primary-50: #F3F7F5;
+  --color-primary-100: #E8F0ED;
+  --color-primary-200: #BDE8DA;
+  --color-primary-300: #74B8A5;
+  --color-primary-400: #3E857B;
+  --color-primary-500: #245B54;
+  --color-primary-600: #173D39;
+  --color-primary-700: #12302D;
+  --color-primary-800: #0E2321;
+  --color-primary-900: #091715;
+
+  /* Re-mapping legacy sky classes into healthcare forest/teal tones */
+  --color-sky-50: #F3F7F5;
+  --color-sky-100: #E8F0ED;
+  --color-sky-200: #BDE8DA;
+  --color-sky-300: #8ecfbf;
+  --color-sky-400: #3e857b;
+  --color-sky-500: #245B54;
+  --color-sky-600: #173D39;
+  --color-sky-700: #12302D;
+  --color-sky-800: #0E2321;
+  --color-sky-900: #091715;
+
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 @layer components {
   .site-container {
-    @apply w-full max-w-[1380px] mx-auto px-5 sm:px-8 lg:px-10;
+    @apply w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .medical-btn-primary {
+    @apply inline-flex items-center justify-center font-semibold text-sm px-5 py-2.5 rounded-lg bg-[#173D39] text-white hover:bg-[#245B54] active:bg-[#12302D] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173D39] focus-visible:ring-offset-2;
+  }
+
+  .medical-btn-secondary {
+    @apply inline-flex items-center justify-center font-semibold text-sm px-5 py-2.5 rounded-lg bg-white text-[#192B29] border border-[#DDE6E2] hover:bg-[#F3F7F5] hover:border-[#c2d3cd] active:bg-[#E8F0ED] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173D39] focus-visible:ring-offset-2;
+  }
+
+  .medical-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#E8F0ED] text-[#173D39] border border-[#DDE6E2];
   }
 }
 
 @layer base {
-  body {
-  @apply bg-slate-50 text-slate-900 antialiased;
-    font-family: 'Inter', 'Outfit', sans-serif;
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
   }
 
-  * {
-    font-style: normal !important;
+  body {
+    background-color: #FFFFFF;
+    color: #192B29;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   button {
-    @apply cursor-pointer;
+    cursor: pointer;
   }
 
   ::selection {
-    background-color: #e0f2fe;
-    color: #0369a1;
+    background-color: #BDE8DA;
+    color: #173D39;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #245B54;
+    box-shadow: 0 0 0 3px rgba(36, 91, 84, 0.15);
   }
 }
 
-/* ── react-datepicker sky theme ── */
-.sky-datepicker {
+/* ── react-datepicker healthcare theme ── */
+.sky-datepicker, .medical-datepicker {
   font-family: inherit !important;
-  border: 1px solid #e5e7eb !important;
-  border-radius: 20px !important;
-  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.15), 0 8px 25px -5px rgba(2, 132, 199, 0.08) !important;
+  border: 1px solid #DDE6E2 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px -4px rgba(23, 61, 57, 0.08), 0 4px 12px -2px rgba(23, 61, 57, 0.04) !important;
   overflow: hidden !important;
   padding: 12px !important;
-  background: #fff !important;
+  background: #FFFFFF !important;
 }
 
 /* header */
-.sky-datepicker .react-datepicker__header {
-  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+.sky-datepicker .react-datepicker__header,
+.medical-datepicker .react-datepicker__header {
+  background: #173D39 !important;
   border-bottom: none !important;
-  border-radius: 12px 12px 0 0 !important;
+  border-radius: 8px 8px 0 0 !important;
   padding: 12px 8px 10px !important;
 }
 
 .sky-datepicker .react-datepicker__current-month,
-.sky-datepicker .react-datepicker__day-name {
-  color: #fff !important;
-  font-weight: 700 !important;
+.sky-datepicker .react-datepicker__day-name,
+.medical-datepicker .react-datepicker__current-month,
+.medical-datepicker .react-datepicker__day-name {
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
 }
 
-.sky-datepicker .react-datepicker__day-name {
+.sky-datepicker .react-datepicker__day-name,
+.medical-datepicker .react-datepicker__day-name {
   font-size: 11px !important;
-  opacity: 0.75;
+  opacity: 0.85;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 /* month/year dropdowns */
 .sky-datepicker .react-datepicker__month-select,
-.sky-datepicker .react-datepicker__year-select {
-  background: rgba(255, 255, 255, 0.15) !important;
+.sky-datepicker .react-datepicker__year-select,
+.medical-datepicker .react-datepicker__month-select,
+.medical-datepicker .react-datepicker__year-select {
+  background: rgba(255, 255, 255, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  color: #fff !important;
-  border-radius: 8px !important;
-  padding: 2px 6px !important;
-  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  border-radius: 6px !important;
+  padding: 3px 6px !important;
+  font-weight: 600 !important;
   font-size: 13px !important;
   cursor: pointer;
   outline: none;
-  max-height: 160px;
-  overflow-y: auto;
 }
 
 .sky-datepicker .react-datepicker__month-select option,
-.sky-datepicker .react-datepicker__year-select option {
-  background: #0369a1 !important;
-  color: #fff !important;
-}
-
-/* nav arrows */
-.sky-datepicker .react-datepicker__navigation-icon::before {
-  border-color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.sky-datepicker .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
-  border-color: #fff !important;
+.sky-datepicker .react-datepicker__year-select option,
+.medical-datepicker .react-datepicker__month-select option,
+.medical-datepicker .react-datepicker__year-select option {
+  background: #173D39 !important;
+  color: #FFFFFF !important;
 }
 
 /* day cells */
-.sky-datepicker .react-datepicker__day {
-  border-radius: 10px !important;
-  color: #374151 !important;
+.sky-datepicker .react-datepicker__day,
+.medical-datepicker .react-datepicker__day {
+  border-radius: 8px !important;
+  color: #192B29 !important;
   font-weight: 500 !important;
   font-size: 13px !important;
-  width: 2rem !important;
-  line-height: 2rem !important;
+  width: 2.1rem !important;
+  line-height: 2.1rem !important;
   transition: all 0.15s ease !important;
 }
 
-.sky-datepicker .react-datepicker__day:hover {
-  background-color: #e0f2fe !important;
-  color: #0369a1 !important;
+.sky-datepicker .react-datepicker__day:hover,
+.medical-datepicker .react-datepicker__day:hover {
+  background-color: #E8F0ED !important;
+  color: #173D39 !important;
 }
 
 .sky-datepicker .react-datepicker__day--selected,
-.sky-datepicker .react-datepicker__day--keyboard-selected {
-  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
-  color: #fff !important;
+.sky-datepicker .react-datepicker__day--keyboard-selected,
+.medical-datepicker .react-datepicker__day--selected,
+.medical-datepicker .react-datepicker__day--keyboard-selected {
+  background: #173D39 !important;
+  color: #FFFFFF !important;
   font-weight: 700 !important;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4) !important;
 }
 
-.sky-datepicker .react-datepicker__day--today {
-  font-weight: 800 !important;
-  color: #0284c7 !important;
-  border: 1.5px solid #0284c7 !important;
+.sky-datepicker .react-datepicker__day--today,
+.medical-datepicker .react-datepicker__day--today {
+  font-weight: 700 !important;
+  color: #173D39 !important;
+  border: 1px solid #173D39 !important;
   background: transparent !important;
 }
 
-.sky-datepicker .react-datepicker__day--today.react-datepicker__day--selected {
-  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
-  color: #fff !important;
+.sky-datepicker .react-datepicker__day--today.react-datepicker__day--selected,
+.medical-datepicker .react-datepicker__day--today.react-datepicker__day--selected {
+  background: #173D39 !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
 }
 
-.sky-datepicker .react-datepicker__day--disabled {
-  color: #d1d5db !important;
+.sky-datepicker .react-datepicker__day--disabled,
+.medical-datepicker .react-datepicker__day--disabled {
+  color: #c2d3cd !important;
 }
 
-/* popper arrow */
-.sky-datepicker-popper .react-datepicker__triangle {
-  display: none !important;
-}
-
-/* popper z-index */
-.sky-datepicker-popper {
+.sky-datepicker-popper,
+.medical-datepicker-popper {
   z-index: 9999 !important;
+}
+
+.sky-datepicker-popper .react-datepicker__triangle,
+.medical-datepicker-popper .react-datepicker__triangle {
+  display: none !important;
 }

@@ -3,20 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 
-// Modular Home Components
+// Redesigned Healthcare Home Components
 import HeroSection from '../components/home/HeroSection';
-import DoctorJoinSection from '../components/home/DoctorJoinSection';
+import MedicalPhotographySection from '../components/home/MedicalPhotographySection';
+import SpecialtiesSection from '../components/home/SpecialtiesSection';
 import DoctorsSpecialistsSection from '../components/home/DoctorsSpecialistsSection';
+import BookingExplanationSection from '../components/home/BookingExplanationSection';
+import TrustSection from '../components/home/TrustSection';
 import ReviewsSection from '../components/home/ReviewsSection';
+import DoctorJoinSection from '../components/home/DoctorJoinSection';
 import FAQSection from '../components/home/FAQSection';
 import HomeFooter from '../components/home/HomeFooter';
+
+// Modals
 import DoctorProfileModal from '../components/home/DoctorProfileModal';
+import InteractiveBookingModal from '../components/home/InteractiveBookingModal';
 import DoctorDashboard from '../components/home/DoctorDashboard';
 import AdminDashboard from '../components/home/AdminDashboard';
-
 import { ConfirmModal } from '../components/ui/ConfirmModal';
-
-
 
 export const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -25,11 +29,21 @@ export const Home: React.FC = () => {
         return userString ? JSON.parse(userString) : null;
     }, []);
 
-
     const [allUsers, setAllUsers] = useState<any[]>([]);
     const [allBookings, setAllBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Selected doctor for Profile Modal
     const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+
+    // Selected doctor for Interactive Booking Modal
+    const [bookingDoctor, setBookingDoctor] = useState<any>(null);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
+    // Specialty filter state (can be set by Hero search or Specialties section)
+    const [activeSpecialty, setActiveSpecialty] = useState<string>('All');
+
+    // Admin state
     const [userToDelete, setUserToDelete] = useState<number | null>(null);
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
@@ -49,8 +63,6 @@ export const Home: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-
-
             if (user?.role === 'admin') {
                 const [usersRes, bookingsRes] = await Promise.all([
                     api.get('/users'),
@@ -96,9 +108,26 @@ export const Home: React.FC = () => {
         }
     };
 
+    const handleHeroSearch = (params: { specialty: string; location: string; query: string }) => {
+        if (params.specialty) {
+            setActiveSpecialty(params.specialty);
+        }
+    };
+
+    const handleSelectSpecialtyFromGrid = (specialtyName: string) => {
+        setActiveSpecialty(specialtyName);
+        const elem = document.getElementById('doctors-list');
+        if (elem) {
+            elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleOpenBooking = (doc?: any) => {
+        setBookingDoctor(doc || null);
+        setIsBookingModalOpen(true);
+    };
+
     const showLanding = !user;
-
-
 
     return (
         <React.Fragment>
@@ -111,25 +140,67 @@ export const Home: React.FC = () => {
                 confirmText="Delete Now"
                 type="danger"
             />
+
+            {/* Doctor Profile View Modal */}
             <DoctorProfileModal
                 doctor={selectedDoctor}
                 isOpen={!!selectedDoctor}
                 onClose={() => setSelectedDoctor(null)}
+                onBookAppointment={(doc) => {
+                    setSelectedDoctor(null);
+                    handleOpenBooking(doc);
+                }}
+            />
+
+            {/* 4-Step Interactive Appointment Booking Modal */}
+            <InteractiveBookingModal
+                isOpen={isBookingModalOpen}
+                onClose={() => setIsBookingModalOpen(false)}
+                initialDoctor={bookingDoctor}
             />
 
             {showLanding ? (
-                <div className="flex-1 flex flex-col pt-2 pb-12">
-                    <HeroSection onBookClick={() => navigate('/complete-profile')} />
-                    <DoctorsSpecialistsSection
-                        doctors={[]}
-                        onViewProfile={() => {
-                            sessionStorage.setItem('showLogin', 'true');
-                            window.location.reload();
-                        }}
+                <div className="flex-1 flex flex-col">
+                    {/* 1. Distinctive Hero Section with integrated doctor search */}
+                    <HeroSection
+                        onSearch={handleHeroSearch}
+                        onBookClick={() => handleOpenBooking()}
                     />
-                    <DoctorJoinSection />
+
+                    {/* 2. Authentic Medical Facility & Consultation Photography Section */}
+                    <MedicalPhotographySection />
+
+                    {/* 3. Seven Clinical Specialties Section */}
+                    <SpecialtiesSection
+                        onSelectSpecialty={handleSelectSpecialtyFromGrid}
+                    />
+
+                    {/* 4. Featured Doctors & Restrained Doctor Cards */}
+                    <DoctorsSpecialistsSection
+                        onViewProfile={(doc) => setSelectedDoctor(doc)}
+                        onBookDoctor={(doc) => handleOpenBooking(doc)}
+                        activeSpecialtyFilter={activeSpecialty}
+                        onClearSpecialtyFilter={() => setActiveSpecialty('All')}
+                    />
+
+                    {/* 5. Simple Three-Step Appointment Explanation */}
+                    <BookingExplanationSection
+                        onStartBooking={() => handleOpenBooking()}
+                    />
+
+                    {/* 6. Verifiable Healthcare Trust Standards */}
+                    <TrustSection />
+
+                    {/* 7. Patient Feedback (Clearly Labeled Demo Data) */}
                     <ReviewsSection />
+
+                    {/* 8. Physician Network Registration */}
+                    <DoctorJoinSection />
+
+                    {/* 9. Frequently Asked Clinical Questions */}
                     <FAQSection />
+
+                    {/* 10. Clean Hospital Network Footer */}
                     <HomeFooter />
                 </div>
             ) : (
@@ -148,10 +219,8 @@ export const Home: React.FC = () => {
                     )}
                 </div>
             )}
-
-            <style>{`
-                input:focus, select:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
-            `}</style>
         </React.Fragment>
     );
 };
+
+export default Home;

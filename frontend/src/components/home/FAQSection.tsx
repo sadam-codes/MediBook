@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
+import { Plus, Minus, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { faqs } from '../../data/homeData';
+import { HEALTHCARE_FAQS } from '../../data/healthcareData';
 
-const FAQAccordion = ({ q, a }: { q: string, a: string }) => {
+const FAQAccordion = ({ question, answer }: { question: string; answer: string }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className={`bg-white rounded-3xl border transition-all duration-300 ${isOpen ? 'border-sky-200 shadow-xl shadow-sky-500/5' : 'border-gray-100 shadow-sm hover:border-gray-200'}`}>
+        <div className={`rounded-xl border transition-all duration-200 ${isOpen ? 'bg-[#F3F7F5] border-[#173D39] shadow-sm' : 'bg-white border-[#DDE6E2] hover:border-[#245B54]'}`}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-8 py-6 flex items-center justify-between text-left group"
+                className="w-full px-6 py-5 flex items-center justify-between text-left group"
+                aria-expanded={isOpen}
             >
-                <span className={`font-black text-lg ${isOpen ? 'text-sky-600' : 'text-gray-900 group-hover:text-sky-600'} transition-colors tracking-tight`}>{q}</span>
-                <div className={`p-2 rounded-xl transition-all ${isOpen ? 'bg-sky-600 text-white shadow-lg shadow-sky-200' : 'bg-gray-50 text-gray-400'}`}>
-                    {isOpen ? <Minus size={20} /> : <Plus size={20} />}
+                <span className={`font-bold text-sm sm:text-base ${isOpen ? 'text-[#173D39]' : 'text-[#192B29] group-hover:text-[#173D39]'} transition-colors pr-4`}>
+                    {question}
+                </span>
+                <div className={`p-1.5 rounded-lg shrink-0 transition-colors ${isOpen ? 'bg-[#173D39] text-white' : 'bg-[#E8F0ED] text-[#173D39]'}`}>
+                    {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                 </div>
             </button>
             <AnimatePresence>
@@ -22,11 +25,11 @@ const FAQAccordion = ({ q, a }: { q: string, a: string }) => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        transition={{ duration: 0.25, ease: 'easeInOut' }}
                         className="overflow-hidden"
                     >
-                        <div className="px-8 pb-7 text-gray-500 font-bold leading-relaxed text-[15px]">
-                            {a}
+                        <div className="px-6 pb-5 pt-1 text-[#687773] text-xs sm:text-sm leading-relaxed border-t border-[#DDE6E2]/50 text-left">
+                            {answer}
                         </div>
                     </motion.div>
                 )}
@@ -35,20 +38,30 @@ const FAQAccordion = ({ q, a }: { q: string, a: string }) => {
     );
 };
 
-const FAQSection: React.FC = () => {
+export const FAQSection: React.FC = () => {
     return (
-        <div className="mb-24">
-            <div className="text-center mb-16 relative">
-                <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Need Assistance?</h2>
-                <p className="text-gray-400 font-bold max-w-2xl mx-auto text-lg opacity-80">Quick answers to frequently asked questions about MediBook.</p>
-            </div>
+        <section className="py-16 sm:py-24 bg-[#F3F7F5] border-b border-[#DDE6E2]" aria-label="Frequently Asked Questions">
+            <div className="site-container">
+                <div className="text-center max-w-2xl mx-auto mb-12">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F0ED] border border-[#DDE6E2] text-[#173D39] text-xs font-semibold mb-3">
+                        <HelpCircle size={13} className="text-[#245B54]" />
+                        <span>Patient Assistance</span>
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#192B29] tracking-tight">
+                        Frequently Asked Clinical Questions
+                    </h2>
+                    <p className="text-[#687773] text-sm sm:text-base mt-2 font-normal">
+                        Answers regarding verified appointments, clinic intake, billing, and confidentiality.
+                    </p>
+                </div>
 
-            <div className="max-w-4xl mx-auto space-y-5">
-                {faqs.map((faq, i) => (
-                    <FAQAccordion key={i} q={faq.q} a={faq.a} />
-                ))}
+                <div className="max-w-3xl mx-auto space-y-3">
+                    {HEALTHCARE_FAQS.map((faq, i) => (
+                        <FAQAccordion key={i} question={faq.question} answer={faq.answer} />
+                    ))}
+                </div>
             </div>
-        </div>
+        </section>
     );
 };
 

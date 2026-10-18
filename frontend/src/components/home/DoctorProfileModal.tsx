@@ -1,168 +1,218 @@
-import React, { useState, useEffect } from 'react';
-import { X, ShieldCheck, Award, Star, Calendar as CalendarIcon } from 'lucide-react';
+import React from 'react';
+import { X, ShieldCheck, MapPin, Clock, Award, Building2, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import api from '../../services/api';
-import { findActiveDoctorBooking } from '../../utils/appointmentUtils';
 
 interface DoctorProfileModalProps {
     doctor: any;
     isOpen: boolean;
     onClose: () => void;
+    onBookAppointment?: (doc: any) => void;
 }
 
-const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({ doctor, isOpen, onClose }) => {
-    const navigate = useNavigate();
-    const [appointments, setAppointments] = useState<any[]>([]);
-    const [patientBooking, setPatientBooking] = useState<any>(null);
-    const [loadingAppts, setLoadingAppts] = useState(false);
+export const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({
+    doctor,
+    isOpen,
+    onClose,
+    onBookAppointment
+}) => {
+    if (!doctor || !isOpen) return null;
 
-    const docData = doctor?.originalData || doctor;
-
-    useEffect(() => {
-        if (isOpen && docData?.userId) {
-            fetchDoctorAppointments();
-            checkPatientBooking();
-        }
-    }, [doctor, isOpen]);
-
-    const checkPatientBooking = async () => {
-        try {
-            const res = await api.get('/appointments/my');
-            const doctorUserId = doctor.originalData?.userId || doctor.userId;
-            setPatientBooking(findActiveDoctorBooking(res.data, doctorUserId));
-        } catch (err) {
-            console.error("Failed to check patient booking:", err);
-        }
+    const docData = doctor.originalData || doctor;
+    const clinic = docData.clinic || {
+        name: 'St. Jude Outpatient Pavilion',
+        campus: 'Main Hospital Campus',
+        address: '1420 Medical Center Parkway',
+        suite: 'Pavilion Suite 320',
+        phone: '(555) 018-4200',
+        hours: 'Mon – Fri: 8:00 AM – 5:30 PM'
     };
 
-    const fetchDoctorAppointments = async () => {
-        setLoadingAppts(true);
-        try {
-            const res = await api.get(`/appointments/doctor/${docData.userId}`);
-            setAppointments(res.data);
-        } catch (err) {
-            console.error("Failed to fetch doctor appointments:", err);
-        } finally {
-            setLoadingAppts(false);
-        }
-    };
-
-    if (!doctor) return null;
+    const qualifications = docData.qualifications || `${docData.experienceYears || docData.exp || '12+'} Experience • Board-Certified Specialist`;
+    const education = docData.education || ['Accredited Faculty Medical School (MD)', 'Postgraduate Fellowship'];
+    const certifications = docData.certifications || ['American Board Certification', 'State Medical Board License'];
+    const languages = docData.languages || ['English'];
 
     return (
         <AnimatePresence>
-            {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
-                    />
-                    <motion.div
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="bg-white rounded-[32px] sm:rounded-[40px] shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden relative z-10 flex flex-col sm:flex-row border border-slate-100"
-                    >
-                        {/* Profile Left Sidebar */}
-                        <div className="w-full sm:w-80 bg-slate-50 p-6 sm:p-8 flex flex-col border-b sm:border-b-0 sm:border-r border-slate-100 shrink-0">
-                            <div className="relative mb-6 sm:mb-8 group max-w-[200px] sm:max-w-none mx-auto sm:mx-0">
-                                <div className="w-full aspect-square rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-xl border-4 border-white group-hover:scale-[1.02] transition-transform duration-500">
-                                    <img src={doctor.img} alt={doctor.name} className="w-full h-full object-cover" />
-                                </div>
-                                <div className="absolute -bottom-3 sm:-bottom-4 left-1/2 -translate-x-1/2 bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-lg border border-slate-50 flex items-center space-x-2 whitespace-nowrap">
-                                    <ShieldCheck size={12} className="text-sky-600" />
-                                    <span className="text-[8px] sm:text-[10px] font-black text-slate-900 uppercase tracking-widest">Verified Expert</span>
+            <div className="fixed inset-0 z-[150] flex items-center justify-center p-3 sm:p-6 bg-[#173D39]/50 backdrop-blur-sm">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={onClose}
+                    className="absolute inset-0"
+                />
+
+                <motion.div
+                    initial={{ scale: 0.95, opacity: 0, y: 15 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.95, opacity: 0, y: 15 }}
+                    transition={{ duration: 0.2 }}
+                    className="bg-white rounded-2xl border border-[#DDE6E2] shadow-2xl w-full max-w-3xl max-h-[92vh] overflow-hidden relative z-10 flex flex-col text-left"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="doctor-profile-name"
+                >
+                    {/* Header */}
+                    <div className="px-6 py-4 border-b border-[#DDE6E2] bg-[#F3F7F5] flex items-center justify-between shrink-0">
+                        <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-[#237A57]" />
+                            <span className="text-[11px] font-bold text-[#173D39] uppercase tracking-wider">
+                                Credentialed Medical Faculty Profile
+                            </span>
+                        </div>
+                        <button
+                            onClick={onClose}
+                            className="p-2 text-[#687773] hover:text-[#192B29] hover:bg-[#E8F0ED] rounded-lg transition-colors"
+                            aria-label="Close profile modal"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    {/* Content Scrollable */}
+                    <div className="p-6 overflow-y-auto space-y-6">
+                        {/* Doctor Main Info Row */}
+                        <div className="flex flex-col sm:flex-row items-start gap-6 pb-6 border-b border-[#DDE6E2]">
+                            <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden border border-[#DDE6E2] bg-[#F3F7F5] shrink-0">
+                                <img
+                                    src={docData.image || docData.img}
+                                    alt={docData.name}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute top-2 left-2">
+                                    <span className="inline-flex items-center p-1 rounded-md bg-white/95 text-[#237A57] shadow-sm">
+                                        <ShieldCheck size={14} />
+                                    </span>
                                 </div>
                             </div>
 
-                            <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
-                                <div>
-                                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight mb-1 sm:mb-2 uppercase">{doctor.name}</h2>
-                                    <p className="text-sky-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em]">{doctor.spec}</p>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                                    <div className="bg-white p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-100 flex flex-col items-center">
-                                        <Award size={14} className="text-slate-400 mb-1" />
-                                        <span className="text-[10px] sm:text-xs font-black text-slate-900 leading-none">{doctor.exp}</span>
-                                        <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">Exp.</span>
+                            <div className="flex-1">
+                                <div className="flex items-start justify-between gap-4 flex-wrap">
+                                    <div>
+                                        <h2 id="doctor-profile-name" className="text-xl sm:text-2xl font-extrabold text-[#192B29] leading-tight">
+                                            {docData.name}
+                                        </h2>
+                                        <p className="text-sm font-semibold text-[#245B54] mt-0.5">
+                                            {docData.specialty || docData.spec} Specialist
+                                        </p>
+                                        <p className="text-xs text-[#687773] mt-1">{qualifications}</p>
                                     </div>
-                                    <div className="bg-white p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-100 flex flex-col items-center">
-                                        <Star size={14} className="text-amber-400 mb-1" />
-                                        <span className="text-[10px] sm:text-xs font-black text-slate-900 leading-none">{doctor.rating}</span>
-                                        <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">Rating</span>
-                                    </div>
-                                </div>
 
-                                <div className="space-y-2 pt-4 border-t border-slate-200">
-                                    <div className="flex items-center justify-center sm:justify-start text-slate-500 space-x-3 group cursor-pointer">
-                                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-slate-400 group-hover:text-sky-500 transition-colors">
-                                            <CalendarIcon size={16} />
-                                        </div>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest">
-                                            {loadingAppts ? 'Checking...' : `${appointments.length} Consultations`}
+                                    <div className="bg-[#E8F0ED] px-3.5 py-1.5 rounded-lg border border-[#DDE6E2] text-right">
+                                        <span className="text-[10px] uppercase font-bold text-[#687773] block">Consultation Fee</span>
+                                        <span className="text-base font-extrabold text-[#173D39]">
+                                            ${docData.consultationFee || docData.fee || 120}
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        {/* Content Right */}
-                        <div className="flex-1 p-6 sm:p-10 overflow-y-auto custom-scrollbar flex flex-col bg-white">
-                            <button
-                                onClick={onClose}
-                                className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 sm:p-3 text-slate-300 hover:text-slate-900 hover:bg-slate-50 rounded-xl sm:rounded-2xl transition-all active:scale-95 z-30"
-                            >
-                                <X size={20} className="sm:w-6 sm:h-6" />
-                            </button>
-
-                            <div className="flex-1 flex flex-col items-center justify-center space-y-2 py-6">
-                                <div className="text-center max-w-md">
-                                    <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-4 leading-tight">Ready for your <span className="text-sky-600">Consultation?</span></h3>
-                                    <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">Schedule your session with Dr. {doctor.name.split(' ')[1] || doctor.name} and receive professional medical guidance from the comfort of your home.</p>
-
-                                    <button
-                                        onClick={() => {
-                                            onClose();
-                                            if (patientBooking) {
-                                                navigate('/bookings');
-                                            } else {
-                                                navigate(`/bookings/${docData.userId}`);
-                                            }
-                                        }}
-                                        className={`w-full py-6 text-white font-black rounded-3xl transition-all duration-500 shadow-2xl text-xs uppercase tracking-[0.3em] active:scale-95 border border-white/5 flex items-center justify-center space-x-3 ${patientBooking
-                                            ? 'bg-slate-900 shadow-slate-900/20 hover:bg-slate-800'
-                                            : 'bg-sky-600 shadow-sky-500/20 hover:bg-sky-700 hover:shadow-sky-600/40'
-                                            }`}
-                                    >
-                                        <CalendarIcon size={18} />
-                                        <span>{patientBooking ? 'View Active Booking' : 'Initialize Booking'}</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="mt-6 pt-8 border-t border-slate-100 text-left">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-                                    <div className="space-y-2">
-                                        <h5 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Clinic Location</h5>
-                                        <p className="text-xs font-bold text-slate-900">{docData.clinicName || 'City Medical Center'}</p>
-                                        <p className="text-[10px] text-slate-400 leading-relaxed font-medium">{docData.clinicAddress || 'Downtown Medical District, Suite 402'}</p>
+                                <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[#687773]">
+                                    <div className="flex items-center gap-1.5">
+                                        <Building2 size={13} className="text-[#245B54]" />
+                                        <span>{clinic.name}</span>
                                     </div>
-                                    <div className="space-y-2">
-                                        <h5 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Consultation Fee</h5>
-                                        <p className="text-2xl sm:text-3xl font-black text-slate-900">PKR {docData.consultationFee || '2500'}</p>
-                                        <span className="text-[8px] font-black text-sky-500 bg-sky-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Secure Payment via App</span>
+                                    <span>•</span>
+                                    <div className="flex items-center gap-1.5">
+                                        <Clock size={13} className="text-[#245B54]" />
+                                        <span>{docData.nextAvailable?.label || 'Available This Week'}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
-                </div>
-            )}
+
+                        {/* Clinical Biography */}
+                        <div>
+                            <h3 className="text-xs font-bold text-[#192B29] uppercase tracking-wider mb-2">
+                                Clinical Background & Practice Scope
+                            </h3>
+                            <p className="text-sm text-[#192B29]/90 leading-relaxed font-normal">
+                                {docData.bio || 'Comprehensive clinical care specializing in diagnostic assessment, preventative medicine, and personalized patient management.'}
+                            </p>
+                        </div>
+
+                        {/* Education & Board Certifications */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="p-4 rounded-xl bg-[#F3F7F5] border border-[#DDE6E2]">
+                                <h4 className="text-xs font-bold text-[#192B29] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                                    <Award size={14} className="text-[#173D39]" />
+                                    <span>Medical Education</span>
+                                </h4>
+                                <ul className="space-y-1.5 text-xs text-[#687773]">
+                                    {education.map((item: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-1.5">
+                                            <span className="text-[#173D39] font-bold">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="p-4 rounded-xl bg-[#F3F7F5] border border-[#DDE6E2]">
+                                <h4 className="text-xs font-bold text-[#192B29] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                                    <ShieldCheck size={14} className="text-[#173D39]" />
+                                    <span>Board Certifications</span>
+                                </h4>
+                                <ul className="space-y-1.5 text-xs text-[#687773]">
+                                    {certifications.map((item: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-1.5">
+                                            <span className="text-[#173D39] font-bold">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Clinic Location Details */}
+                        <div className="p-4 rounded-xl bg-white border border-[#DDE6E2] space-y-2">
+                            <h4 className="text-xs font-bold text-[#192B29] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                                <MapPin size={14} className="text-[#173D39]" />
+                                <span>Clinic Pavilion & Hours</span>
+                            </h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#687773]">
+                                <div>
+                                    <p className="font-semibold text-[#192B29]">{clinic.name} — {clinic.suite}</p>
+                                    <p>{clinic.address}</p>
+                                </div>
+                                <div>
+                                    <p><strong className="text-[#192B29]">Operating Hours:</strong> {clinic.hours}</p>
+                                    <p><strong className="text-[#192B29]">Facility Phone:</strong> {clinic.phone}</p>
+                                    <p className="flex items-center gap-1 mt-1 text-[#245B54] font-medium"><Globe size={12} /> Languages: {languages.join(', ')}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Demo Notice */}
+                        <div className="p-3 rounded-lg bg-[#E8F0ED]/70 border border-[#DDE6E2] text-xs text-[#687773] flex items-center gap-2">
+                            <ShieldCheck size={14} className="text-[#237A57] shrink-0" />
+                            <span>Demonstration Provider Profile: Credentials and hospital appointments are simulated for system testing.</span>
+                        </div>
+                    </div>
+
+                    {/* Footer Actions */}
+                    <div className="px-6 py-4 bg-[#F3F7F5] border-t border-[#DDE6E2] flex items-center justify-between shrink-0">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 text-xs font-semibold text-[#687773] hover:text-[#192B29] transition-colors"
+                        >
+                            Back to Specialists
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                onClose();
+                                if (onBookAppointment) {
+                                    onBookAppointment(docData);
+                                }
+                            }}
+                            className="medical-btn-primary"
+                        >
+                            Book Appointment with {docData.name}
+                        </button>
+                    </div>
+                </motion.div>
+            </div>
         </AnimatePresence>
     );
 };

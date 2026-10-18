@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Loader2, CheckCircle2, ShieldCheck } from 'lucide-react';
 import BookingFlow from '../components/home/BookingFlow';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -51,7 +51,7 @@ export const BookingPage: React.FC = () => {
             const res = await api.get(`/payments/verify?session_id=${sessionId}`);
             if (res.data.paid) {
                 setPaymentStep(4);
-                toast.success('Payment successful! Appointment confirmed.');
+                toast.success('Payment confirmed. Appointment registered.');
             } else {
                 verifiedPaymentSessions.delete(sessionId);
                 toast.error('Payment was not completed.');
@@ -84,7 +84,9 @@ export const BookingPage: React.FC = () => {
                     ...res.data,
                     name: res.data.user?.fullName,
                     spec: res.data.specialization,
-                    img: res.data.user?.profileImage ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${res.data.user.profileImage}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(res.data.user?.fullName || 'D')}&background=0f172a&color=fff&bold=true`
+                    img: res.data.user?.profileImage
+                        ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${res.data.user.profileImage}`
+                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(res.data.user?.fullName || 'D')}&background=173D39&color=fff&bold=true`
                 };
                 setDoctor(doc);
 
@@ -111,10 +113,10 @@ export const BookingPage: React.FC = () => {
 
     if (loading || verifyingPayment) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-                <Loader2 size={48} className="animate-spin text-sky-600 mb-4 opacity-20" />
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
-                    {verifyingPayment ? 'Confirming Payment...' : 'Initializing Booking Engine...'}
+            <div className="min-h-[500px] flex flex-col items-center justify-center bg-white">
+                <Loader2 size={36} className="animate-spin text-[#173D39] mb-3" />
+                <p className="text-xs font-semibold text-[#687773] uppercase tracking-wider">
+                    {verifyingPayment ? 'Confirming Appointment...' : 'Connecting to Clinic Calendar...'}
                 </p>
             </div>
         );
@@ -123,65 +125,81 @@ export const BookingPage: React.FC = () => {
     if (!doctor) return null;
 
     return (
-        <div className="min-h-screen bg-slate-50 py-0 px-4">
-            <div className="max-w-5xl mx-auto">
-                {/* Header Navigation */}
-                <div className="flex items-center justify-between mb-12">
+        <div className="py-6 px-4 text-left">
+            <div className="max-w-4xl mx-auto">
+                {/* Back Button */}
+                <div className="mb-6">
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center space-x-3 text-slate-400 hover:text-slate-900 transition-all group"
+                        className="inline-flex items-center gap-2 text-xs font-semibold text-[#687773] hover:text-[#173D39] transition-colors"
                     >
-                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform border border-slate-100">
-                            <ArrowLeft size={18} />
-                        </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest">Back</span>
+                        <ArrowLeft size={16} />
+                        <span>Return to Previous Screen</span>
                     </button>
-
-
                 </div>
 
-                <div className="bg-white rounded-[48px] shadow-2xl shadow-slate-200/50 overflow-hidden border border-slate-100 flex flex-col md:flex-row">
-                    {/* Doctor Mini Profile */}
-                    <div className="md:w-80 bg-slate-900 p-10 text-left relative overflow-hidden shrink-0">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full -mr-32 -mt-32 blur-[80px]" />
-
-                        <div className="relative z-10">
-                            <div className="w-32 h-32 rounded-[32px] overflow-hidden border-4 border-white/10 shadow-2xl mb-8">
+                <div className="bg-white rounded-2xl border border-[#DDE6E2] shadow-sm overflow-hidden flex flex-col md:flex-row">
+                    {/* Doctor Mini Profile Sidebar */}
+                    <div className="md:w-80 bg-[#173D39] text-white p-8 shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#245B54] mb-6 bg-[#245B54]">
                                 <img src={doctor.img} alt={doctor.name} className="w-full h-full object-cover" />
                             </div>
 
-                            <h2 className="text-3xl font-black text-white italic tracking-tight mb-2 uppercase leading-none">{doctor.name}</h2>
-                            <p className="text-sky-500 font-black text-[10px] uppercase tracking-[0.2em] mb-8">{doctor.spec}</p>
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-[#245B54] text-[#BDE8DA] uppercase tracking-wider mb-2">
+                                <ShieldCheck size={11} /> Credentialed Faculty
+                            </span>
 
-                            <div className="space-y-6 pt-8 border-t border-white/10">
+                            <h2 className="text-xl font-bold text-white leading-tight mb-1">
+                                {doctor.name}
+                            </h2>
+                            <p className="text-xs text-[#BDE8DA] font-medium mb-6">
+                                {doctor.spec} Specialist
+                            </p>
+
+                            <div className="space-y-4 pt-6 border-t border-[#245B54] text-xs">
                                 <div>
-                                    <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Practice Location</p>
-                                    <p className="text-xs font-bold text-slate-300 leading-relaxed">{doctor.clinicName}</p>
-                                    <p className="text-[10px] text-slate-500 mt-1">{doctor.clinicAddress}</p>
+                                    <span className="text-[10px] text-[#E8F0ED]/60 uppercase font-semibold block mb-0.5">
+                                        Clinical Location
+                                    </span>
+                                    <p className="font-semibold text-white">{doctor.clinicName || 'St. Jude Pavilion'}</p>
+                                    <p className="text-[#E8F0ED]/70 text-[11px]">{doctor.clinicAddress || '1420 Medical Center Pkwy'}</p>
                                 </div>
 
                                 <div>
-                                    <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Consultation Fee</p>
-                                    <p className="text-2xl font-black text-white">PKR {doctor.consultationFee}</p>
+                                    <span className="text-[10px] text-[#E8F0ED]/60 uppercase font-semibold block mb-0.5">
+                                        Consultation Fee
+                                    </span>
+                                    <p className="text-lg font-bold text-white">${doctor.consultationFee || 120}</p>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="pt-6 mt-6 border-t border-[#245B54] text-[11px] text-[#E8F0ED]/70">
+                            Direct EMR appointment reservation. Protected consultation slots.
                         </div>
                     </div>
 
                     {/* Booking Flow Core */}
-                    <div className="flex-1 p-4 md:p-6 relative">
+                    <div className="flex-1 p-6 md:p-8">
                         {existingAppointment ? (
-                            <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-700">
-                                <div className="w-20 h-20 bg-sky-50 rounded-full flex items-center justify-center mb-8 border border-sky-100 shadow-inner">
-                                    <CheckCircle2 size={40} className="text-sky-500" />
+                            <div className="py-12 flex flex-col items-center justify-center text-center">
+                                <div className="w-16 h-16 bg-[#E8F0ED] rounded-full flex items-center justify-center mb-4 text-[#237A57]">
+                                    <CheckCircle2 size={32} />
                                 </div>
-                                <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Already <span className="text-sky-600">Booked</span></h3>
-                                <p className="text-slate-400 font-medium text-sm leading-relaxed mb-10 max-w-sm mx-auto">
-                                    You already have an active appointment with Dr. {doctor.name.split(' ')[1] || doctor.name} on <span className="text-slate-900 font-bold">{new Date(existingAppointment.date).toLocaleDateString()}</span> at <span className="text-slate-900 font-bold">{existingAppointment.time}</span>.
+                                <h3 className="text-lg font-bold text-[#192B29] mb-2">
+                                    Active Appointment Exists
+                                </h3>
+                                <p className="text-xs text-[#687773] leading-relaxed mb-6 max-w-sm">
+                                    You already have an active appointment with {doctor.name} on{' '}
+                                    <strong className="text-[#192B29]">
+                                        {new Date(existingAppointment.date).toLocaleDateString()}
+                                    </strong>{' '}
+                                    at <strong className="text-[#192B29]">{existingAppointment.time}</strong>.
                                 </p>
                                 <button
                                     onClick={() => navigate('/bookings')}
-                                    className="px-10 py-2 bg-slate-900 text-white font-black rounded-2xl hover:bg-sky-600 transition-all shadow-xl shadow-slate-900/10 uppercase tracking-widest text-[10px] active:scale-95"
+                                    className="px-6 py-2.5 bg-[#173D39] text-white text-xs font-semibold rounded-lg hover:bg-[#245B54] transition-colors"
                                 >
                                     View My Appointments
                                 </button>
@@ -191,8 +209,9 @@ export const BookingPage: React.FC = () => {
                         )}
                     </div>
                 </div>
-
             </div>
         </div>
     );
 };
+
+export default BookingPage;
