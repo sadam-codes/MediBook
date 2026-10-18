@@ -8,7 +8,7 @@ import axios from 'axios';
 import {
     Mail, Lock, Loader2, X, User, Eye, EyeOff, Activity,
     FileText, Clock, Coins, Phone, Calendar, Stethoscope,
-    MapPin, Building, Globe, CheckCircle2, UserCircle, Image as ImageIcon,
+    MapPin, Building, Globe, CheckCircle2, Image as ImageIcon,
     ClipboardList, Timer, ShieldCheck, Camera, ArrowRight, ArrowLeft
 } from 'lucide-react';
 import { CustomSelect } from './ui/CustomSelect';
@@ -338,13 +338,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                         {[1, 2, 3, 4].map(step => (
                                             <div
                                                 key={step}
-                                                className={`h-1.5 rounded-full transition-all duration-300 ${
-                                                    signupStep === step
-                                                        ? 'w-8 bg-[#173D39]'
-                                                        : signupStep > step
-                                                            ? 'w-6 bg-[#245B54]'
-                                                            : 'w-3 bg-[#DDE6E2]'
-                                                }`}
+                                                className={`h-1.5 rounded-full transition-all duration-300 ${signupStep === step
+                                                    ? 'w-8 bg-[#173D39]'
+                                                    : signupStep > step
+                                                        ? 'w-6 bg-[#245B54]'
+                                                        : 'w-3 bg-[#DDE6E2]'
+                                                    }`}
                                             />
                                         ))}
                                     </div>
@@ -362,9 +361,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                 <input
                                                     {...register('email')}
-                                                    className={`w-full pl-11 pr-4 py-3.5 bg-white border ${
-                                                        errors.email ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3.5 bg-white border ${errors.email ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="name@example.com"
                                                 />
                                             </div>
@@ -378,9 +376,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <input
                                                     type={showPassword ? 'text' : 'password'}
                                                     {...register('password')}
-                                                    className={`w-full pl-11 pr-12 py-3.5 bg-white border ${
-                                                        errors.password ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-12 py-3.5 bg-white border ${errors.password ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="••••••••"
                                                 />
                                                 <button
@@ -413,15 +410,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <button
                                                     type="button"
                                                     onClick={() => setValue('role', 'patient')}
-                                                    className={`p-3.5 rounded-xl font-bold text-sm transition-all border flex items-center gap-3 text-left ${
-                                                        selectedRole === 'patient'
-                                                            ? 'bg-[#173D39] text-white border-[#173D39] shadow-md shadow-[#173D39]/15'
-                                                            : 'bg-white text-[#192B29] border-[#DDE6E2] hover:border-[#173D39]/40 hover:bg-[#F3F7F5]'
-                                                    }`}
+                                                    className={`p-3.5 rounded-xl font-bold text-sm transition-all border flex items-center gap-3 text-left ${selectedRole === 'patient'
+                                                        ? 'bg-[#173D39] text-white border-[#173D39] shadow-md shadow-[#173D39]/15'
+                                                        : 'bg-white text-[#192B29] border-[#DDE6E2] hover:border-[#173D39]/40 hover:bg-[#F3F7F5]'
+                                                        }`}
                                                 >
-                                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                                                        selectedRole === 'patient' ? 'bg-white/15 text-[#BDE8DA]' : 'bg-[#E8F0ED] text-[#173D39]'
-                                                    }`}>
+                                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${selectedRole === 'patient' ? 'bg-white/15 text-[#BDE8DA]' : 'bg-[#E8F0ED] text-[#173D39]'
+                                                        }`}>
                                                         <User size={18} />
                                                     </div>
                                                     <div>
@@ -433,15 +428,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <button
                                                     type="button"
                                                     onClick={() => setValue('role', 'doctor')}
-                                                    className={`p-3.5 rounded-xl font-bold text-sm transition-all border flex items-center gap-3 text-left ${
-                                                        selectedRole === 'doctor'
-                                                            ? 'bg-[#173D39] text-white border-[#173D39] shadow-md shadow-[#173D39]/15'
-                                                            : 'bg-white text-[#192B29] border-[#DDE6E2] hover:border-[#173D39]/40 hover:bg-[#F3F7F5]'
-                                                    }`}
+                                                    className={`p-3.5 rounded-xl font-bold text-sm transition-all border flex items-center gap-3 text-left ${selectedRole === 'doctor'
+                                                        ? 'bg-[#173D39] text-white border-[#173D39] shadow-md shadow-[#173D39]/15'
+                                                        : 'bg-white text-[#192B29] border-[#DDE6E2] hover:border-[#173D39]/40 hover:bg-[#F3F7F5]'
+                                                        }`}
                                                 >
-                                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                                                        selectedRole === 'doctor' ? 'bg-white/15 text-[#BDE8DA]' : 'bg-[#E8F0ED] text-[#173D39]'
-                                                    }`}>
+                                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${selectedRole === 'doctor' ? 'bg-white/15 text-[#BDE8DA]' : 'bg-[#E8F0ED] text-[#173D39]'
+                                                        }`}>
                                                         <Stethoscope size={18} />
                                                     </div>
                                                     <div>
@@ -458,9 +451,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                 <input
                                                     {...register('fullName')}
-                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                        errors.fullName ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.fullName ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="Dr. Jane Doe / John Smith"
                                                 />
                                             </div>
@@ -473,9 +465,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                 <input
                                                     {...register('email')}
-                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                        errors.email ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.email ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="email@example.com"
                                                 />
                                             </div>
@@ -488,9 +479,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                 <input
                                                     {...register('phoneNumber')}
-                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                        errors.phoneNumber ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.phoneNumber ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="+92 300 1234567"
                                                 />
                                             </div>
@@ -522,9 +512,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <input
                                                     type="password"
                                                     {...register('password')}
-                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                        errors.password ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.password ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="Min 6 characters"
                                                 />
                                             </div>
@@ -568,9 +557,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('licenseNumber')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.licenseNumber ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.licenseNumber ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="PMDC / State License"
                                                         />
                                                     </div>
@@ -602,9 +590,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <input
                                                             type="number"
                                                             {...register('experience')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.experience ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.experience ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="e.g. 8"
                                                         />
                                                     </div>
@@ -617,9 +604,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <ClipboardList className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('qualification')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.qualification ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.qualification ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="MBBS, FCPS, MD"
                                                         />
                                                     </div>
@@ -635,9 +621,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <input
                                                             type="date"
                                                             {...register('dateOfBirth')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.dateOfBirth ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.dateOfBirth ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] transition-all`}
                                                         />
                                                     </div>
                                                     {errors.dateOfBirth && <p className="text-xs text-[#B42318] font-semibold mt-1 ml-1">{errors.dateOfBirth.message}</p>}
@@ -693,9 +678,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('clinicName')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.clinicName ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.clinicName ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="City Hospital / MediClinic"
                                                         />
                                                     </div>
@@ -709,9 +693,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <input
                                                             type="number"
                                                             {...register('consultationFee')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.consultationFee ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.consultationFee ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="e.g. 2500"
                                                         />
                                                     </div>
@@ -724,9 +707,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('clinicAddress')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.clinicAddress ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.clinicAddress ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="Floor 2, Medical Tower, Sector F-8"
                                                         />
                                                     </div>
@@ -741,9 +723,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('address')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.address ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.address ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="Street, Area, Apartment"
                                                         />
                                                     </div>
@@ -769,9 +750,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                 <input
                                                     {...register('city')}
-                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                        errors.city ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.city ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="Lahore / Islamabad"
                                                 />
                                             </div>
@@ -784,9 +764,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                 <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                 <input
                                                     {...register('country')}
-                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                        errors.country ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                    className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.country ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                        } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                     placeholder="Pakistan"
                                                 />
                                             </div>
@@ -825,11 +804,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                                 key={day}
                                                                 type="button"
                                                                 onClick={() => toggleDay(day)}
-                                                                className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all border ${
-                                                                    selectedDays.includes(day)
-                                                                        ? 'bg-[#173D39] text-white border-[#173D39] shadow-sm'
-                                                                        : 'bg-white text-[#687773] border-[#DDE6E2] hover:border-[#173D39] hover:text-[#173D39]'
-                                                                }`}
+                                                                className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all border ${selectedDays.includes(day)
+                                                                    ? 'bg-[#173D39] text-white border-[#173D39] shadow-sm'
+                                                                    : 'bg-white text-[#687773] border-[#DDE6E2] hover:border-[#173D39] hover:text-[#173D39]'
+                                                                    }`}
                                                             >
                                                                 {day}
                                                             </button>
@@ -900,9 +878,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('emergencyContactName')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.emergencyContactName ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.emergencyContactName ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="Family member / Guardian name"
                                                         />
                                                     </div>
@@ -915,9 +892,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                                                         <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors" size={18} />
                                                         <input
                                                             {...register('emergencyContactPhone')}
-                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${
-                                                                errors.emergencyContactPhone ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                                            } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                                            className={`w-full pl-11 pr-4 py-3 bg-white border ${errors.emergencyContactPhone ? 'border-rose-400 bg-rose-50/20' : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                                             placeholder="+92 300 0000000"
                                                         />
                                                     </div>

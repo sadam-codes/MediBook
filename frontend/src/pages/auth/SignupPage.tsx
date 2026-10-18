@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { Mail, Lock, User, Loader2, ArrowLeft, Eye, EyeOff, ShieldCheck, ArrowRight, UserPlus } from 'lucide-react';
+import { Mail, Lock, User, Loader2, ArrowLeft, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Logo } from '../../components/ui/Logo';
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000' });
@@ -100,11 +100,10 @@ export const SignupPage: React.FC = () => {
                             />
                             <input
                                 {...register('fullName')}
-                                className={`w-full pl-11 pr-4 py-3.5 bg-white border ${
-                                    errors.fullName
+                                className={`w-full pl-11 pr-4 py-3.5 bg-white border ${errors.fullName
                                         ? 'border-rose-400 bg-rose-50/20'
                                         : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                 placeholder="John Smith / Dr. Jane Doe"
                             />
                         </div>
@@ -124,11 +123,10 @@ export const SignupPage: React.FC = () => {
                             />
                             <input
                                 {...register('email')}
-                                className={`w-full pl-11 pr-4 py-3.5 bg-white border ${
-                                    errors.email
+                                className={`w-full pl-11 pr-4 py-3.5 bg-white border ${errors.email
                                         ? 'border-rose-400 bg-rose-50/20'
                                         : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                 placeholder="name@example.com"
                             />
                         </div>
@@ -149,11 +147,10 @@ export const SignupPage: React.FC = () => {
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 {...register('password')}
-                                className={`w-full pl-11 pr-12 py-3.5 bg-white border ${
-                                    errors.password
+                                className={`w-full pl-11 pr-12 py-3.5 bg-white border ${errors.password
                                         ? 'border-rose-400 bg-rose-50/20'
                                         : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
-                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                    } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
                                 placeholder="Min 6 characters"
                             />
                             <button
