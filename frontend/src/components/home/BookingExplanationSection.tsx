@@ -28,8 +28,8 @@ export const BookingExplanationSection: React.FC<BookingExplanationSectionProps>
     ];
 
     return (
-        <section className="py-16 sm:py-24 bg-white border-b border-[#DDE6E2]" aria-label="Appointment Process Explanation">
-            <div className="site-container">
+        <section id="how-it-works" className="py-16 sm:py-24 bg-white border-b border-[#DDE6E2]" aria-label="Appointment Process Explanation">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 {/* Header */}
                 <div className="text-center max-w-2xl mx-auto mb-14">
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F0ED] border border-[#DDE6E2] text-[#173D39] text-xs font-semibold mb-3">

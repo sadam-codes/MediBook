@@ -4,6 +4,7 @@ import {
     Video, Building2
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
+import toast from 'react-hot-toast';
 import { DEMO_DOCTORS, type DoctorProfile } from '../../data/healthcareData';
 
 interface InteractiveBookingModalProps {
@@ -44,9 +45,23 @@ export const InteractiveBookingModal: React.FC<InteractiveBookingModalProps> = (
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [confirmedPass, setConfirmedPass] = useState<any>(null);
 
-    // Sync initialDoctor when opened
+    // Sync initialDoctor when opened and enforce login
     useEffect(() => {
         if (isOpen) {
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                toast('Please sign in or create an account to book an appointment.', {
+                    icon: '🔒',
+                    duration: 4000
+                });
+                if (initialDoctor) {
+                    sessionStorage.setItem('pendingBookingDoctor', JSON.stringify(initialDoctor));
+                }
+                onClose();
+                window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { mode: 'login' } }));
+                return;
+            }
+
             if (initialDoctor) {
                 const doc = initialDoctor.originalData || initialDoctor;
                 setSelectedDoctor(doc);
@@ -56,15 +71,12 @@ export const InteractiveBookingModal: React.FC<InteractiveBookingModalProps> = (
                 setStep(1);
             }
             // Auto fill logged in user if available
-            const storedUser = localStorage.getItem('user');
-            if (storedUser) {
-                try {
-                    const u = JSON.parse(storedUser);
-                    if (u.fullName) setPatientName(u.fullName);
-                    if (u.email) setPatientEmail(u.email);
-                } catch {
-                    // ignore
-                }
+            try {
+                const u = JSON.parse(storedUser);
+                if (u.fullName) setPatientName(u.fullName);
+                if (u.email) setPatientEmail(u.email);
+            } catch {
+                // ignore
             }
             setSelectedTimeSlot('');
             setConfirmedPass(null);
@@ -97,6 +109,17 @@ export const InteractiveBookingModal: React.FC<InteractiveBookingModalProps> = (
     };
 
     const handleConfirmBooking = () => {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) {
+            toast('Please sign in or create an account to finalize your booking.', {
+                icon: '🔒',
+                duration: 4000
+            });
+            onClose();
+            window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { mode: 'login' } }));
+            return;
+        }
+
         setIsSubmitting(true);
 
         setTimeout(() => {
@@ -264,10 +287,10 @@ export const InteractiveBookingModal: React.FC<InteractiveBookingModalProps> = (
                                 </div>
                             </div>
 
-                            {/* Demo Notice */}
-                            <div className="p-3 rounded-lg bg-[#F3F7F5] border border-[#DDE6E2] text-xs text-[#687773] flex items-center gap-2">
-                                <AlertCircle size={14} className="text-[#245B54] shrink-0" />
-                                <span>Note: This is a demonstration booking pass. No actual credit card charge or clinic intake queue has been billed.</span>
+                            {/* Clinical Arrival Guidance */}
+                            <div className="p-3 rounded-lg bg-[#E8F0ED] border border-[#DDE6E2] text-xs text-[#173D39] flex items-center gap-2">
+                                <ShieldCheck size={14} className="text-[#237A57] shrink-0" />
+                                <span>Clinical Confirmation: Please present this pass or appointment code at reception upon pavilion arrival.</span>
                             </div>
 
                             <div className="flex items-center justify-end gap-3 pt-2">
@@ -289,7 +312,7 @@ export const InteractiveBookingModal: React.FC<InteractiveBookingModalProps> = (
                                         <p className="text-xs text-[#687773]">Choose from our credentialed medical faculty across clinical departments.</p>
                                     </div>
 
-                                    <div className="space-y-2.5 max-h-[400px] overflow-y-auto pr-1">
+                                    <div className="space-y-2.5 max-h-[400px] overflow-y-auto pr-1 no-scrollbar hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                                         {DEMO_DOCTORS.map((doc) => (
                                             <div
                                                 key={doc.id}

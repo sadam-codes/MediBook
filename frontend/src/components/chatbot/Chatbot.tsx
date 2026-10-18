@@ -251,17 +251,16 @@ export const Chatbot: React.FC = () => {
                         exit={{ opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' }}
                         className="absolute bottom-24 right-0 w-[420px] h-[600px] bg-white rounded-[32px] shadow-2xl flex flex-col overflow-hidden border border-gray-200"
                     >
-                        <div className="bg-sky-600 p-6 text-white flex items-center justify-between relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-                            <div className="flex items-center space-x-4 relative z-10">
-                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-sky-100">
-                                    <img src="/maledoctor.png" alt="MediBook AI" className="w-full h-full object-cover" />
+                        <div className="bg-[#173D39] p-5 text-white flex items-center justify-between relative overflow-hidden border-b border-[#245B54]">
+                            <div className="flex items-center space-x-3.5 relative z-10">
+                                <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center p-0.5 border border-[#DDE6E2] shadow-sm overflow-hidden shrink-0">
+                                    <img src="/logo.png" alt="MediBook AI" className="w-full h-full object-contain rounded-lg" />
                                 </div>
                                 <div>
-                                    <h3 className="font-black text-lg tracking-tight uppercase leading-none mb-1">MediBook</h3>
-                                    <p className="text-[10px] text-sky-100 font-bold uppercase tracking-[0.2em] flex items-center opacity-80">
-                                        <span className="w-1.5 h-1.5 bg-sky-400 rounded-full mr-2 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
-                                        Specialist Expert
+                                    <h3 className="font-bold text-base tracking-tight leading-none mb-1 text-white">MediBook Assistant</h3>
+                                    <p className="text-[10px] text-[#BDE8DA] font-semibold uppercase tracking-wider flex items-center">
+                                        <span className="w-1.5 h-1.5 bg-[#BDE8DA] rounded-full mr-1.5 animate-pulse"></span>
+                                        Clinical Support
                                     </p>
                                 </div>
                             </div>
@@ -287,15 +286,15 @@ export const Chatbot: React.FC = () => {
                                     className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} items-end space-x-3`}
                                 >
                                     {msg.sender === 'bot' && (
-                                        <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shrink-0 border border-gray-200 overflow-hidden">
-                                            <img src="/maledoctor.png" alt="Bot Avatar" className="w-full h-full object-cover" />
+                                        <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 border border-[#DDE6E2] p-0.5 overflow-hidden shadow-sm">
+                                            <img src="/logo.png" alt="Bot Avatar" className="w-full h-full object-contain rounded-lg" />
                                         </div>
                                     )}
                                     <div
                                         className={`max-w-[85%] p-4 rounded-2xl text-[13px] leading-relaxed ${msg.sender === 'user'
-                                            ? 'bg-sky-600 text-white rounded-br-none font-medium border border-sky-500'
-                                            : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none font-normal'
-                                            }`}
+                                             ? 'bg-[#173D39] text-white rounded-br-none font-medium'
+                                             : 'bg-white text-[#192B29] border border-[#DDE6E2] rounded-bl-none font-normal'
+                                             }`}
                                     >
                                         {msg.sender === 'bot' && msg.isTyping ? (
                                             <TypingText text={msg.text} onComplete={() => {
@@ -352,14 +351,14 @@ export const Chatbot: React.FC = () => {
                             ))}
                             {isLoading && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start items-center space-x-3">
-                                    <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shrink-0 border border-gray-200 animate-bounce overflow-hidden">
-                                        <img src="/maledoctor.png" alt="Loading" className="w-full h-full object-cover" />
+                                    <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 border border-[#DDE6E2] p-0.5 overflow-hidden shadow-sm">
+                                        <img src="/logo.png" alt="Loading" className="w-full h-full object-contain rounded-lg" />
                                     </div>
-                                    <div className="bg-white border border-gray-100 p-4 rounded-2xl rounded-bl-none shadow-sm flex items-center space-x-3">
+                                    <div className="bg-white border border-[#DDE6E2] p-3.5 rounded-2xl rounded-bl-none shadow-sm flex items-center space-x-3">
                                         <div className="flex space-x-1">
-                                            <div className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                                            <div className="w-1.5 h-1.5 bg-sky-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                                            <div className="w-1.5 h-1.5 bg-sky-600 rounded-full animate-bounce"></div>
+                                            <div className="w-1.5 h-1.5 bg-[#245B54] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                                            <div className="w-1.5 h-1.5 bg-[#173D39] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                                            <div className="w-1.5 h-1.5 bg-[#237A57] rounded-full animate-bounce"></div>
                                         </div>
                                     </div>
                                 </motion.div>

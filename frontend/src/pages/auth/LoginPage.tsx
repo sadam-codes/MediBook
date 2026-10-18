@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -6,12 +6,13 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { Shield, Mail, Lock, Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Loader2, ArrowLeft, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Logo } from '../../components/ui/Logo';
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000' });
 
 const schema = yup.object({
-    email: yup.string().email('Invalid email format').required('Email is required'),
+    email: yup.string().email('Please enter a valid email format').required('Email is required'),
     password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 }).required();
 
@@ -19,7 +20,7 @@ type FormData = yup.InferType<typeof schema>;
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
         resolver: yupResolver(schema)
@@ -27,12 +28,11 @@ export const LoginPage: React.FC = () => {
 
     const onSubmit = async (data: FormData) => {
         try {
-            // Only send email and password to prevent "property should not exist" errors
             const { email, password } = data;
             const response = await api.post('/auth/login', { email, password });
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
-            toast.success('Welcome back!');
+            toast.success('Welcome back to MediBook!');
             navigate('/home');
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to login. Please check your credentials.');
@@ -40,82 +40,135 @@ export const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 sm:p-8 py-12">
+        <div className="min-h-screen w-full bg-[#F3F7F5] flex flex-col items-center justify-center p-4 sm:p-8 py-12 relative overflow-hidden">
+            {/* Ambient Background Accents */}
+            <div className="w-96 h-96 bg-[#BDE8DA]/30 rounded-full blur-3xl absolute -top-20 -right-20 pointer-events-none" />
+            <div className="w-96 h-96 bg-[#E8F0ED]/70 rounded-full blur-3xl absolute -bottom-20 -left-20 pointer-events-none" />
+
+            {/* Back Navigation */}
+            <div className="w-full max-w-[460px] mb-4 z-10">
+                <button
+                    onClick={() => navigate('/')}
+                    className="inline-flex items-center gap-2 text-xs font-bold text-[#687773] hover:text-[#173D39] transition-colors group"
+                >
+                    <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                    <span>Back to Home</span>
+                </button>
+            </div>
+
+            {/* Main Login Card */}
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-[480px] bg-white rounded-[20px] shadow-2xl border border-slate-100 overflow-hidden flex flex-col"
+                transition={{ duration: 0.3 }}
+                className="w-full max-w-[460px] bg-white rounded-2xl shadow-xl shadow-[#173D39]/5 border border-[#DDE6E2] overflow-hidden p-8 sm:p-10 relative z-10"
             >
-                <div className="p-8 sm:p-12 overflow-y-auto custom-scrollbar">
-                    <div className="flex flex-col items-center mb-10">
-                        <div className="w-16 h-16 bg-sky-600 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-sky-200 mb-6">
-                            <Shield size={32} />
-                        </div>
-                        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h2>
-                        <p className="text-slate-400 font-bold text-sm mt-2">Enter your credentials to continue</p>
+                <div className="flex flex-col items-center text-center mb-8">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F0ED] border border-[#DDE6E2] text-[#173D39] text-xs font-bold uppercase tracking-wider mb-4">
+                        <ShieldCheck size={14} className="text-[#173D39]" />
+                        <span>Verified Portal Login</span>
                     </div>
 
-                    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="space-y-2">
-                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Identity</label>
-                            <div className="relative group">
-                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-sky-500 transition-colors" size={20} />
-                                <input
-                                    {...register('email')}
-                                    className={`w-full pl-14 pr-6 py-5 bg-slate-50 border-2 ${errors.email ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-sky-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
-                                    placeholder="name@example.com"
-                                />
-                            </div>
-                            <p className="text-[10px] text-red-500 font-black uppercase tracking-wider ml-4 min-h-[14px]">{errors.email?.message}</p>
+                    <Logo size="2xl" className="shadow-md shadow-[#173D39]/10 mb-3" />
+
+                    <h1 className="text-2xl sm:text-3xl font-extrabold text-[#192B29] tracking-tight">
+                        Welcome Back
+                    </h1>
+                    <p className="text-[#687773] text-sm mt-1.5 font-medium max-w-xs">
+                        Enter your credentials to access your appointments and clinical records.
+                    </p>
+                </div>
+
+                <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-[#192B29] uppercase tracking-wider ml-1">
+                            Email Address
+                        </label>
+                        <div className="relative group">
+                            <Mail
+                                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors"
+                                size={18}
+                            />
+                            <input
+                                {...register('email')}
+                                className={`w-full pl-11 pr-4 py-3.5 bg-white border ${
+                                    errors.email
+                                        ? 'border-rose-400 bg-rose-50/20'
+                                        : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                placeholder="name@example.com"
+                            />
                         </div>
+                        {errors.email && (
+                            <p className="text-xs text-[#B42318] font-semibold mt-1 ml-1">{errors.email.message}</p>
+                        )}
+                    </div>
 
-                        <div className="space-y-2">
-                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
-                            <div className="relative group">
-                                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-sky-500 transition-colors" size={20} />
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    {...register('password')}
-                                    className={`w-full pl-14 pr-14 py-5 bg-slate-50 border-2 ${errors.password ? 'border-red-200 bg-red-50/30' : 'border-transparent focus:border-sky-500'} rounded-[24px] outline-none font-bold text-slate-700 placeholder:text-slate-300 transition-all`}
-                                    placeholder="••••••••"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-sky-500 transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
-                                >
-                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                </button>
-                            </div>
-                            <p className="text-[10px] text-red-500 font-black uppercase tracking-wider ml-4 min-h-[14px]">{errors.password?.message}</p>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full bg-slate-900 hover:bg-sky-600 text-white font-black py-5 rounded-[28px] transition-all shadow-xl active:scale-95 flex items-center justify-center border-none"
-                            style={{ backgroundColor: '#0f172a' }}
-                        >
-                            {isSubmitting ? <Loader2 className="animate-spin" /> : 'Login'}
-                        </button>
-                    </form>
-
-                    <div className="mt-10 flex flex-col items-center space-y-4">
-                        <p className="text-sm font-bold text-slate-400">
-                            New to MediBook?{' '}
-                            <button onClick={() => navigate('/')} className="text-indigo-600 hover:underline font-black bg-transparent border-none p-0 inline-flex items-center">
-                                Join now <ArrowLeft size={14} className="ml-1 rotate-180" />
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-[#192B29] uppercase tracking-wider ml-1">
+                            Password
+                        </label>
+                        <div className="relative group">
+                            <Lock
+                                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#687773] group-focus-within:text-[#173D39] transition-colors"
+                                size={18}
+                            />
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                {...register('password')}
+                                className={`w-full pl-11 pr-12 py-3.5 bg-white border ${
+                                    errors.password
+                                        ? 'border-rose-400 bg-rose-50/20'
+                                        : 'border-[#DDE6E2] hover:border-[#245B54]/40 focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/10'
+                                } rounded-xl outline-none font-medium text-sm text-[#192B29] placeholder:text-[#687773]/60 transition-all`}
+                                placeholder="••••••••"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#687773] hover:text-[#173D39] transition-colors bg-transparent border-none p-0 flex items-center justify-center focus:outline-none"
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
-                        </p>
+                        </div>
+                        {errors.password && (
+                            <p className="text-xs text-[#B42318] font-semibold mt-1 ml-1">{errors.password.message}</p>
+                        )}
                     </div>
+
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full bg-[#173D39] hover:bg-[#245B54] text-white font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-[0.99] flex items-center justify-center text-sm gap-2 mt-2"
+                    >
+                        {isSubmitting ? (
+                            <Loader2 className="animate-spin text-white" size={20} />
+                        ) : (
+                            <>
+                                <span>Sign In to MediBook</span>
+                                <ArrowRight size={16} />
+                            </>
+                        )}
+                    </button>
+                </form>
+
+                <div className="mt-8 pt-6 border-t border-[#DDE6E2] text-center">
+                    <p className="text-xs font-semibold text-[#687773]">
+                        New to MediBook?{' '}
+                        <button
+                            onClick={() => navigate('/signup')}
+                            className="text-[#173D39] hover:text-[#245B54] hover:underline font-bold transition-all bg-transparent border-none p-0 inline"
+                        >
+                            Create an account
+                        </button>
+                    </p>
+                </div>
+
+                <div className="mt-6 flex items-center justify-center gap-1.5 text-[11px] text-[#687773] font-medium">
+                    <ShieldCheck size={13} className="text-[#173D39]" />
+                    <span>256-bit encrypted healthcare portal • HIPAA compliant</span>
                 </div>
             </motion.div>
-
-            <style>{`
-                .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-                .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-            `}</style>
         </div>
     );
 };

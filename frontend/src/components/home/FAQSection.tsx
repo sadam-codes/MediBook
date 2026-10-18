@@ -40,8 +40,8 @@ const FAQAccordion = ({ question, answer }: { question: string; answer: string }
 
 export const FAQSection: React.FC = () => {
     return (
-        <section className="py-16 sm:py-24 bg-[#F3F7F5] border-b border-[#DDE6E2]" aria-label="Frequently Asked Questions">
-            <div className="site-container">
+        <section id="faq" className="py-16 sm:py-24 bg-[#F3F7F5] border-b border-[#DDE6E2]" aria-label="Frequently Asked Questions">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="text-center max-w-2xl mx-auto mb-12">
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F0ED] border border-[#DDE6E2] text-[#173D39] text-xs font-semibold mb-3">
                         <HelpCircle size={13} className="text-[#245B54]" />

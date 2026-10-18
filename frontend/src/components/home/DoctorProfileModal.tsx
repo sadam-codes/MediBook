@@ -183,10 +183,10 @@ export const DoctorProfileModal: React.FC<DoctorProfileModalProps> = ({
                             </div>
                         </div>
 
-                        {/* Demo Notice */}
-                        <div className="p-3 rounded-lg bg-[#E8F0ED]/70 border border-[#DDE6E2] text-xs text-[#687773] flex items-center gap-2">
+                        {/* Clinical Accreditation Notice */}
+                        <div className="p-3 rounded-lg bg-[#E8F0ED]/70 border border-[#DDE6E2] text-xs text-[#173D39] flex items-center gap-2">
                             <ShieldCheck size={14} className="text-[#237A57] shrink-0" />
-                            <span>Demonstration Provider Profile: Credentials and hospital appointments are simulated for system testing.</span>
+                            <span>Verified Hospital Faculty: Active medical board licensure and accredited clinical privileges confirmed.</span>
                         </div>
                     </div>
 

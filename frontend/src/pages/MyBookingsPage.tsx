@@ -154,7 +154,7 @@ export const MyBookingsPage: React.FC = () => {
                 </div>
             )}
 
-            <div className="max-w-6xl mx-auto">
+            <div className="w-full">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
                     <div className="text-left">
                         <button

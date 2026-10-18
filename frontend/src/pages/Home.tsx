@@ -3,15 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 
-// Redesigned Healthcare Home Components
+// Clean Authentic Healthcare Home Components
 import HeroSection from '../components/home/HeroSection';
-import MedicalPhotographySection from '../components/home/MedicalPhotographySection';
 import SpecialtiesSection from '../components/home/SpecialtiesSection';
 import DoctorsSpecialistsSection from '../components/home/DoctorsSpecialistsSection';
 import BookingExplanationSection from '../components/home/BookingExplanationSection';
-import TrustSection from '../components/home/TrustSection';
-import ReviewsSection from '../components/home/ReviewsSection';
-import DoctorJoinSection from '../components/home/DoctorJoinSection';
 import FAQSection from '../components/home/FAQSection';
 import HomeFooter from '../components/home/HomeFooter';
 
@@ -122,7 +118,34 @@ export const Home: React.FC = () => {
         }
     };
 
+    // Check for pending booking after user logs in
+    useEffect(() => {
+        const pending = sessionStorage.getItem('pendingBookingDoctor');
+        if (user && pending) {
+            sessionStorage.removeItem('pendingBookingDoctor');
+            try {
+                const parsedDoc = JSON.parse(pending);
+                setBookingDoctor(parsedDoc);
+                setIsBookingModalOpen(true);
+            } catch {
+                // ignore
+            }
+        }
+    }, [user]);
+
     const handleOpenBooking = (doc?: any) => {
+        if (!user) {
+            toast('Please sign in or create an account to book an appointment.', {
+                icon: '🔒',
+                duration: 4000
+            });
+            if (doc) {
+                sessionStorage.setItem('pendingBookingDoctor', JSON.stringify(doc));
+            }
+            window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { mode: 'login' } }));
+            return;
+        }
+
         setBookingDoctor(doc || null);
         setIsBookingModalOpen(true);
     };
@@ -167,15 +190,12 @@ export const Home: React.FC = () => {
                         onBookClick={() => handleOpenBooking()}
                     />
 
-                    {/* 2. Authentic Medical Facility & Consultation Photography Section */}
-                    <MedicalPhotographySection />
-
-                    {/* 3. Seven Clinical Specialties Section */}
+                    {/* 2. Clinical Specialties Section */}
                     <SpecialtiesSection
                         onSelectSpecialty={handleSelectSpecialtyFromGrid}
                     />
 
-                    {/* 4. Featured Doctors & Restrained Doctor Cards */}
+                    {/* 3. Verified Outpatient Specialists & Direct Booking */}
                     <DoctorsSpecialistsSection
                         onViewProfile={(doc) => setSelectedDoctor(doc)}
                         onBookDoctor={(doc) => handleOpenBooking(doc)}
@@ -183,24 +203,15 @@ export const Home: React.FC = () => {
                         onClearSpecialtyFilter={() => setActiveSpecialty('All')}
                     />
 
-                    {/* 5. Simple Three-Step Appointment Explanation */}
+                    {/* 4. Simple Three-Step Appointment Process */}
                     <BookingExplanationSection
                         onStartBooking={() => handleOpenBooking()}
                     />
 
-                    {/* 6. Verifiable Healthcare Trust Standards */}
-                    <TrustSection />
-
-                    {/* 7. Patient Feedback (Clearly Labeled Demo Data) */}
-                    <ReviewsSection />
-
-                    {/* 8. Physician Network Registration */}
-                    <DoctorJoinSection />
-
-                    {/* 9. Frequently Asked Clinical Questions */}
+                    {/* 5. Frequently Asked Clinical Questions */}
                     <FAQSection />
 
-                    {/* 10. Clean Hospital Network Footer */}
+                    {/* 6. Clean Hospital Network Footer */}
                     <HomeFooter />
                 </div>
             ) : (

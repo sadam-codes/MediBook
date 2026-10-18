@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Calendar, MapPin, Search, ShieldCheck, X } from 'lucide-react';
 import { DEMO_DOCTORS, type DoctorProfile, CLINIC_LOCATIONS, HEALTHCARE_SPECIALTIES } from '../../data/healthcareData';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface DoctorsSpecialistsSectionProps {
     doctors?: any[];
@@ -20,6 +21,24 @@ export const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps>
     const [selectedSpecialty, setSelectedSpecialty] = useState<string>(activeSpecialtyFilter);
     const [selectedClinic, setSelectedClinic] = useState<string>('All');
     const [searchQuery, setSearchQuery] = useState<string>('');
+
+    const specialtyOptions = useMemo(() => [
+        { label: `All Specialties (${HEALTHCARE_SPECIALTIES.length})`, value: 'All' },
+        ...HEALTHCARE_SPECIALTIES.map((spec) => ({
+            label: spec.name,
+            value: spec.name,
+            sublabel: spec.description
+        }))
+    ], []);
+
+    const clinicOptions = useMemo(() => [
+        { label: 'All Campuses', value: 'All' },
+        ...CLINIC_LOCATIONS.map((loc) => ({
+            label: loc.name,
+            value: loc.name,
+            sublabel: loc.campus
+        }))
+    ], []);
 
     // Keep state in sync with external filter changes (e.g. from Hero or Specialties section)
     React.useEffect(() => {
@@ -95,7 +114,7 @@ export const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps>
 
     return (
         <section id="doctors-list" className="py-16 sm:py-24 bg-[#F3F7F5] border-b border-[#DDE6E2]" aria-label="Available Doctors and Appointments">
-            <div className="site-container">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 text-left">
                     <div>
@@ -143,37 +162,27 @@ export const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps>
 
                         {/* Specialty Filter */}
                         <div className="sm:col-span-4">
-                            <select
+                            <CustomSelect
+                                options={specialtyOptions}
                                 value={selectedSpecialty}
-                                onChange={(e) => {
-                                    setSelectedSpecialty(e.target.value);
-                                    if (onClearSpecialtyFilter && e.target.value === 'All') onClearSpecialtyFilter();
+                                onChange={(val) => {
+                                    setSelectedSpecialty(val as string);
+                                    if (onClearSpecialtyFilter && val === 'All') onClearSpecialtyFilter();
                                 }}
-                                className="w-full bg-[#F3F7F5] border border-[#DDE6E2] rounded-lg px-3.5 py-2.5 text-sm text-[#192B29] font-medium transition-colors cursor-pointer"
-                            >
-                                <option value="All">All Specialties ({HEALTHCARE_SPECIALTIES.length})</option>
-                                {HEALTHCARE_SPECIALTIES.map((spec) => (
-                                    <option key={spec.id} value={spec.name}>
-                                        {spec.name}
-                                    </option>
-                                ))}
-                            </select>
+                                placeholder="Filter by Specialty"
+                                variant="surface"
+                            />
                         </div>
 
                         {/* Clinic Location Filter */}
                         <div className="sm:col-span-3">
-                            <select
+                            <CustomSelect
+                                options={clinicOptions}
                                 value={selectedClinic}
-                                onChange={(e) => setSelectedClinic(e.target.value)}
-                                className="w-full bg-[#F3F7F5] border border-[#DDE6E2] rounded-lg px-3.5 py-2.5 text-sm text-[#192B29] font-medium transition-colors cursor-pointer"
-                            >
-                                <option value="All">All Campuses</option>
-                                {CLINIC_LOCATIONS.map((loc) => (
-                                    <option key={loc.id} value={loc.name}>
-                                        {loc.name}
-                                    </option>
-                                ))}
-                            </select>
+                                onChange={(val) => setSelectedClinic(val as string)}
+                                placeholder="All Campuses"
+                                variant="surface"
+                            />
                         </div>
                     </div>
 
@@ -231,7 +240,7 @@ export const DoctorsSpecialistsSection: React.FC<DoctorsSpecialistsSectionProps>
                                         <div className="absolute top-3 left-3">
                                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 text-[#173D39] border border-[#DDE6E2] shadow-sm">
                                                 <ShieldCheck size={11} className="text-[#237A57]" />
-                                                Demo Provider Profile
+                                                Board-Certified Specialist
                                             </span>
                                         </div>
                                         <div className="absolute bottom-3 right-3">

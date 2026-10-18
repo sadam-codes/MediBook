@@ -1,9 +1,10 @@
-import doctor1 from '../assets/doctors/doctor1.png';
-import doctor2 from '../assets/doctors/doctor2.png';
-import doctor3 from '../assets/doctors/doctor3.png';
-import doctor4 from '../assets/doctors/doctor4.png';
-import doctor5 from '../assets/doctors/doctor5.png';
-import doctor6 from '../assets/doctors/doctor6.png';
+import doctor1 from '../assets/doctors/doctor1_real.jpg';
+import doctor2 from '../assets/doctors/doctor2_real.jpg';
+import doctor3 from '../assets/doctors/doctor3_real.jpg';
+import doctor4 from '../assets/doctors/doctor4_real.jpg';
+import doctor5 from '../assets/doctors/doctor5_real.jpg';
+import doctor6 from '../assets/doctors/doctor6_real.jpg';
+import doctor7 from '../assets/doctors/doctor7_real.jpg';
 
 export interface ClinicLocation {
   id: string;
@@ -284,7 +285,7 @@ export const DEMO_DOCTORS: DoctorProfile[] = [
       time: '02:00 PM',
       label: 'Oct 20 at 2:00 PM'
     },
-    image: doctor5,
+    image: doctor4,
     bio: 'Dr. Tariq Al-Mansoor is a senior neurologist with expertise in complex headache management, peripheral neuropathies, and vestibular diagnostics. His practice emphasizes comprehensive neurological examinations and evidence-based therapeutic regimens.',
     education: ['McGill University Faculty of Medicine (MD)', 'Mayo Clinic Fellowship in Clinical Neurophysiology'],
     certifications: ['American Board of Psychiatry and Neurology', 'American Headache Society Certified Specialist'],
@@ -315,7 +316,7 @@ export const DEMO_DOCTORS: DoctorProfile[] = [
       time: '10:30 AM',
       label: 'Oct 21 at 10:30 AM'
     },
-    image: doctor4,
+    image: doctor5,
     bio: 'Dr. Sofia Lindqvist specializes in non-operative musculoskeletal medicine, joint injection therapies, and sports rehabilitation. She collaborates closely with physical therapists to restore athletic performance and joint function safely.',
     education: ['Karolinska Institute (MD)', 'Stanford University Orthopedic Surgery Fellowship'],
     certifications: ['American Board of Orthopaedic Surgery', 'Certificate of Added Qualification in Sports Medicine'],
@@ -377,7 +378,7 @@ export const DEMO_DOCTORS: DoctorProfile[] = [
       time: '08:30 AM',
       label: 'Tomorrow at 8:30 AM'
     },
-    image: doctor2,
+    image: doctor7,
     bio: 'Dr. David Thorne brings 18 years of comprehensive clinical hospital and ambulatory internal medicine experience. He focuses on cardiovascular risk reduction, metabolic health, preventative screenings, and proactive longevity medicine.',
     education: ['Penn State College of Medicine (MD)', 'Cleveland Clinic Internal Medicine Residency'],
     certifications: ['American Board of Internal Medicine', 'Fellow of the American College of Physicians'],

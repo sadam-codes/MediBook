@@ -54,8 +54,8 @@
 }
 
 @layer components {
-  .site-container {
-    @apply w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8;
+  .site-container, .container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .medical-btn-primary {
@@ -217,3 +217,66 @@
 .medical-datepicker-popper .react-datepicker__triangle {
   display: none !important;
 }
+
+/* Healthcare Theme Native Select & Dropdown Global Styles */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #FFFFFF;
+  border: 1px solid #DDE6E2;
+  border-radius: 0.75rem;
+  padding: 0.625rem 2.5rem 0.625rem 0.875rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: #192B29;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23687773' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  transition: all 0.2s ease;
+  outline: none;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: #245B54;
+}
+
+select:focus {
+  border-color: #173D39;
+  box-shadow: 0 0 0 3px rgba(23, 61, 57, 0.12);
+}
+
+select option {
+  background-color: #FFFFFF;
+  color: #192B29;
+  padding: 0.5rem;
+}
+
+select option:checked {
+  background-color: #E8F0ED !important;
+  color: #173D39 !important;
+  font-weight: 600;
+}
+
+/* Hide scrollbars across all dropdown menus while keeping them fully scrollable */
+.no-scrollbar,
+.hide-scrollbar,
+[role="listbox"],
+.custom-select-menu {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar,
+[role="listbox"]::-webkit-scrollbar,
+.custom-select-menu::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Edge, Opera */
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+

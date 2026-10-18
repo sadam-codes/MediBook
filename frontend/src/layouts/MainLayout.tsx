@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Calendar, LogOut, ChevronDown, Stethoscope, Building2, ShieldCheck, HeartPulse } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { AuthModal } from '../components/AuthModal';
+import { Logo } from '../components/ui/Logo';
 import { Chatbot } from '../components/chatbot/Chatbot';
 import { ProfilePhotoButton, type LayoutUser } from '../components/ProfilePhotoButton';
 import { ClinicsModal } from '../components/home/ClinicsModal';
@@ -75,6 +77,16 @@ export const MainLayout: React.FC = () => {
         };
     }, [isMobileMenuOpen]);
 
+    React.useEffect(() => {
+        const handleOpenAuth = (e: any) => {
+            const mode = e.detail?.mode || 'login';
+            const role = e.detail?.role || 'patient';
+            openAuthModal(mode, role);
+        };
+        window.addEventListener('open-auth-modal', handleOpenAuth);
+        return () => window.removeEventListener('open-auth-modal', handleOpenAuth);
+    }, []);
+
     const scrollToSection = (id: string) => {
         setIsMobileMenuOpen(false);
         if (location.pathname !== '/') {
@@ -92,20 +104,23 @@ export const MainLayout: React.FC = () => {
         if (user) {
             navigate('/bookings');
         } else {
+            toast('Please sign in to view your appointments.', { icon: '🔒' });
             openAuthModal('login');
         }
     };
 
     const handleBookAppointmentClick = () => {
         setIsMobileMenuOpen(false);
-        if (location.pathname === '/') {
-            const elem = document.getElementById('doctors-list');
-            if (elem) {
-                elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                return;
-            }
+        if (!user) {
+            toast('Please sign in or create an account to book an appointment.', {
+                icon: '🔒',
+                duration: 4000
+            });
+            openAuthModal('login');
+            return;
         }
-        if (user?.role === 'patient') {
+
+        if (user.role === 'patient') {
             navigate('/patient/doctors');
         } else {
             navigate('/');
@@ -120,7 +135,7 @@ export const MainLayout: React.FC = () => {
         <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#192B29]">
             {/* Top clinical announcement bar */}
             <div className="bg-[#173D39] text-[#E8F0ED] text-[12px] font-medium py-1.5 px-4 text-center border-b border-[#245B54]">
-                <div className="site-container flex items-center justify-between">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between">
                     <div className="flex items-center gap-2 mx-auto sm:mx-0">
                         <span className="w-2 h-2 rounded-full bg-[#BDE8DA] inline-block animate-pulse" />
                         <span>Verified Clinical Calendar: Real-time appointment slots open across all outpatient centers.</span>
@@ -137,7 +152,7 @@ export const MainLayout: React.FC = () => {
 
             {/* Main Navigation Bar */}
             <nav className={`bg-white border-b border-[#DDE6E2] sticky top-0 z-50 transition-all duration-200 ${isMobileMenuOpen ? 'z-[200]' : 'z-50'}`}>
-                <div className="site-container h-18 sm:h-20 flex items-center justify-between">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-18 sm:h-20 flex items-center justify-between">
                     {/* Brand Identity */}
                     <div
                         className="flex items-center gap-3 cursor-pointer group"
@@ -148,9 +163,7 @@ export const MainLayout: React.FC = () => {
                             else navigate('/');
                         }}
                     >
-                        <div className="w-10 h-10 rounded-xl bg-[#173D39] flex items-center justify-center text-[#BDE8DA] border border-[#245B54] group-hover:bg-[#245B54] transition-colors shadow-sm">
-                            <HeartPulse size={22} className="stroke-[2.2]" />
-                        </div>
+                        <Logo size="md" className="group-hover:scale-105" />
                         <div className="flex flex-col">
                             <div className="flex items-center gap-1.5">
                                 <span className="font-bold text-xl sm:text-2xl text-[#173D39] tracking-tight leading-none">
@@ -278,9 +291,12 @@ export const MainLayout: React.FC = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="p-4 bg-[#F3F7F5] rounded-xl border border-[#DDE6E2]">
-                                <h3 className="font-bold text-[#192B29] text-base">MediBook Clinical Access</h3>
-                                <p className="text-xs text-[#687773] mt-1">Book consultations with board-certified hospital specialists</p>
+                            <div className="p-4 bg-[#F3F7F5] rounded-xl border border-[#DDE6E2] flex items-center gap-3">
+                                <Logo size="sm" />
+                                <div>
+                                    <h3 className="font-bold text-[#192B29] text-sm leading-snug">MediBook Clinical Access</h3>
+                                    <p className="text-xs text-[#687773] mt-0.5">Book consultations with verified hospital specialists</p>
+                                </div>
                             </div>
                         )}
 
@@ -364,8 +380,14 @@ export const MainLayout: React.FC = () => {
             </nav>
 
             {/* Main Content Area */}
-            <main className="flex-1">
-                <Outlet />
+            <main className="flex-1 w-full flex flex-col">
+                {location.pathname === '/' && !user ? (
+                    <Outlet />
+                ) : (
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-6 sm:py-8 w-full flex-1 flex flex-col">
+                        <Outlet />
+                    </div>
+                )}
             </main>
 
             {user?.role === 'patient' && <Chatbot />}

@@ -10,7 +10,7 @@ export const DoctorJoinSection: React.FC = () => {
 
     return (
         <section className="py-16 sm:py-20 bg-white border-b border-[#DDE6E2]" aria-label="Physician Credentialing">
-            <div className="site-container">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="bg-[#173D39] rounded-2xl p-8 sm:p-12 lg:p-16 text-white text-left relative overflow-hidden shadow-lg">
                     {/* Subtle aesthetic line details, no random neon blobs */}
                     <div className="absolute top-0 right-0 w-96 h-96 bg-[#245B54] rounded-full -mr-28 -mt-28 opacity-40 blur-2xl pointer-events-none" />

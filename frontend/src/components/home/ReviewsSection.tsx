@@ -5,7 +5,7 @@ import { PATIENT_FEEDBACK_DEMO } from '../../data/healthcareData';
 export const ReviewsSection: React.FC = () => {
     return (
         <section className="py-16 sm:py-24 bg-white border-b border-[#DDE6E2]" aria-label="Patient Experience Demonstration">
-            <div className="site-container">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 text-left">
                     <div>

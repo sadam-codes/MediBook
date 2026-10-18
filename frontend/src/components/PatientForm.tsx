@@ -68,23 +68,23 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
     };
 
     return (
-        <div className="bg-white p-6 md:p-8 rounded-[32px] shadow-xl shadow-gray-200/50 border border-gray-100 max-w-2xl mx-auto mt-6 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2.5 bg-sky-600" />
+        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl shadow-[#173D39]/5 border border-[#DDE6E2] max-w-2xl mx-auto mt-6 relative overflow-hidden text-left">
+            <div className="absolute top-0 left-0 w-full h-2.5 bg-[#173D39]" />
 
             <div className="mb-6 text-center">
-                <div className="w-14 h-14 bg-sky-600 text-white rounded-[20px] flex items-center justify-center mx-auto mb-4 transform -rotate-3 shadow-md border border-sky-100">
-                    <Heart size={28} className="fill-current" />
+                <div className="w-14 h-14 bg-[#173D39] text-[#BDE8DA] rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#245B54] shadow-sm">
+                    <Heart size={26} className="fill-current" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight mb-2">Your Health Profile</h3>
-                <p className="text-gray-500 font-medium text-sm max-w-md mx-auto leading-relaxed">
-                    To provide you with the best experience, we need a few medical details to personalize your care.
+                <h3 className="text-2xl md:text-3xl font-extrabold text-[#192B29] tracking-tight mb-2">Your Health Profile</h3>
+                <p className="text-[#687773] font-normal text-sm max-w-md mx-auto leading-relaxed">
+                    To provide you with safe outpatient care, please declare essential clinical details for your patient record.
                 </p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 ml-1">Birth Date</label>
+                        <label className="text-xs font-bold text-[#192B29] ml-1">Birth Date</label>
                         <div className="relative">
                             <DatePicker
                                 selected={birthDate}
@@ -98,57 +98,57 @@ export const PatientForm: React.FC<{ onComplete: () => void }> = ({ onComplete }
                                 dropdownMode="select"
                                 maxDate={new Date()}
                                 placeholderText="Select birth date"
-                                className="w-full px-4 py-3 pl-10 bg-gray-50 border border-gray-200 focus:bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm cursor-pointer"
+                                className="w-full px-4 py-2.5 pl-10 bg-white border border-[#DDE6E2] hover:border-[#245B54] focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/15 rounded-xl outline-none text-[#192B29] text-sm font-medium transition-all shadow-xs cursor-pointer min-h-[44px]"
                                 wrapperClassName="w-full"
                                 popperClassName="sky-datepicker-popper"
                                 calendarClassName="sky-datepicker"
                             />
-                            <CalendarDays size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-500 pointer-events-none" />
+                            <CalendarDays size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#245B54] pointer-events-none" />
                         </div>
                     </div>
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 ml-1">Phone Number</label>
-                        <input {...register('phoneNumber')} placeholder="923044561544" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm" />
+                        <label className="text-xs font-bold text-[#192B29] ml-1">Phone Number</label>
+                        <input {...register('phoneNumber')} placeholder="e.g. (555) 018-4200" className="w-full px-4 py-2.5 bg-white border border-[#DDE6E2] hover:border-[#245B54] focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/15 rounded-xl outline-none text-[#192B29] text-sm font-medium transition-all shadow-xs min-h-[44px]" />
                     </div>
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 ml-1">Gender</label>
+                        <label className="text-xs font-bold text-[#192B29] ml-1">Gender</label>
                         <CustomSelect
                             value={genderValue}
                             onChange={(val) => setValue('gender', val)}
                             options={[
                                 { value: 'male', label: 'Male' },
                                 { value: 'female', label: 'Female' },
-                                { value: 'other', label: 'Other' }
+                                { value: 'other', label: 'Other / Non-binary' }
                             ]}
                             placeholder="Select gender..."
                         />
                     </div>
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 ml-1">Blood Group</label>
+                        <label className="text-xs font-bold text-[#192B29] ml-1">Blood Group</label>
                         <CustomSelect
                             value={bloodGroupValue}
                             onChange={(val) => setValue('bloodGroup', val)}
                             options={[
-                                { value: 'A+', label: 'A+' },
-                                { value: 'A-', label: 'A-' },
-                                { value: 'B+', label: 'B+' },
-                                { value: 'B-', label: 'B-' },
-                                { value: 'O+', label: 'O+' },
-                                { value: 'O-', label: 'O-' },
-                                { value: 'AB+', label: 'AB+' },
-                                { value: 'AB-', label: 'AB-' }
+                                { value: 'A+', label: 'A Positive (A+)' },
+                                { value: 'A-', label: 'A Negative (A-)' },
+                                { value: 'B+', label: 'B Positive (B+)' },
+                                { value: 'B-', label: 'B Negative (B-)' },
+                                { value: 'O+', label: 'O Positive (O+)' },
+                                { value: 'O-', label: 'O Negative (O-)' },
+                                { value: 'AB+', label: 'AB Positive (AB+)' },
+                                { value: 'AB-', label: 'AB Negative (AB-)' }
                             ]}
                             placeholder="Select blood group..."
                         />
                     </div>
                     <div className="col-span-1 md:col-span-2 space-y-1.5 mt-1">
-                        <label className="text-xs font-bold text-gray-700 ml-1">Medical History & Allergies</label>
-                        <textarea {...register('medicalHistory')} rows={3} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-500/10 rounded-xl outline-none text-gray-900 text-sm font-medium transition-all shadow-sm resize-y leading-relaxed" placeholder="Please declare any known conditions, allergies, or past surgeries to help doctors assist you better..."></textarea>
+                        <label className="text-xs font-bold text-[#192B29] ml-1">Medical History & Allergies</label>
+                        <textarea {...register('medicalHistory')} rows={3} className="w-full px-4 py-3 bg-white border border-[#DDE6E2] hover:border-[#245B54] focus:border-[#173D39] focus:ring-2 focus:ring-[#173D39]/15 rounded-xl outline-none text-[#192B29] text-sm font-medium transition-all shadow-xs resize-y leading-relaxed" placeholder="Please declare any known conditions, allergies, or past surgeries to help doctors assist you better..."></textarea>
                     </div>
                 </div>
 
                 <div className="pt-4">
-                    <button type="submit" disabled={submitting} className="w-full px-6 py-4 bg-sky-600 text-white font-black text-[15px] rounded-xl flex justify-center items-center shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 hover:-translate-y-0.5 transition-all active:scale-[0.98]">
+                    <button type="submit" disabled={submitting} className="w-full px-6 py-3.5 bg-[#173D39] hover:bg-[#245B54] text-white font-bold text-sm rounded-xl flex justify-center items-center shadow-md transition-all active:scale-[0.98]">
                         {submitting ? <Loader2 className="animate-spin mr-2 text-white" size={20} /> : 'Save Health Profile'}
                     </button>
                 </div>

@@ -113,56 +113,58 @@ const RoleDropdown = ({ currentRole, onUpdate }: { currentRole: string; onUpdate
     }, []);
 
     const roles = [
-        { value: 'patient', label: 'Patient', icon: UserCheck, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100' },
-        { value: 'doctor', label: 'Doctor', icon: ShieldCheck, color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-100' },
-        { value: 'admin', label: 'Admin', icon: Settings, color: 'text-purple-600', bg: 'bg-purple-50', border: 'border-purple-100' },
+        { value: 'patient', label: 'Patient', icon: UserCheck, color: 'text-[#173D39]', bg: 'bg-[#E8F0ED]', border: 'border-[#DDE6E2]' },
+        { value: 'doctor', label: 'Doctor', icon: ShieldCheck, color: 'text-[#245B54]', bg: 'bg-[#F3F7F5]', border: 'border-[#DDE6E2]' },
+        { value: 'admin', label: 'Admin', icon: Settings, color: 'text-[#192B29]', bg: 'bg-white', border: 'border-[#173D39]' },
     ];
 
     const current = roles.find(r => r.value === currentRole) || roles[0];
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative text-left" ref={dropdownRef}>
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center justify-between px-4 py-2 rounded-xl border transition-all duration-200 min-w-[160px] group
-                    ${current.bg} ${current.border} hover:shadow-md active:scale-[0.98]`}
+                className={`flex items-center justify-between px-3.5 py-2 rounded-xl border transition-all duration-200 min-w-[150px] group shadow-xs hover:border-[#173D39] active:scale-[0.98]
+                    ${current.bg} ${current.border}`}
             >
                 <div className="flex items-center space-x-2">
                     <current.icon size={14} className={current.color} />
-                    <span className={`text-[11px] font-black uppercase tracking-wider ${current.color}`}>{current.label}</span>
+                    <span className={`text-[11px] font-bold uppercase tracking-wider ${current.color}`}>{current.label}</span>
                 </div>
-                <div className="flex items-center space-x-2 border-l border-gray-200/50 pl-2 ml-2">
-                    <Edit3 size={12} className="text-gray-400 group-hover:text-gray-600" />
-                    <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <div className="flex items-center space-x-1.5 border-l border-[#DDE6E2] pl-2 ml-2">
+                    <Edit3 size={12} className="text-[#687773] group-hover:text-[#173D39]" />
+                    <ChevronDown size={14} className={`text-[#687773] transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#173D39]' : ''}`} />
                 </div>
             </button>
 
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 6, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                        className="absolute z-50 mt-2 w-full bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden py-1"
+                        exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute z-50 mt-1.5 w-full min-w-[160px] bg-white rounded-xl shadow-xl shadow-[#173D39]/10 border border-[#DDE6E2] overflow-hidden py-1 no-scrollbar"
                     >
                         {roles.map((role) => (
                             <button
                                 key={role.value}
+                                type="button"
                                 onClick={() => {
                                     onUpdate(role.value);
                                     setIsOpen(false);
                                 }}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors text-left
-                                    ${currentRole === role.value ? 'bg-gray-50/50' : ''}`}
+                                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 hover:bg-[#F3F7F5] transition-colors text-left
+                                    ${currentRole === role.value ? 'bg-[#E8F0ED] text-[#173D39] font-bold' : 'text-[#192B29]'}`}
                             >
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${role.bg}`}>
-                                    <role.icon size={16} className={role.color} />
+                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${role.bg} border border-[#DDE6E2]`}>
+                                    <role.icon size={14} className={role.color} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs font-black text-gray-900 uppercase tracking-tight">{role.label}</span>
+                                    <span className="text-xs font-bold uppercase tracking-tight">{role.label}</span>
                                     {currentRole === role.value && (
-                                        <span className="text-[9px] font-bold text-sky-500 uppercase font-normal">Current Level</span>
+                                        <span className="text-[9px] font-semibold text-[#237A57] uppercase">Active Role</span>
                                     )}
                                 </div>
                             </button>
@@ -177,10 +179,10 @@ const RoleDropdown = ({ currentRole, onUpdate }: { currentRole: string; onUpdate
 type FilterRole = 'all' | 'patient' | 'doctor' | 'admin';
 
 const filterOptions: { value: FilterRole; label: string; icon: React.ElementType; color: string; bg: string; border: string }[] = [
-    { value: 'all', label: 'All Users', icon: Users, color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-200' },
-    { value: 'patient', label: 'Patients', icon: UserCheck, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100' },
-    { value: 'doctor', label: 'Doctors', icon: ShieldCheck, color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-100' },
-    { value: 'admin', label: 'Admins', icon: Settings, color: 'text-purple-600', bg: 'bg-purple-50', border: 'border-purple-100' },
+    { value: 'all', label: 'All Users', icon: Users, color: 'text-[#192B29]', bg: 'bg-[#F3F7F5]', border: 'border-[#DDE6E2]' },
+    { value: 'patient', label: 'Patients', icon: UserCheck, color: 'text-[#173D39]', bg: 'bg-[#E8F0ED]', border: 'border-[#DDE6E2]' },
+    { value: 'doctor', label: 'Doctors', icon: ShieldCheck, color: 'text-[#245B54]', bg: 'bg-[#F3F7F5]', border: 'border-[#DDE6E2]' },
+    { value: 'admin', label: 'Admins', icon: Settings, color: 'text-[#173D39]', bg: 'bg-white', border: 'border-[#173D39]' },
 ];
 
 const FilterDropdown = ({ filterRole, onChange }: { filterRole: FilterRole; onChange: (role: FilterRole) => void }) => {
@@ -200,43 +202,45 @@ const FilterDropdown = ({ filterRole, onChange }: { filterRole: FilterRole; onCh
     const current = filterOptions.find(o => o.value === filterRole) || filterOptions[0];
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative text-left" ref={dropdownRef}>
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center justify-between px-4 py-2.5 rounded-xl border-2 transition-all duration-200 min-w-[170px] group shadow-sm hover:shadow-md active:scale-[0.98]
+                className={`flex items-center justify-between px-4 py-2 rounded-xl border transition-all duration-200 min-w-[160px] group shadow-xs hover:border-[#173D39] active:scale-[0.98]
                     ${current.bg} ${current.border}`}
             >
                 <div className="flex items-center space-x-2">
-                    <Filter size={13} className={current.color} />
+                    <Filter size={13} className="text-[#245B54]" />
                     <current.icon size={13} className={current.color} />
-                    <span className={`text-[11px] font-black uppercase tracking-wider ${current.color}`}>{current.label}</span>
+                    <span className={`text-[11px] font-bold uppercase tracking-wider ${current.color}`}>{current.label}</span>
                 </div>
-                <ChevronDown size={14} className={`${current.color} transition-transform duration-200 ml-3 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={14} className={`text-[#687773] transition-transform duration-200 ml-3 ${isOpen ? 'rotate-180 text-[#173D39]' : ''}`} />
             </button>
 
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 6, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.98 }}
                         transition={{ duration: 0.12 }}
-                        className="absolute right-0 z-50 mt-2 w-full min-w-[170px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden py-1"
+                        className="absolute right-0 z-50 mt-1.5 w-full min-w-[170px] bg-white rounded-xl shadow-xl shadow-[#173D39]/10 border border-[#DDE6E2] overflow-hidden py-1 no-scrollbar"
                     >
                         {filterOptions.map((opt) => (
                             <button
                                 key={opt.value}
+                                type="button"
                                 onClick={() => { onChange(opt.value); setIsOpen(false); }}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors text-left
-                                    ${filterRole === opt.value ? 'bg-gray-50/60' : ''}`}
+                                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 hover:bg-[#F3F7F5] transition-colors text-left
+                                    ${filterRole === opt.value ? 'bg-[#E8F0ED] text-[#173D39] font-bold' : 'text-[#192B29]'}`}
                             >
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${opt.bg}`}>
+                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${opt.bg} border border-[#DDE6E2]`}>
                                     <opt.icon size={14} className={opt.color} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs font-black text-gray-900 uppercase tracking-tight">{opt.label}</span>
+                                    <span className="text-xs font-bold uppercase tracking-tight">{opt.label}</span>
                                     {filterRole === opt.value && (
-                                        <span className="text-[9px] font-bold text-sky-500 uppercase">Active Filter</span>
+                                        <span className="text-[9px] font-semibold text-[#237A57] uppercase">Active Filter</span>
                                     )}
                                 </div>
                             </button>

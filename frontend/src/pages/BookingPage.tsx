@@ -125,8 +125,8 @@ export const BookingPage: React.FC = () => {
     if (!doctor) return null;
 
     return (
-        <div className="py-6 px-4 text-left">
-            <div className="max-w-4xl mx-auto">
+        <div className="w-full text-left">
+            <div className="max-w-4xl mx-auto w-full">
                 {/* Back Button */}
                 <div className="mb-6">
                     <button

@@ -5,7 +5,7 @@ import clinicPavilionImg from '../../assets/clinic_pavilion.jpg';
 export const MedicalPhotographySection: React.FC = () => {
     return (
         <section className="py-14 sm:py-20 bg-[#F3F7F5] border-b border-[#DDE6E2]" aria-label="Clinical Environment and Facilities">
-            <div className="site-container">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                     {/* Left: Authentic Architectural Photography */}
                     <div className="lg:col-span-7 order-2 lg:order-1">
